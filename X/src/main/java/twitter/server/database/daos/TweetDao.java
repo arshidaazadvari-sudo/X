@@ -1,4 +1,4 @@
-package com.xclone.dao;
+package twitter.server.database.daos;
 
 import com.xclone.database.DatabaseConnection;
 import com.xclone.model.Tweet;
@@ -68,7 +68,7 @@ public class TweetDao {
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()){
-                //return mapResultSetToTweet(rs);
+                return mapResultSetToTweet(rs);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -97,7 +97,7 @@ public class TweetDao {
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                //tweets.add(mapResultSetToTweet(rs));
+                tweets.add(mapResultSetToTweet(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -125,13 +125,116 @@ public class TweetDao {
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                //tweets.add(mapResultSetToTweet(rs));
+                tweets.add(mapResultSetToTweet(rs));
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return tweets;
     }
 
+    public List<Tweet> getFeedForUser(int userId, int limit){
+        List<Tweet> tweets = new ArrayList<>();
+        String sql = """
+            SELECT t.*, u.username, u.display_name,
+                   COUNT(DISTINCT l.user_id) as likes_count
+            EXISTS(SELECT 1 FROM likes WHERE user_id = ? AND tweet_id = t.id) AS is_liked
+            FROM tweets t
+            JOIN users u ON t.user_id = u.id
+            LEFT JOIN likes l ON t.id = l.tweet_id
+            WHERE (t.user_id = ? OR t.user_id IN (SELECT followee_id FROM follows WHERE follower_id = ?))
+                AND t.is_deleted = false AND t.reply_to_tweet_id IS NULL
+            GROUP BY t.id, u.id
+            ORDER BY t.created_at BESC LIMIT ?
+        """;
+
+        try (Connection conn = DatabaseConnection.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)){
+
+            pstmt.setInt(1, userId);
+            pstmt.setInt(2, userId);
+            pstmt.setInt(3, userId);
+            pstmt.setInt(4, limit);
+
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()){
+                Tweet tweet = mapResultSetToTweet(rs);
+                tweet.setLikedByCurrentUser(rs.getBoolean("is_liked"));
+                tweets.add(tweet);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tweets;
+    }
+
+    public boolean deleteTweet(int tweetId, int userId){
+        String sql = "UPDATE tweets SET is_deleted = true WHERE id = ? AND user_id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)){
+
+            pstmt.setInt(1, tweetId);
+            pstmt.setInt(2, userId);
+
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean updateTweet(int tweetId, int userId, String newContent){
+        if (newContent == null || newContent.trim().isEmpty()){
+            System.out.println("content cannot be empty");
+            return false;
+        }
+        String sql = """
+               UPDATE tweets SET content = ?, updated_at = CURRENT_TIMESTAMP 
+               WHERE id = ? AND user_id = ? AND is_deleted = false
+               """;
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)){
+
+            pstmt.setString(1, newContent.trim());
+            pstmt.setInt(2, tweetId);
+            pstmt.setInt(3, userId);
+
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private Tweet mapResultSetToTweet(ResultSet rs) throws SQLException {
+        Tweet tweet = new Tweet();
+        tweet.setId(rs.getInt("id"));
+        tweet.setUserId(rs.getInt("user_id"));
+        tweet.setContent(rs.getString("content"));
+
+        Array mediaArray = rs.getArray("media_urls");
+        if (mediaArray != null) tweet.setMediaUrls((String[]) mediaArray.getArray());
+
+        tweet.setCreatedAt(rs.getTimestamp("created_at"));
+        tweet.setUpdatedAt(rs.getTimestamp("updated_at"));
+        tweet.setDeleted(rs.getBoolean("is_deleted"));
+
+        int replyTo = rs.getInt("reply_to_tweet_id");
+        if (!rs.wasNull()){
+            tweet.setReplyToTweetId(replyTo);
+        }
+
+        int reTweetOf = rs.getInt("retweet_of_tweet_id");
+        if (!rs.wasNull()){
+            tweet.setRetweetOfTweetId(reTweetOf);
+        }
+
+        try {
+            tweet.setUsername(rs.getString("username"));
+            tweet.setDisplayName(rs.getString("display_name"));
+            tweet.setLikesCount(rs.getInt("likes_count"));
+        }catch (SQLException e){}
+
+        return tweet;
+    }
 }
