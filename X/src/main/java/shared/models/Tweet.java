@@ -1,6 +1,7 @@
 package shared.models;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 public class Tweet {
     private int id;
@@ -18,6 +19,7 @@ public class Tweet {
     private int likesCount;
     private int repliesCount;
     private boolean isLikedByCurrentUser;
+    private List<String> hashtags;
 
     public Tweet() {}
 
@@ -53,8 +55,6 @@ public class Tweet {
     public Integer getRetweetOfTweetId() { return retweetOfTweetId; }
     public void setRetweetOfTweetId(Integer retweetOfTweetId) { this.retweetOfTweetId = retweetOfTweetId; }
 
-
-
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
 
@@ -69,6 +69,9 @@ public class Tweet {
 
     public boolean isLikedByCurrentUser() { return isLikedByCurrentUser; }
     public void setLikedByCurrentUser(boolean likedByCurrentUser) { isLikedByCurrentUser = likedByCurrentUser; }
+
+    public List<String> getHashtags(){return hashtags; }
+    public void setHashtags(List<String> hashtags){this.hashtags = hashtags; }
 
     @Override
     public String toString(){

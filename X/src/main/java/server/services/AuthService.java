@@ -14,6 +14,20 @@ public class AuthService {
     }
 
     public User register(String username, String email, String password, String displayName, String bio){
+        if (username == null || username.trim().isEmpty()){
+            System.out.println("Username  cannot be empty");
+            return null;
+        }
+
+        if (email == null || email.trim().isEmpty()){
+            System.out.println("Email  cannot be empty");
+            return null;
+        }
+
+        if (!PasswordUtil.isValidPassword(password)){
+            System.out.println("Password must be at least 6 character");
+            return null;
+        }
 
         if (userDao.isUsernameTaken(username)){
             System.out.println("Username is already taken: " + username);
@@ -45,14 +59,22 @@ public class AuthService {
     }
 
     public User login(String username, String password){
+        if (username == null || username.trim().isEmpty()){
+            System.out.println("Username  cannot be empty");
+            return null;
+        }
+
+        if (password == null || password.isEmpty()){
+            System.out.println("Password cannot ba empty");
+        }
+
         User user = userDao.getUserByUsername(username.trim());
         if (user == null){
             System.out.println("User not found");
             return null;
         }
 
-        boolean passwordMatches = PasswordUtil.checkPassword(password, user.getPasswordHash());
-        if (!passwordMatches){
+        if (!PasswordUtil.checkPassword(password, user.getPasswordHash())){
             System.out.println("Incorrect password for: " + username);
             return null;
         }
@@ -69,6 +91,10 @@ public class AuthService {
     public boolean changePassword(int userId, String oldPassword, String newPassword){
 
         User user = userDao.getUserById(userId);
+        if (user == null){
+            System.out.println("User not found with id: " + userId);
+            return false;
+        }
 
         if (!PasswordUtil.checkPassword(oldPassword, user.getPasswordHash())){
             System.out.println("Current Password is incorrect");

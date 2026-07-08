@@ -38,10 +38,13 @@ public class TweetDao {
                 if (keys.next()){
                     tweet.setId(keys.getInt(1));
                 }
+
+                if (tweet.getId() > 0){
+                    processHashtags(tweet.getId(), tweet.getContent());
+                }
                 System.out.println("Tweet created: ID = " + tweet.getId());
                 return true;
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -80,7 +83,7 @@ public class TweetDao {
         List<Tweet> tweets = new ArrayList<>();
         String sql = """
                 SELECT t.*, u.username, u.display_name,
-                    COUNT(DISTINCT 1.user_id) as likes_count
+                    COUNT(DISTINCT l.user_id) as likes_count
                 FROM tweets t
                 JOIN users u ON t.user_id = u.id
                 LEFT JOIN likes l ON t.id = l.tweet_id
@@ -109,7 +112,7 @@ public class TweetDao {
         List<Tweet> tweets = new ArrayList<>();
         String sql = """
             SELECT t.*, u.username, u.display_name,
-                   COUNT(DISTINCT l.user_id) as likes_count
+                   COUNT(DISTINCT l.user_id) AS likes_count
             FROM tweets t
             JOIN users u ON t.user_id = u.id
             LEFT JOIN likes l ON t.id = l.tweet_id
@@ -137,7 +140,7 @@ public class TweetDao {
         List<Tweet> tweets = new ArrayList<>();
         String sql = """
             SELECT t.*, u.username, u.display_name,
-                   COUNT(DISTINCT l.user_id) as likes_count
+                   COUNT(DISTINCT l.user_id) AS likes_count
             EXISTS(SELECT 1 FROM likes WHERE user_id = ? AND tweet_id = t.id) AS is_liked
             FROM tweets t
             JOIN users u ON t.user_id = u.id
@@ -206,14 +209,21 @@ public class TweetDao {
         return false;
     }
 
-    private Tweet mapResultSetToTweet(ResultSet rs) throws SQLException {
+    public void processHashtags(int tweetId, String content){
+        HashtagDAO hashtagDAO = new HashtagDAO();
+        hashtagDAO.processHashtags(tweetId, content);
+    }
+
+    public Tweet mapResultSetToTweet(ResultSet rs) throws SQLException {
         Tweet tweet = new Tweet();
         tweet.setId(rs.getInt("id"));
         tweet.setUserId(rs.getInt("user_id"));
         tweet.setContent(rs.getString("content"));
 
         Array mediaArray = rs.getArray("media_urls");
-        if (mediaArray != null) tweet.setMediaUrls((String[]) mediaArray.getArray());
+        if (mediaArray != null) {
+            tweet.setMediaUrls((String[]) mediaArray.getArray());
+        }
 
         tweet.setCreatedAt(rs.getTimestamp("created_at"));
         tweet.setUpdatedAt(rs.getTimestamp("updated_at"));
@@ -234,7 +244,6 @@ public class TweetDao {
             tweet.setDisplayName(rs.getString("display_name"));
             tweet.setLikesCount(rs.getInt("likes_count"));
         }catch (SQLException e){}
-
         return tweet;
     }
 }

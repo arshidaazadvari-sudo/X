@@ -10,7 +10,32 @@ import java.util.List;
 
 public class UserDao {
     public boolean createUser(User user){
-        String sql = "INSERT INTO users (username, email, password, display_name, bio) VALUES (?, ?, ?, ?, ?)";
+        if (user.getUsername() == null || user.getUsername().isEmpty()){
+            System.out.println("Username cannot be empty");
+            return false;
+        }
+
+        if (user.getEmail() == null || user.getEmail().isEmpty()){
+            System.out.println("Email cannot be empty");
+            return false;
+        }
+
+        if (user.getPasswordHash() == null || user.getPasswordHash().isEmpty()){
+            System.out.println("PasswordHash cannot be empty");
+            return false;
+        }
+
+        if (isUsernameTaken(user.getUsername())){
+            System.out.println("Username already taken: " + user.getUsername());
+            return false;
+        }
+
+        if (isEmailTaken(user.getEmail())){
+            System.out.println("Email already taken: " + user.getEmail());
+            return false;
+        }
+
+        String sql = "INSERT INTO users (username, email, password_hash, display_name, bio) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
@@ -28,16 +53,19 @@ public class UserDao {
                 if (keys.next()){
                     user.setId(keys.getInt(1));
                 }
+                System.out.println("User created: " + user.getUsername());
                 return true;
             }
-
+            return false;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
     }
 
     public User getUserByUsername(String username){
+        if (username == null || username.isEmpty())  return null;
+
         String sql = "SELECT * FROM users WHERE username = ?";
         try(Connection conn = DatabaseConnection.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(sql)){
@@ -55,7 +83,29 @@ public class UserDao {
         return null;
     }
 
+    public User getUserByEmail(String email){
+        if (email == null || email.isEmpty())  return null;
+
+        String sql = "SELECT * FROM users WHERE email = ?";
+        try(Connection conn = DatabaseConnection.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)){
+
+            pstmt.setString(1,email);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()){
+                return mapResultSetToUser(rs);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public User getUserById(int id){
+        if (id <= 0)  return null;
+
         String sql = "SELECT * FROM users WHERE id = ?";
         try(Connection conn = DatabaseConnection.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(sql)){
@@ -74,7 +124,9 @@ public class UserDao {
     }
 
     public boolean updateUser(User user){
-        String sql = "UPDATE users SET display_name = ?, bio = ?, profile_pic = ?, banner_pic = ?, WHERE id = ?";
+        if (user == null || user.getId() <= 0) return false;
+
+        String sql = "UPDATE users SET display_name = ?, bio = ?, profile_pic = ?, banner_pic = ? WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)){
@@ -85,9 +137,7 @@ public class UserDao {
             pstmt.setString(4, user.getBannerPic());
             pstmt.setInt(5, user.getId());
 
-            int affected = pstmt.executeUpdate();
-            return affected > 0 ;
-
+            return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -112,6 +162,8 @@ public class UserDao {
     }
 
     public boolean deleteUser(int userId){
+        if (userId <= 0)  return false;
+
         String sql = "UPDATE users SET is_active = false WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -141,6 +193,8 @@ public class UserDao {
     }
 
     public boolean isUsernameTaken(String username){
+        if (username == null || username.isEmpty())  return false;
+
         String sql = "SELECT COUNT(*) FROM users WHERE username = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -159,6 +213,8 @@ public class UserDao {
     }
 
     public boolean isEmailTaken(String email){
+        if (email == null || email.isEmpty())  return false;
+
         String sql = "SELECT COUNT(*) FROM users WHERE email = ?";
 
         try(Connection conn = DatabaseConnection.getConnection();
@@ -178,6 +234,8 @@ public class UserDao {
 
     public List<User> searchUser(String keyword){
         List<User> users = new ArrayList<>();
+        if (keyword == null || keyword.isEmpty())  return  users;
+
         String sql = "SELECT * FROM users WHERE username ILIKE ? OR display_name ILIKE ? LIMIT 20";
 
         try(Connection conn = DatabaseConnection.getConnection();
