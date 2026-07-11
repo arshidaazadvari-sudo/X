@@ -61,7 +61,7 @@ public class HashtagDAO {
     }
 
     public void linkTweetToHashtag(int tweetId, int hashtagId){
-        String sql = "INSERT INTO tweet_hashtags (tweet_id, hashtag_id) VALUE (?, ?)";
+        String sql = "INSERT INTO tweet_hashtags (tweet_id, hashtag_id) VALUES (?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)){
