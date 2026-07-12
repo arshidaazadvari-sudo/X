@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.control.cell.TextFieldListCell?>
+<?import javafx.scene.image.ImageView?>
+<HBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="CONTROLLER_NAME"
+      alignment="CENTER" spacing="20">
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <VBox>
+
+        <Button fx:id="home" onAction="#" text="Home"/>
+
+        <Button fx:id="explore" onAction="#" text="Explore"/>
+
+        <Button fx:id="notifications" onAction="#" text="Notifications"/>
+
+        <Button fx:id="profile" onAction="#" text="Profile"/>
+
+        <Button fx:id="post" onAction="#" text="Post"/>
+
+        <Button fx:id="account" onAction="#"/>
+
+    </VBox>
+
+    <ScrollPane>
+
+        <VBox>
+
+            <HBox fx:id="TLTweetCard">
+
+                <ImageView fx:id="profilePicture" onMouseClicked="#">
+                    <clip>
+                        <Circle centerX="24" centerY="24" radius="24"/>
+                    </clip>
+                </ImageView>
+
+                <VBox>
+
+                    <TextArea fx:id="tweetText" wrapText="true" promptText="What's happening?"/>
+
+                    <HBox>
+                        <Button fx:id="imageAndVideo" onAction="#"/>
+                        <Button fx:id="GIF" onAction="#"/>
+                        <Button fx:id="schedule" onAction="#"/>
+                        <Button fx:id="postBtn" text="Post" onAction="#"/>
+                    </HBox>
+
+                </VBox>
+
+            </HBox>
+
+            <VBox fx:id="tweetsContainer"/>
+
+        </VBox>
+
+    </ScrollPane>
+
+</HBox>

@@ -7,7 +7,6 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.scene.shape.Circle?>
-<?import javafx.scene.text.TextFlow?>
 <?import javafx.scene.image.ImageView?>
 <HBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
@@ -22,18 +21,13 @@
 
     <VBox>
 
-        <HBox>
-            <TextFlow fx:id="userData"/>
-            <Button fx:id="followBTN" onAction="#"/>
-        </HBox>
-
-        <TextFlow fx:id="tweetText"/>
+        <TextArea fx:id="tweetText" wrapText="true" promptText="What's happening?"/>
 
         <HBox>
-            <Button fx:id="reply" onAction="#"/>
-            <Button fx:id="repost" onAction="#"/>
-            <Button fx:id="like" onAction="#"/>
-            <!-- other possible buttons -->
+            <Button fx:id="imageAndVideo" onAction="#"/>
+            <Button fx:id="GIF" onAction="#"/>
+            <Button fx:id="schedule" onAction="#"/>
+            <Button fx:id="postBtn" text="Post" onAction="#"/>
         </HBox>
 
     </VBox>

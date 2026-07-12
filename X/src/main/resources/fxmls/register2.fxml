@@ -19,18 +19,18 @@
 
     <Label text="(?)"/>
 
-    <Label text="Enter your username and password:"/>
+    <Label text="Choose your username and password:"/>
 
     <TextField fx:id="usernameField" promptText="your username"/>
 
     <TextField fx:id="passwordField" promptText="your password"/>
 
-    <Text fx:id="loginError"/>
-
-    <Button onAction="#" text="Log in"/>
-
-    <Label text="new to X?"/>
+    <Text fx:id="registerError"/>
 
     <Button onAction="#" text="Sign up"/>
+
+    <Label text="Already have an account?"/>
+
+    <Button onAction="#" text="Log in"/>
 
 </VBox>
