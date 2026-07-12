@@ -16,7 +16,7 @@ public class DatabaseConnection {
     public static Connection getConnection()throws SQLException {
         if (connection == null || connection.isClosed()){
             try{
-                Class.forName("org.postgresql.Drive");
+                Class.forName("org.postgresql.Driver");
                 connection = DriverManager.getConnection(URL, USER, PASSWORD);
                 System.out.println("Connected to database");
             } catch (ClassNotFoundException e) {

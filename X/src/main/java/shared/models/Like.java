@@ -5,9 +5,9 @@ import java.sql.Timestamp;
 public class Like {
      private int userId;
      private int tweetId;
-      private Timestamp createdAt;
+     private Timestamp createdAt;
 
-      public Like() {}
+     public Like() {}
 
     public Like(int userId, int tweetId){
           this.userId = userId;

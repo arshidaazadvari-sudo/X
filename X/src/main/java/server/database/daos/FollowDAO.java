@@ -80,7 +80,6 @@ public class FollowDAO {
             while (rs.next()){
                 users.add(mapResultSetToUser(rs));
             }
-
         }catch (SQLException e) {
             e.printStackTrace();
         }
@@ -104,7 +103,6 @@ public class FollowDAO {
             while (rs.next()){
                 users.add(mapResultSetToUser(rs));
             }
-
         }catch (SQLException e) {
             e.printStackTrace();
         }
@@ -124,7 +122,6 @@ public class FollowDAO {
             if (rs.next()){
                return rs.getInt(1) > 0;
             }
-
         }catch (SQLException e) {
             e.printStackTrace();
         }
@@ -143,7 +140,6 @@ public class FollowDAO {
             if (rs.next()){
                 return rs.getInt(1);
             }
-
         }catch (SQLException e) {
             e.printStackTrace();
         }
@@ -162,7 +158,6 @@ public class FollowDAO {
             if (rs.next()){
                 return rs.getInt(1);
             }
-
         }catch (SQLException e) {
             e.printStackTrace();
         }

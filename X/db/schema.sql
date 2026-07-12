@@ -88,14 +88,14 @@ CREATE TABLE tweet_hashtags (
 
 
 --media_table
-    CREATE TABLE media(
-                        id SERIAL PRIMARY KEY,
-                        tweet_id INTEGER REFERENCES tweets(id) ON DELETE CASCADE ,
-                        file_path VARCHAR(255) NOT NULL ,
-                        file_type VARCHAR(50) ,
-                        file_size BIGINT,
-                        uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    );
+CREATE TABLE media(
+                    id SERIAL PRIMARY KEY,
+                    tweet_id INTEGER REFERENCES tweets(id) ON DELETE CASCADE ,
+                    file_path VARCHAR(255) NOT NULL ,
+                    file_type VARCHAR(50) ,
+                    file_size BIGINT,
+                    uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
 --index
 CREATE INDEX idx_tweets_user_id ON tweets(user_id);

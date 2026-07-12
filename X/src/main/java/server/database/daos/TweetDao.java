@@ -188,11 +188,11 @@ public class TweetDao {
 
     public boolean updateTweet(int tweetId, int userId, String newContent){
         if (newContent == null || newContent.trim().isEmpty()){
-            System.out.println("content cannot be empty");
+            System.out.println("Content cannot be empty");
             return false;
         }
         String sql = """
-               UPDATE tweets SET content = ?, updated_at = CURRENT_TIMESTAMP 
+               UPDATE tweets SET content = ?, updated_at = CURRENT_TIMESTAMP
                WHERE id = ? AND user_id = ? AND is_deleted = false
                """;
         try (Connection conn = DatabaseConnection.getConnection();
@@ -243,7 +243,7 @@ public class TweetDao {
             tweet.setUsername(rs.getString("username"));
             tweet.setDisplayName(rs.getString("display_name"));
             tweet.setLikesCount(rs.getInt("likes_count"));
-        }catch (SQLException e){}
+        }catch (SQLException _){}
         return tweet;
     }
 }
