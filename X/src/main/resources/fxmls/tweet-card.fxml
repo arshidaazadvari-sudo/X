@@ -31,8 +31,14 @@
 
         <HBox>
             <Button fx:id="reply" onAction="#"/>
+            <Label fx:id="replyCount"/>
+
             <Button fx:id="repost" onAction="#"/>
+            <Label fx:id="repostCount"/>
+
             <Button fx:id="like" onAction="#"/>
+            <Label fx:id="likeCount"/>
+
             <!-- other possible buttons -->
         </HBox>
 

@@ -7,10 +7,9 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.text.Text?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="CONTROLLER_NAME"
+      fx:controller="client.controllers.AuthController"
       alignment="CENTER" spacing="20">
 
     <padding>
@@ -19,18 +18,22 @@
 
     <Label text="(?)"/>
 
+    <Label text="Enter your email:"/>
+
+    <TextField fx:id="emailField" promptText="your email"/>
+
     <Label text="Choose your username and password:"/>
 
     <TextField fx:id="usernameField" promptText="your username"/>
 
     <TextField fx:id="passwordField" promptText="your password"/>
 
-    <Text fx:id="registerError"/>
+    <TextArea fx:id="registerError"/>
 
-    <Button onAction="#" text="Sign up"/>
+    <Button onAction="#signup" text="Sign up"/>
 
     <Label text="Already have an account?"/>
 
-    <Button onAction="#" text="Log in"/>
+    <Button onAction="#switchScene" text="Log in"/>
 
 </VBox>

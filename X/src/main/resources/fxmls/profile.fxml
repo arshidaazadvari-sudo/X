@@ -10,74 +10,43 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.shape.Circle?>
 
-<HBox xmlns="http://javafx.com/javafx"
+<VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="CONTROLLER_NAME"
+      fx:controller="client.controllers.ProfileController"
       alignment="CENTER" spacing="20">
+    <BorderPane>
 
-    <padding>
-        <Insets top="20" right="20" bottom="20" left="20"/>
-    </padding>
+        <center>
+            <VBox>
+                <StackPane>
 
-    <VBox>
+                    <ImageView fx:id="banner"/>
 
-        <Button fx:id="home" onAction="#" text="Home"/>
+                    <AnchorPane>
+                        <Circle fx:id="profilePicture"/>
+                    </AnchorPane>
 
-        <Button fx:id="explore" onAction="#" text="Explore"/>
+                </StackPane>
 
-        <Button fx:id="notifications" onAction="#" text="Notifications"/>
+                <!-- user data and follow button -->
 
-        <Button fx:id="profile" onAction="#" text="Profile"/>
+                <VBox fx:id="usersData"/>
 
-        <Button fx:id="post" onAction="#" text="Post"/>
+                <HBox fx:id="sections">
 
-        <Button fx:id="account" onAction="#"/>
+                    <Button fx:id="posts"/>
 
-    </VBox>
+                    <Button fx:id="replies"/>
 
-    <VBox>
+                    <Button fx:id="media"/>
 
-        <BorderPane>
+                    <!-- other sections -->
 
-            <center>
-                <ScrollPane>
-                    <VBox>
+                </HBox>
 
-                        <StackPane>
+                <VBox fx:id="tweetsContainer"/>
+            </VBox>
+        </center>
+    </BorderPane>
 
-                            <ImageView fx:id="banner"/>
-
-                            <AnchorPane>
-                                <Circle fx:id="profilePicture"/>
-                            </AnchorPane>
-
-                        </StackPane>
-
-                        <!-- user data and follow button -->
-
-                        <VBox fx:id="usersData"/>
-
-                        <HBox fx:id="sections">
-
-                            <Button fx:id="posts"/>
-
-                            <Button fx:id="replies"/>
-
-                            <Button fx:id="media"/>
-
-                            <!-- other sections -->
-
-                        </HBox>
-
-                        <VBox fx:id="tweetsContainer"/>
-
-                    </VBox>
-                </ScrollPane>
-            </center>
-
-        </BorderPane>
-
-
-    </VBox>
-
-</HBox>
+</VBox>
