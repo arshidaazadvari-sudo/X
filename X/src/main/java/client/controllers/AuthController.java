@@ -14,7 +14,7 @@ public class AuthController {
     @FXML private TextArea loginError;
 
     @FXML
-    public void initialize(){
+    public void initialize() {
         //
     }
     
