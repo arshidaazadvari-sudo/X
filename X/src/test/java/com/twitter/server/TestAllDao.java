@@ -2,7 +2,6 @@ package com.twitter.server;
 
 import server.database.DatabaseConnection;
 import server.database.daos.*;
-import shared.models.Reply;
 import shared.models.Tweet;
 import shared.models.User;
 import shared.utils.PasswordUtil;
@@ -24,7 +23,7 @@ public class TestAllDao {
         TweetDao tweetDao = new TweetDao();
         FollowDAO followDAO = new FollowDAO();
         LikeDAO likeDAO = new LikeDAO();
-        ReplyDAO replyDAO = new ReplyDAO();
+        //ReplyDAO replyDAO = new ReplyDAO();
         HashtagDAO hashtagDAO = new HashtagDAO();
         MediaDAO mediaDAO = new MediaDAO();
 
@@ -74,15 +73,15 @@ public class TestAllDao {
         }
         System.out.println("The count of tweet's likes : " + likeDAO.getLikeCount(tweet.getId()));
 
-        System.out.println("-------------6)Test ReplyDao-------------\n");
-        Reply reply = new Reply();
+        System.out.println("-------------6)Test Reply With (reply_to_tweet_id)-------------\n");
+        Tweet reply = new Tweet();
         reply.setUserId(testUser.getId());
-        reply.setTweetId(tweet.getId());
         reply.setContent("This is an answer for the test");
-        Reply savedReply = replyDAO.createReply(reply);
-        if (savedReply != null) {
-            System.out.println("Created the reply of the test = id : " + savedReply.getId());
-        }
+        reply.setReplyToTweetId(tweet.getId());
+        tweetDao.createTweet(reply);
+        System.out.println("Created the reply of test = id: " + reply.getId());
+        List<Tweet> replies = tweetDao.getRepliesForTweet(tweet.getId());
+        System.out.println("the count if replies to tweet: " + tweet.getId() + ": " + replies.size());
 
         System.out.println("-------------7)Test HashtagDao-------------\n");
         List<String> extracted = hashtagDAO.extractHashtags("Hello #java #Coding");

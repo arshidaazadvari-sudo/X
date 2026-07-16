@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TweetDao {
-
     public boolean createTweet(Tweet tweet){
         if (tweet.getContent() == null || tweet.getContent().trim().isEmpty()){
             System.out.println("Tweet content cannot be empty");
@@ -148,7 +147,7 @@ public class TweetDao {
             WHERE (t.user_id = ? OR t.user_id IN (SELECT followee_id FROM follows WHERE follower_id = ?))
                 AND t.is_deleted = false AND t.reply_to_tweet_id IS NULL
             GROUP BY t.id, u.id
-            ORDER BY t.created_at BESC LIMIT ?
+            ORDER BY t.created_at DESC LIMIT ?
         """;
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -207,6 +206,41 @@ public class TweetDao {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public List<Tweet> searchTweets(String keyword, int limit){
+        List<Tweet> tweets = new ArrayList<>();
+        if (keyword == null || keyword.trim().isEmpty()){
+            return tweets;
+        }
+
+        String sql = """
+                SELECT t.*, u.username, u.display_name,
+                        COUNT(DISTINCT l.user_id) AS likes_count
+                FROM tweets t
+                JOIN users u ON t.user_id = u.id
+                LEFT JOIN likes l ON t.id = l.tweet_id
+                WHERE t.content ILIKE ? AND t.is_deleted = false
+                GROUP BY t.id, u.id
+                ORDER BY t.created_at DESC
+                LIMIT ?
+                """;
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            String pattern = "%" + keyword + "%";
+            pstmt.setString(1, pattern);
+            pstmt.setInt(2, limit);
+
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                tweets.add(mapResultSetToTweet(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tweets;
     }
 
     public void processHashtags(int tweetId, String content){

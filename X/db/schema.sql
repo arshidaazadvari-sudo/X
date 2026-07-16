@@ -63,15 +63,6 @@ CREATE TABLE likes(
                       PRIMARY KEY (user_id, tweet_id)
 );
 
---replies table
-CREATE TABLE replies(
-                        id SERIAL PRIMARY KEY,
-                        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-                        tweet_id INTEGER REFERENCES tweets(id) ON DELETE CASCADE,
-                        content TEXT NOT NULL,
-                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
 --hashtags table
 CREATE TABLE hashtags (
                           id SERIAL PRIMARY KEY,
@@ -100,6 +91,7 @@ CREATE TABLE media(
 --index
 CREATE INDEX idx_tweets_user_id ON tweets(user_id);
 CREATE INDEX idx_tweets_created_at ON tweets(created_at DESC);
+CREATE INDEX idx_tweets_reply_to ON tweets(reply_to_tweet_id)
 CREATE INDEX idx_follows_follower_id ON follows(follower_id);
 CREATE INDEX idx_follows_followee_id ON follows(followee_id);
 CREATE INDEX idx_likes_tweet_id ON likes(tweet_id);
