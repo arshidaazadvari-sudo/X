@@ -18,22 +18,22 @@
 
     <Label text="(?)"/>
 
-    <Label text="Enter your email:"/>
+    <Label fx:id="emailText" text="Enter your email:"/>
 
     <TextField fx:id="emailField" promptText="your email"/>
 
-    <Label text="Choose your username and password:"/>
+    <Label text="Enter your username and password:"/>
 
     <TextField fx:id="usernameField" promptText="your username"/>
 
     <TextField fx:id="passwordField" promptText="your password"/>
 
-    <TextArea fx:id="registerError"/>
+    <TextArea fx:id="error"/>
 
-    <Button onAction="#signup" text="Sign up"/>
+    <Button fx:id="AuthBTN" onAction="#authentication" text="Login"/>
 
-    <Label text="Already have an account?"/>
+    <Label fx:id="switchPageText" text="Already have an account?"/>
 
-    <Button onAction="#switchScene" text="Log in"/>
+    <Button fx:id="switchPageBTN" onAction="#switchPage" text="Sign up"/>
 
 </VBox>

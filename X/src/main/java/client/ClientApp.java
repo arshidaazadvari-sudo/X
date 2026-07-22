@@ -12,7 +12,7 @@ public class ClientApp extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(ClientApp.class.getResource("login.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(ClientApp.class.getResource("authentication.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 700, 700); //________________
         scene.getStylesheets().add(getClass().getResource("dark-theme.css").toExternalForm());
         stage.setTitle("X");

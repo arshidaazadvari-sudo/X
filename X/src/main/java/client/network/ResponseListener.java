@@ -10,7 +10,7 @@ public class ResponseListener implements Runnable {
 
     private final ObjectInputStream in;
 
-    public static Notification authError;
+    public static Notification authNotif;
 
     public static List<Notification> notifications;
 
@@ -27,9 +27,10 @@ public class ResponseListener implements Runnable {
                     Notification new_notif = (Notification) obj;
 
                     if (new_notif.getType().equals(NotificationType.LOGIN_ERROR) ||
-                            new_notif.getType().equals(NotificationType.REGISTER_ERROR)) {
+                            new_notif.getType().equals(NotificationType.REGISTER_ERROR) ||
+                            new_notif.getType().equals(NotificationType.AUTH_SUCCESS)) {
 
-                        authError = new_notif;
+                        authNotif = new_notif;
                     }
                     else {
                         notifications.add(new_notif);

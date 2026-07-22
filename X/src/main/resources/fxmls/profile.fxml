@@ -26,19 +26,33 @@
                         <Circle fx:id="profilePicture"/>
                     </AnchorPane>
 
+                    <HBox>
+                        <Button fx:id="editProfileBTN" onAction="#editProfile" text="Edit profile"/>
+                        <Button fx:id="followBTN" onAction="#follow" text="Follow"/>
+                    </HBox>
+
                 </StackPane>
 
-                <!-- user data and follow button -->
+                <VBox>
+                    <Label fx:id="name"/>
+                    <Label fx:id="username"/>
+                    <Label fx:id="bio"/>
+                    <Label fx:id="dateOfJoining"/>
+                    <HBox>
+                        <Label fx:id="FollowingBTN" onMouseClicked="#displayFollowings"/>
+                        <Label fx:id="FollowerBTN" onMouseClicked="#displayFollowers"/>
+                    </HBox>
+                </VBox>
 
-                <VBox fx:id="usersData"/>
+                <HBox>
 
-                <HBox fx:id="sections">
+                    <Button fx:id="posts" onAction="#displayPosts" text="Posts"/>
 
-                    <Button fx:id="posts"/>
+                    <Button fx:id="replies" onAction="#displayReplies" text="Replies"/>
 
-                    <Button fx:id="replies"/>
+                    <Button fx:id="media" onAction="#displayMedia" text="Media"/>
 
-                    <Button fx:id="media"/>
+                    <Button fx:id="likes" onAction="#displayLikes" text="Likes"/>
 
                     <!-- other sections -->
 
