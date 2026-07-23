@@ -6,7 +6,6 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.shape.Circle?>
 
@@ -20,10 +19,14 @@
             <VBox>
                 <StackPane>
 
-                    <ImageView fx:id="banner"/>
+                    <ImageView fx:id="banner" preserveRatio="true"/>
 
                     <AnchorPane>
-                        <Circle fx:id="profilePicture"/>
+                        <ImageView fx:id="profile" preserveRatio="true">
+                            <clip>
+                                <Circle centerX="65" centerY="65" radius="65"/>
+                            </clip>
+                        </ImageView>
                     </AnchorPane>
 
                     <HBox>
@@ -34,7 +37,7 @@
                 </StackPane>
 
                 <VBox>
-                    <Label fx:id="name"/>
+                    <Label fx:id="displayName"/>
                     <Label fx:id="username"/>
                     <Label fx:id="bio"/>
                     <Label fx:id="dateOfJoining"/>

@@ -1,4 +1,6 @@
 package client.session;
 
-public class SessionState {
+public enum SessionState {
+    LOGGED_IN,
+    LOGGED_OUT
 }

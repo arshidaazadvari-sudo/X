@@ -7,6 +7,8 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.text.TextFlow?>
+<?import javafx.scene.control.cell.TextFieldListCell?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="client.controllers.AuthController"
@@ -28,11 +30,15 @@
 
     <TextField fx:id="passwordField" promptText="your password"/>
 
+    <Label fx:id="nameText" text="Choose a display name:"/>
+
+    <TextField fx:id="nameField" promptText="your display name"/>
+
     <TextArea fx:id="error"/>
 
     <Button fx:id="AuthBTN" onAction="#authentication" text="Login"/>
 
-    <Label fx:id="switchPageText" text="Already have an account?"/>
+    <Label fx:id="switchPageText" text="New to X?"/>
 
     <Button fx:id="switchPageBTN" onAction="#switchPage" text="Sign up"/>
 

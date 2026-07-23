@@ -1,23 +1,27 @@
 package client.network;
 
 import client.ClientConfig;
+import tools.jackson.databind.ObjectMapper;
 
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
+import java.lang.runtime.ObjectMethods;
 import java.net.Socket;
 
 public class ServerConnection {
 
+    public static ObjectMapper mapper = new ObjectMapper();
+
     private Socket socket;
-    private ObjectOutputStream out;
-    private ObjectInputStream in;
+    private BufferedReader in;
+    private PrintWriter out;
     private boolean isConnected;
 
     public boolean connect() {
         try (Socket socket_ = new Socket(ClientConfig.HOST, ClientConfig.PORT)) {
             socket = socket_;
-            out = new ObjectOutputStream(socket.getOutputStream());
-            in = new ObjectInputStream(socket.getInputStream());
+
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            out = new PrintWriter(socket.getOutputStream(), true);
 
             isConnected = true;
 
@@ -47,10 +51,9 @@ public class ServerConnection {
 
     }
 
-    public void send(Object request) {
+    public void send(String request) {
         try {
-            out.writeObject(request);
-            out.flush();
+            out.println(request);
         }
         catch (Exception e) {
             //
