@@ -34,7 +34,7 @@ public class HomeController {
 
     @FXML private HBox mediaBox;
 
-    @FXML private VBox tweetsContainer;
+    @FXML private static VBox tweetsContainer;
 
     private List<Image> images;
 
@@ -46,9 +46,9 @@ public class HomeController {
 
     public void setUser(User u) { this.user = u; }
 
-    public void addNewTweets(Tweet t) {
+    public static void addNewTweets(Tweet t) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("tweet-card.fxml"));
+            FXMLLoader loader = new FXMLLoader(HomeController.class.getResource("tweet-card.fxml"));
 
             HBox tweetBox = loader.load();
 

@@ -14,17 +14,12 @@ public class ClientSession {
 
     private static boolean onHomePage;
 
-    public static BlockingQueue<Tweet> realTimeTweets = new LinkedBlockingQueue<>();
-
     public static void setUser(User u) { user = u; }
     public static User getUser() { return user; }
 
     public void setState(SessionState s) { state = s; }
     public static SessionState getState() { return state; }
 
-    public static void setOnHomePage(boolean b) {
-        onHomePage = b;
-        if (!b) realTimeTweets.clear();
-    }
+    public static void setOnHomePage(boolean b) { onHomePage = b; }
     public static boolean isOnHomePage() { return onHomePage; }
 }

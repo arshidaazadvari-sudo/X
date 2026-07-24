@@ -1,5 +1,7 @@
 package client.network;
 
+import client.controllers.HomeController;
+import client.controllers.MainController;
 import client.session.ClientSession;
 import shared.models.Tweet;
 import tools.jackson.databind.JsonNode;
@@ -52,7 +54,7 @@ public class ResponseListener implements Runnable {
                             newT.setRetweetOfTweetId(Integer.parseInt(payload.get("originalTweetId").toString()));
                             //newT.set(Boolean.parseBoolean(payload.get("isLiked").toString()));
                             //newT.set(Boolean.parseBoolean(payload.get("isRetweeted").toString()));
-                            ClientSession.realTimeTweets.put(newT);
+                            HomeController.addNewTweets(newT);
                         }
                         break;
                     }
