@@ -1,6 +1,7 @@
 package client.controllers;
 
 import client.session.ClientSession;
+import client.utils.DateFormatter;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -72,11 +73,10 @@ public class ProfileController {
         Image banner_pic = new Image(getClass().getResourceAsStream(banner_address));
         banner.setImage(banner_pic);
 
-
         displayName.setText(user.getDisplayName());
         username.setText(user.getUsername());
         bio.setText(user.getBio());
-        //set date of joining ??????????????????
+        dateOfJoining.setText( "Joined " + DateFormatter.joiningDateString(user.getCreatedAt()));
 
         //set text for followings & followers (include counts)
         int followerC = followDAO.getFollowerCount(user.getId());
@@ -107,7 +107,8 @@ public class ProfileController {
 
     @FXML
     private void editProfile() {
-        //display the mini window ??????????????????
+        //display the mini window
+        mainController.setEditWindow();
     }
 
     @FXML

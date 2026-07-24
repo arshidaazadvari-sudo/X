@@ -77,4 +77,9 @@ public class FollowController {
         isOnFollowers = false;
         //change style (the underline) ??????????????
     }
+
+    @FXML
+    private void goToProfile() {
+        mainController.anyProfile(user);
+    }
 }

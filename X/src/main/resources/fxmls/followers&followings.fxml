@@ -12,6 +12,7 @@
             prefHeight="400.0" prefWidth="600.0">
 
     <HBox>
+        <Button text="return icon" onAction="#goToProfile"/>
         <Button fx:id="followersBTN" text="Followers" onAction="#followers"/>
         <Button fx:id="followingsBTN" text="Following" onAction="#following"/>
     </HBox>

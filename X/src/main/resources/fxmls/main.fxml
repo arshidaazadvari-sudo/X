@@ -7,35 +7,114 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.geometry.Insets?>
-<HBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="client.controllers.MainController"
-      alignment="CENTER" spacing="20">
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Text?>
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="client.controllers.MainController"
+           alignment="CENTER">
 
-    <padding>
-        <Insets top="20" right="20" bottom="20" left="20"/>
-    </padding>
+    <HBox>
 
-    <VBox>
+        <padding>
+            <Insets top="20" right="20" bottom="20" left="20"/>
+        </padding>
 
-        <Button fx:id="home" onAction="#Home" text="Home"/>
+        <VBox>
 
-        <Button fx:id="explore" onAction="#Explore" text="Explore"/>
+            <Button fx:id="home" onAction="#Home" text="Home"/>
 
-        <Button fx:id="notifications" onAction="#" text="Notifications"/> <!-- bonus -->
+            <Button fx:id="explore" onAction="#Explore" text="Explore"/>
 
-        <Button fx:id="profile" onAction="#Profile" text="Profile"/>
+            <!-- <Button fx:id="notifications" onAction="#" text="Notifications"/> -->
 
-        <Button fx:id="post" onAction="#Post" text="Post"/>
+            <Button fx:id="profile" onAction="#Profile" text="Profile"/>
 
-        <Button fx:id="account" onAction="#Account"/>
+            <Button fx:id="post" onAction="#PostWindow" text="Post"/>
+
+            <Button fx:id="account" onAction="#Account"/>
+
+        </VBox>
+
+        <ScrollPane>
+            <VBox fx:id="container"/>
+        </ScrollPane>
+
+    </HBox>
+
+    <Pane fx:id="overlay1"/>
+
+    <AnchorPane fx:id="editWindow" prefWidth="600" prefHeight="500">
+        <HBox>
+            <Button onAction="#closeEditWindow" text="close icon"/>
+            <Label text="Edit profile"/>
+            <Button onAction="#saveChanges" text="save"/>
+        </HBox>
+
+        <StackPane>
+
+            <ImageView fx:id="bannerPic" preserveRatio="true"/>
+            <Button onAction="#chooseBannerPic" text="picture icon"/>
+
+            <AnchorPane>
+                <ImageView fx:id="profilePic" preserveRatio="true">
+                    <clip>
+                        <Circle centerX="60" centerY="60" radius="60"/>
+                    </clip>
+                </ImageView>
+            </AnchorPane>
+            <Button onAction="#chooseProfilePic" text="picture icon"/>
+
+        </StackPane>
+
+        <VBox>
+            <VBox>
+                <Label text="Name"/>
+                <TextField fx:id="newDisplayName"/>
+            </VBox>
+
+            <Label fx:id="blankNameMSG" text="Name can't be blank"/>
+
+            <VBox>
+                <Label text="Bio"/>
+                <TextArea fx:id="newBio"/>
+            </VBox>
+        </VBox>
+
+    </AnchorPane>
+
+    <Pane fx:id="overlay2"/>
+
+    <VBox fx:id="discardWindow">
+        <Label text="Discard changes?"/>
+        <Text text="This can’t be undone and you’ll lose your changes. "/>
+        <Button text="Discard" onAction="#discard"/>
+        <Button text="Cancel" onAction="#cancel"/>
+    </VBox>
+
+    <Pane fx:id="overlay3"/>
+
+    <VBox fx:id="postWindow">
+
+        <Button onAction="#closePostWindow" text="close icon"/>
+
+        <HBox>
+            <ImageView fx:id="miniProfilePic" preserveRatio="true">
+                <clip>
+                    <Circle centerX="22" centerY="22" radius="22"/>
+                </clip>
+            </ImageView>
+            <TextArea fx:id="postText" promptText="What's happening? "/>
+        </HBox>
+
+        <HBox fx:id="mediaBox" prefHeight="300" prefWidth="500"/>
+
+        <HBox>
+            <Button fx:id="mediaBTN" onAction="#Media" text="media icon"/>
+            <Button onAction="#Post" text="Post"/>
+        </HBox>
 
     </VBox>
 
-    <ScrollPane>
-
-        <VBox fx:id="container"/>
-
-    </ScrollPane>
-
-</HBox>
+</StackPane>

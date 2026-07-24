@@ -6,8 +6,6 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.text.Text?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.image.ImageView?>
 <VBox xmlns="http://javafx.com/javafx"
@@ -17,7 +15,7 @@
 
     <HBox fx:id="TLTweetCard">
 
-        <ImageView fx:id="profilePicture" onMouseClicked="#">
+        <ImageView fx:id="miniProfilePicture" onMouseClicked="#displayProfile">
             <clip>
                 <Circle centerX="24" centerY="24" radius="24"/>
             </clip>
@@ -25,13 +23,13 @@
 
         <VBox>
 
-            <TextArea fx:id="tweetText" wrapText="true" promptText="What's happening?"/>
+            <TextArea fx:id="postText" wrapText="true" promptText="What's happening?"/>
+
+            <HBox fx:id="mediaBox" prefHeight="300" prefWidth="500"/>
 
             <HBox>
-                <Button fx:id="imageAndVideo" onAction="#"/>
-                <Button fx:id="GIF" onAction="#"/>
-                <Button fx:id="schedule" onAction="#"/>
-                <Button fx:id="postBtn" text="Post" onAction="#"/>
+                <Button fx:id="mediaBTN" onAction="#Media"/>
+                <Button fx:id="postBTN" text="Post" onAction="#Post"/>
             </HBox>
 
         </VBox>

@@ -20,7 +20,6 @@
                 <StackPane>
 
                     <ImageView fx:id="banner" preserveRatio="true"/>
-
                     <AnchorPane>
                         <ImageView fx:id="profile" preserveRatio="true">
                             <clip>

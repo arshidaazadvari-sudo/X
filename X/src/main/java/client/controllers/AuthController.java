@@ -18,7 +18,7 @@ import java.io.IOException;
 
 public class AuthController {
 
-    private ServerConnection connection;
+    private static ServerConnection connection;
 
     private boolean isLogin;
 
@@ -31,8 +31,6 @@ public class AuthController {
 
     @FXML private Label emailText;
     @FXML private TextField emailField;
-    @FXML private Label nameText;
-    @FXML private TextField nameField;
     @FXML private TextArea error;
 
     @FXML
@@ -45,8 +43,6 @@ public class AuthController {
 
         emailText.setVisible(false);
         emailField.setVisible(false);
-        nameText.setVisible(false);
-        nameField.setVisible(false);
         error.setVisible(false);
 
         isLogin = true;
@@ -56,26 +52,21 @@ public class AuthController {
     public void authentication() {
 
         ObjectNode payload = ServerConnection.mapper.createObjectNode();
-        if (isLogin) {
-            payload.put("username", usernameField.getText());
-            payload.put("password", passwordField.getText());
+        ObjectNode auth = ServerConnection.mapper.createObjectNode();
 
-            ObjectNode login = ServerConnection.mapper.createObjectNode();
-            login.put("type", "LOGIN");
-            login.set("payload", payload);
-            connection.send(login.toString());
+        payload.put("username", usernameField.getText());
+
+        if (isLogin) {
+            auth.put("type", "LOGIN");
         }
         else {
-            payload.put("username", usernameField.getText());
             payload.put("email", emailField.getText());
-            payload.put("password", passwordField.getText());
-            payload.put("displayName", nameField.getText());
-
-            ObjectNode register = ServerConnection.mapper.createObjectNode();
-            register.put("type", "REGISTER");
-            register.set("payload", payload);
-            connection.send(register.toString());
+            auth.put("type", "REGISTER");
         }
+
+        payload.put("password", passwordField.getText());
+        auth.set("payload", payload);
+        connection.send(auth.toString());
 
         //wait 500 milliseconds while server & response listener do their part (set an auth error if there's any)
         try {
@@ -87,7 +78,7 @@ public class AuthController {
         if (ResponseListener.getAuthError() == null) {
             //open a session ???????????????????
 
-            //go to homepage
+            //go to main scene
             try {
                 Stage stage = (Stage) AuthBTN.getScene().getWindow();
                 FXMLLoader fxmlLoader = new FXMLLoader(ClientApp.class.getResource("main.fxml"));
@@ -116,8 +107,6 @@ public class AuthController {
 
         emailText.setVisible(!emailText.isVisible());
         emailField.setVisible(!emailField.isVisible());
-        nameText.setVisible(!nameText.isVisible());
-        nameField.setVisible(!nameField.isVisible());
 
         isLogin = !isLogin;
         if (isLogin) {
@@ -133,4 +122,7 @@ public class AuthController {
 
     }
 
+    public static ServerConnection getConnection() {
+        return connection;
+    }
 }
