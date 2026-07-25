@@ -41,6 +41,7 @@
                     <Label fx:id="bio"/>
                     <Label fx:id="dateOfJoining"/>
                     <HBox>
+                        <Label fx:id="tweetsCount"/>
                         <Label fx:id="FollowingBTN" onMouseClicked="#displayFollowings"/>
                         <Label fx:id="FollowerBTN" onMouseClicked="#displayFollowers"/>
                     </HBox>
@@ -50,11 +51,11 @@
 
                     <Button fx:id="posts" onAction="#displayPosts" text="Posts"/>
 
-                    <Button fx:id="replies" onAction="#displayReplies" text="Replies"/>
+                    <!-- <Button fx:id="replies" onAction="#displayReplies" text="Replies"/>
 
                     <Button fx:id="media" onAction="#displayMedia" text="Media"/>
 
-                    <Button fx:id="likes" onAction="#displayLikes" text="Likes"/>
+                    <Button fx:id="likes" onAction="#displayLikes" text="Likes"/> -->
 
                     <!-- other sections -->
 

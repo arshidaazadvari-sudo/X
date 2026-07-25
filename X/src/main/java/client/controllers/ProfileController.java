@@ -33,6 +33,7 @@ public class ProfileController {
     @FXML private Label bio;
     @FXML private Label dateOfJoining;
 
+    @FXML private Label tweetsCount;
     @FXML private Label FollowingBTN;
     @FXML private Label FollowerBTN;
 
@@ -48,13 +49,15 @@ public class ProfileController {
 
     private final FollowDAO followDAO = new FollowDAO();
 
-    private MainController mainController;
+    private static MainController mainController;
+
+    private TweetDao tweetDao = new TweetDao();
 
     private User user;
 
     public void setUser(User u) { this.user = u; }
 
-    public void setMainController(MainController mc) { this.mainController = mc; }
+    public void setMainController(MainController mc) { mainController = mc; }
 
     @FXML
     private void initialize() {
@@ -76,11 +79,13 @@ public class ProfileController {
         displayName.setText(user.getDisplayName());
         username.setText(user.getUsername());
         bio.setText(user.getBio());
-        dateOfJoining.setText( "Joined " + DateFormatter.joiningDateString(user.getCreatedAt()));
+        dateOfJoining.setText( "Joined " + DateFormatter.joiningDate(user.getCreatedAt()));
 
-        //set text for followings & followers (include counts)
+        //set text for tweets, followings & followers (include counts)
+        int tweetC = tweetDao.getTweetByUserId(user.getId()).size();
         int followerC = followDAO.getFollowerCount(user.getId());
         int followingC = followDAO.getFollowingCount(user.getId());
+        tweetsCount.setText(tweetC + "Tweets");
         FollowerBTN.setText(followerC + " Followers");
         FollowingBTN.setText(followingC + " Following");
 
@@ -143,8 +148,7 @@ public class ProfileController {
 
         //switch the tweets
         tweetsContainer.getChildren().clear();
-        TweetDao tweetDao = new TweetDao();
-        List<Tweet> posts = tweetDao.getTweetByUserId(user.getId()); //???????? what about the reposts (method must be fixed)
+        List<Tweet> posts = tweetDao.getTweetByUserId(user.getId());
         for (Tweet t : posts) {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("tweet-card.fxml"));
@@ -153,6 +157,7 @@ public class ProfileController {
 
                 TweetController controller = loader.getController();
                 controller.setTweet(t);
+                controller.setMainController(mainController);
 
                 tweetsContainer.getChildren().add(tweetBox);
 
@@ -162,20 +167,5 @@ public class ProfileController {
         }
 
         //change style (the underline) ????????????????
-    }
-
-    @FXML
-    private void displayReplies() { //bonus
-        //just like the method displayPosts
-    }
-
-    @FXML
-    private void displayMedia() { //bonus
-        //just like the method displayPosts
-    }
-
-    @FXML
-    private void displayLikes() { //bonus
-        //just like the method displayPosts
     }
 }

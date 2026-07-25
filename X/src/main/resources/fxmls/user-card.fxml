@@ -13,7 +13,7 @@
       fx:controller="client.controllers.UserCardController"
       prefHeight="400.0" prefWidth="600.0" onMouseClicked="#displayProfile">
 
-    <ImageView fx:id="profile">
+    <ImageView fx:id="profile" preserveRatio="true">
         <clip>
             <Circle centerX="24" centerY="24" radius="24"/>
         </clip>

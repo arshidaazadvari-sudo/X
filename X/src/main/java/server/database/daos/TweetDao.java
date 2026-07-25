@@ -148,7 +148,7 @@ public class TweetDao {
             WHERE (t.user_id = ? OR t.user_id IN (SELECT followee_id FROM follows WHERE follower_id = ?))
                 AND t.is_deleted = false AND t.reply_to_tweet_id IS NULL
             GROUP BY t.id, u.id
-            ORDER BY t.created_at BESC LIMIT ?
+            ORDER BY t.created_at DESC LIMIT ?
         """;
 
         try (Connection conn = DatabaseConnection.getConnection();

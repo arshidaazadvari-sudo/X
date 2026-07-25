@@ -23,13 +23,13 @@ public class FollowController {
 
     private User user;
 
-    private MainController mainController;
+    private static MainController mainController;
 
     public void setOnFollowers(boolean b) { this.isOnFollowers = b; }
 
     public void setUser(User u) { this.user = u; }
 
-    public void setMainController(MainController mc) { this.mainController = mc; }
+    public void setMainController(MainController mc) { mainController = mc; }
 
     private void displayUsers(List<User> users) {
         for (User u : users) {

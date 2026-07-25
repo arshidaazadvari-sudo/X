@@ -9,34 +9,46 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.TextFlow?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.text.Text?>
 <HBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="CONTROLLER_NAME"
-      prefHeight="400.0" prefWidth="600.0">
+      fx:controller="client.controllers.TweetController"
+      prefHeight="400.0" prefWidth="600.0" onMouseClicked="#tweetPage">
 
-    <ImageView fx:id="profilePicture" onMouseClicked="#">
+    <TextFlow fx:id="replyToText">
+        <Text fx:id="replyToUsername"/>
+        <Text text="See the tweet" onMouseClicked="#showRepliedTweet"/>
+    </TextFlow>
+
+    <ImageView fx:id="profilePicture" onMouseClicked="#profile" preserveRatio="true">
         <clip>
-            <Circle centerX="24" centerY="24" radius="24"/>
+            <Circle centerX="22" centerY="22" radius="22"/>
         </clip>
     </ImageView>
 
     <VBox>
 
         <HBox>
-            <TextFlow fx:id="userData"/>
-            <Button fx:id="followBTN" onAction="#"/>
+            <TextFlow>
+                <Text fx:id="name" onMouseClicked="#profile"/>
+                <Text fx:id="username" onMouseClicked="#profile"/>
+                <Text fx:id="postingDate"/>
+            </TextFlow>
+            <Button fx:id="followBTN" onAction="#follow"/>
         </HBox>
 
         <TextFlow fx:id="tweetText"/>
 
+        <HBox fx:id="mediaBox"/>
+
         <HBox>
-            <Button fx:id="reply" onAction="#"/>
+            <Button onAction="#reply" text="reply icon"/>
             <Label fx:id="replyCount"/>
 
-            <Button fx:id="repost" onAction="#"/>
+            <Button fx:id="repost" onAction="#repost" text="repost icon"/>
             <Label fx:id="repostCount"/>
 
-            <Button fx:id="like" onAction="#"/>
+            <Button fx:id="like" onAction="#like" text="like icon"/>
             <Label fx:id="likeCount"/>
 
             <!-- other possible buttons -->

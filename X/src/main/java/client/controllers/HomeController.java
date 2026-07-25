@@ -1,7 +1,5 @@
 package client.controllers;
 
-import client.network.ResponseListener;
-import client.network.ServerConnection;
 import client.session.ClientSession;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,11 +13,9 @@ import javafx.stage.FileChooser;
 import server.database.daos.TweetDao;
 import shared.models.Tweet;
 import shared.models.User;
-import tools.jackson.databind.node.ObjectNode;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.List;
 
 public class HomeController {
@@ -38,11 +34,13 @@ public class HomeController {
 
     private List<Image> images;
 
-    private MainController mainController;
+    private String defaultProfile = "/images/default_profile.png";
+
+    private static MainController mainController;
 
     private User user;
 
-    public void setMainController(MainController mc) { this.mainController = mc; }
+    public void setMainController(MainController mc) { mainController = mc; }
 
     public void setUser(User u) { this.user = u; }
 
@@ -54,6 +52,7 @@ public class HomeController {
 
             TweetController controller = loader.getController();
             controller.setTweet(t);
+            controller.setMainController(mainController);
 
             tweetsContainer.getChildren().add(tweetBox);
 
@@ -64,7 +63,13 @@ public class HomeController {
 
     @FXML
     private void initialize() {
-        //??????????
+
+        String miniPro_address;
+        if (ClientSession.getUser().getProfilePic() != null) miniPro_address = ClientSession.getUser().getProfilePic();
+        else miniPro_address = defaultProfile;
+        Image miniPro_pic = new Image(getClass().getResourceAsStream(miniPro_address));
+        miniProfilePicture.setImage(miniPro_pic);
+
         mediaBox.setVisible(false);
         mediaBox.setManaged(false);
 
@@ -76,11 +81,6 @@ public class HomeController {
         }
 
         ClientSession.setOnHomePage(true);
-    }
-
-    @FXML
-    private void showMore() {
-        //
     }
 
     @FXML
@@ -101,7 +101,12 @@ public class HomeController {
                 images.add(image);
             }
 
-            mainController.displayDraftMedia(images, mediaBox);
+            if (images.size() >= 4) {
+                //change the style of mediaBTN ????????????
+            }
+
+            List<Button> btns = mainController.displayMedia(images, mediaBox);
+            mainController.buttonStyling(btns);
         }
     }
 

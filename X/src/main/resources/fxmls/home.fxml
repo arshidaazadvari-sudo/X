@@ -15,9 +15,9 @@
 
     <HBox fx:id="TLTweetCard">
 
-        <ImageView fx:id="miniProfilePicture" onMouseClicked="#displayProfile">
+        <ImageView fx:id="miniProfilePicture" onMouseClicked="#displayProfile" preserveRatio="true">
             <clip>
-                <Circle centerX="24" centerY="24" radius="24"/>
+                <Circle centerX="22" centerY="22" radius="22"/>
             </clip>
         </ImageView>
 

@@ -2,23 +2,37 @@ package client.controllers;
 
 import client.network.ServerConnection;
 import client.session.ClientSession;
+import client.utils.DateFormatter;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 import server.database.daos.UserDao;
+import shared.models.Tweet;
 import shared.models.User;
 import tools.jackson.databind.node.ObjectNode;
 
 import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainController {
+
+    @FXML private Button postBTN;
+
+    @FXML private HBox replyingTo;
+    @FXML private ImageView R_ProfilePic;
+    @FXML private Text R_username;
+    @FXML private Text R_name;
+    @FXML private Text R_postingDate;
+    @FXML private TextArea R_tweetText;
 
     @FXML private Button home;
     @FXML private Button explore;
@@ -53,10 +67,19 @@ public class MainController {
     private String newProfilePic;
     private String newBannerPic;
 
+    private boolean isReplying;
+    private Tweet R_tweet;
+
+    public void setIsReplying(boolean b) { isReplying = b; }
+    public void setRTweet(Tweet rt) { R_tweet = rt; }
+
+    public VBox getContainer() { return container; }
+
     @FXML
     private void initialize() {
 
         //initial values
+
         String profile_addresss;
         if (ClientSession.getUser().getProfilePic() != null) profile_addresss = ClientSession.getUser().getProfilePic();
         else profile_addresss = defaultProfile;
@@ -77,6 +100,7 @@ public class MainController {
 
         newDisplayName.setText(ClientSession.getUser().getDisplayName());
         newBio.setText(ClientSession.getUser().getBio());
+
 
         //bio character limit of 160
         newBio.setTextFormatter(new TextFormatter<String>(change -> {
@@ -102,6 +126,10 @@ public class MainController {
         overlay3.setManaged(false);
         postWindow.setVisible(false);
         postWindow.setManaged(false);
+        replyingTo.setVisible(false);
+        replyingTo.setManaged(false);
+
+        isReplying = false;
 
         //the default landing page
         Home();
@@ -144,10 +172,8 @@ public class MainController {
         }
     }
 
-    public void setEditWindow() {
-        overlay1.setVisible(true);
-        editWindow.setVisible(true);
-    }
+    //____________________________________________________________
+    //sidebar menu on the main scene
 
     @FXML
     private void Profile() {
@@ -181,7 +207,21 @@ public class MainController {
     }
 
     @FXML
-    private void PostWindow() {
+    public void PostWindow() {
+
+        // the replying-to tweet (if any)
+        if (isReplying) {
+            replyingTo.setManaged(true);
+            replyingTo.setVisible(true);
+            postBTN.setText("Reply");
+
+            //R_ProfilePic.setImage(); ????????????????????
+            R_username.setText(R_tweet.getUsername());
+            R_name.setText(R_tweet.getDisplayName());
+            R_postingDate.setText(DateFormatter.postingDate(R_tweet.getCreatedAt()));
+            R_tweetText.setText(R_tweet.getContent());
+        }
+
         overlay3.setVisible(true);
         overlay3.setManaged(true);
         postWindow.setVisible(true);
@@ -194,6 +234,14 @@ public class MainController {
     @FXML
     private void Account() {
         //
+    }
+
+    //____________________________________________________________
+    //edit profile window
+
+    public void setEditWindow() {
+        overlay1.setVisible(true);
+        editWindow.setVisible(true);
     }
 
     @FXML
@@ -282,6 +330,9 @@ public class MainController {
         discardWindow.setVisible(false);
     }
 
+    //____________________________________________________________
+    //post or reply
+
     @FXML
     private void closePostWindow() {
         images.clear();
@@ -293,16 +344,51 @@ public class MainController {
         //set the style of mediaBTN back to default ????????????
     }
 
-    private void deleteMedia(List<Image> imageList, int index) {
-        imageList.remove(index);
-        displayDraftMedia(imageList, mediaBox);
+    @FXML
+    private void Post() {
+        posting(images, postText.getText());
     }
 
-    public void displayDraftMedia(List<Image> imageList, HBox mBox) {
+    @FXML
+    private void Media() {
+        if (images.size() < 4) {
+            FileChooser fileChooser = new FileChooser();
+            FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("PNG Images", "*.png");
+            fileChooser.getExtensionFilters().add(filter);
+            File file = fileChooser.showOpenDialog(miniProfilePic.getScene().getWindow());
+
+            if (file != null) {
+                Image image = new Image(file.toURI().toString());
+                images.add(image);
+            }
+
+            if (images.size() >= 4) {
+                //change the style of mediaBTN ????????????
+            }
+
+            List<Button> btns = displayMedia(images, mediaBox);
+            buttonStyling(btns);
+        }
+    }
+
+    private void deleteMedia(List<Image> imageList, int index) {
+        imageList.remove(index);
+        List<Button> btns = displayMedia(imageList, mediaBox);
+        buttonStyling(btns);
+    }
+
+    public List<Button> displayMedia(List<Image> imageList, HBox mBox) {
+        List<Button> BTNs = new ArrayList<>();
+
         mBox.getChildren().clear();
         mBox.setVisible(true);
         mBox.setManaged(true);
         switch (imageList.size()) {
+            case 0: {
+                mBox.setVisible(false);
+                mBox.setManaged(false);
+                break;
+            }
             case 1: {
                 ImageView iv = new ImageView(imageList.get(0));
                 iv.setFitWidth(500);
@@ -310,11 +396,10 @@ public class MainController {
                 StackPane sp = new StackPane();
                 Button btn = new Button();
                 btn.setOnAction(actionEvent -> deleteMedia(imageList,0));
-                btn.setText("close icon");
-                //style the button ???????????????????
                 sp.getChildren().add(iv);
                 sp.getChildren().add(btn);
                 mBox.getChildren().add(sp);
+                BTNs.add(btn);
                 break;
             }
             case 2: {
@@ -336,11 +421,10 @@ public class MainController {
                         default:
                             break;
                     }
-                    btn.setText("close icon");
-                    //style the button ???????????????????
                     sp.getChildren().add(iv);
                     sp.getChildren().add(btn);
                     mBox.getChildren().add(sp);
+                    BTNs.add(btn);
                 }
 
                 break;
@@ -352,11 +436,10 @@ public class MainController {
                 StackPane sp1 = new StackPane();
                 Button btn1 = new Button();
                 btn1.setOnAction(actionEvent -> deleteMedia(imageList, 0));
-                btn1.setText("close icon");
-                //style the button ???????????????????
                 sp1.getChildren().add(iv1);
                 sp1.getChildren().add(btn1);
                 mBox.getChildren().add(sp1);
+                BTNs.add(btn1);
 
                 VBox vb = new VBox();
 
@@ -378,11 +461,10 @@ public class MainController {
                         default:
                             break;
                     }
-                    btn.setText("close icon");
-                    //style the button ???????????????????
                     sp.getChildren().add(iv);
                     sp.getChildren().add(btn);
                     vb.getChildren().add(sp);
+                    BTNs.add(btn);
                 }
                 mBox.getChildren().add(vb);
 
@@ -417,57 +499,48 @@ public class MainController {
                             default:
                                 break;
                         }
-                        btn.setText("close icon");
-                        //style the button ???????????????????
                         sp.getChildren().add(iv);
                         sp.getChildren().add(btn);
                         vb.getChildren().add(sp);
+                        BTNs.add(btn);
                     }
                     mBox.getChildren().add(vb);
                 }
-                //change the style of mediaBTN ????????????
                 break;
             }
             default:
                 break;
         }
+        return BTNs;
     }
 
-    @FXML
-    private void Media() {
-        if (images.size() < 4) {
-            FileChooser fileChooser = new FileChooser();
-            FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("PNG Images", "*.png");
-            fileChooser.getExtensionFilters().add(filter);
-            File file = fileChooser.showOpenDialog(miniProfilePic.getScene().getWindow());
-
-            if (file != null) {
-                Image image = new Image(file.toURI().toString());
-                images.add(image);
-            }
-
-            displayDraftMedia(images, mediaBox);
+    public void buttonStyling(List<Button> btns) {
+        for (Button b : btns) {
+            b.setText("close icon");
+            //style the button ???????????????????
         }
     }
 
     public void posting(List<Image> imageList, String content) {
-        ObjectNode payload = ServerConnection.mapper.createObjectNode();
-        ObjectNode newTweet = ServerConnection.mapper.createObjectNode();
+        if (!isReplying) {
+            ObjectNode payload = ServerConnection.mapper.createObjectNode();
+            ObjectNode newTweet = ServerConnection.mapper.createObjectNode();
 
-        payload.put("userId", ClientSession.getUser().getId());
-        payload.put("content", content);
-        Timestamp ts = new Timestamp(System.currentTimeMillis());
-        payload.put("timestamp", ts.toString());
-        //????????????????
-        //payload.put("mediaUrls", );
+            payload.put("userId", ClientSession.getUser().getId());
+            payload.put("content", content);
+            Timestamp ts = new Timestamp(System.currentTimeMillis());
+            payload.put("timestamp", ts.toString());
+            //????????????????
+            //payload.put("mediaUrls", );
 
-        newTweet.put("type", "CREATE_TWEET");
-        newTweet.set("payload", payload);
-        AuthController.getConnection().send(newTweet.toString());
+            newTweet.put("type", "CREATE_TWEET");
+            newTweet.set("payload", payload);
+            AuthController.getConnection().send(newTweet.toString());
+        }
+        else {
+            //send the reply ????????????????
+        }
     }
 
-    @FXML
-    private void Post() {
-        posting(images, postText.getText());
-    }
+
 }

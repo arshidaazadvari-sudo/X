@@ -10,6 +10,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
            fx:controller="client.controllers.MainController"
@@ -99,6 +100,25 @@
 
         <Button onAction="#closePostWindow" text="close icon"/>
 
+        <HBox fx:id="replyingTo">
+
+            <ImageView fx:id="R_ProfilePic" preserveRatio="true">
+                <clip>
+                    <Circle centerX="22" centerY="22" radius="22"/>
+                </clip>
+            </ImageView>
+
+            <VBox>
+                <TextFlow>
+                    <Text fx:id="R_name"/>
+                    <Text fx:id="R_username"/>
+                    <Text fx:id="R_postingDate"/>
+                </TextFlow>
+                <TextArea fx:id="R_tweetText"/>
+            </VBox>
+
+        </HBox>
+
         <HBox>
             <ImageView fx:id="miniProfilePic" preserveRatio="true">
                 <clip>
@@ -112,7 +132,7 @@
 
         <HBox>
             <Button fx:id="mediaBTN" onAction="#Media" text="media icon"/>
-            <Button onAction="#Post" text="Post"/>
+            <Button fx:id="postBTN" onAction="#Post" text="Post"/>
         </HBox>
 
     </VBox>
