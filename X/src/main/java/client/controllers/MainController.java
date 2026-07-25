@@ -522,24 +522,27 @@ public class MainController {
     }
 
     public void posting(List<Image> imageList, String content) {
-        if (!isReplying) {
-            ObjectNode payload = ServerConnection.mapper.createObjectNode();
-            ObjectNode newTweet = ServerConnection.mapper.createObjectNode();
 
-            payload.put("userId", ClientSession.getUser().getId());
-            payload.put("content", content);
-            Timestamp ts = new Timestamp(System.currentTimeMillis());
-            payload.put("timestamp", ts.toString());
-            //????????????????
-            //payload.put("mediaUrls", );
+        ObjectNode payload = ServerConnection.mapper.createObjectNode();
+        ObjectNode newTweet = ServerConnection.mapper.createObjectNode();
 
-            newTweet.put("type", "CREATE_TWEET");
-            newTweet.set("payload", payload);
-            AuthController.getConnection().send(newTweet.toString());
+        payload.put("userId", ClientSession.getUser().getId());
+        payload.put("content", content);
+        Timestamp ts = new Timestamp(System.currentTimeMillis());
+        payload.put("timestamp", ts.toString());
+        //????????????????
+        //payload.put("mediaUrls", );
+
+        if (isReplying) {
+            //
+            payload.put("replyToTweetId", R_tweet.getId());
         }
         else {
-            //send the reply ????????????????
+            //payload.put("replyToTweetId", ); ????????????????????
         }
+        newTweet.put("type", "CREATE_TWEET");
+        newTweet.set("payload", payload);
+        AuthController.getConnection().send(newTweet.toString());
     }
 
 
