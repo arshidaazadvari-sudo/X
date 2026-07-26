@@ -6,9 +6,24 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
+<VBox xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="CONTROLLER_NAME"
+            fx:controller="client.controllers.ExploreController"
             prefHeight="400.0" prefWidth="600.0">
 
-</AnchorPane>
+    <HBox>
+        <Button fx:id="returnBTN" text="return icon" onAction="#Return"/>
+        <TextField fx:id="searchText" promptText="Search"/>
+        <Button text="search icon" onAction="#search"/>
+    </HBox>
+
+    <VBox>
+        <VBox fx:id="trendingHashtags">
+            <VBox>
+                <Label text="Trending hashtags"/>
+            </VBox>
+        </VBox>
+        <VBox fx:id="resultsContainer"/>
+    </VBox>
+
+</VBox>

@@ -1,26 +1,22 @@
 package client.controllers;
 
 import client.network.ServerConnection;
-import client.session.ClientSession;
+import client.session.Client;
 import client.utils.DateFormatter;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
-import server.Server;
-import server.ServerConfig;
 import server.database.daos.*;
 import shared.models.Tweet;
 import tools.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -151,12 +147,12 @@ public class TweetController {
         FollowDAO followDAO = new FollowDAO();
         if (followBTN.getText().equals("Follow")) {
             //follow the user
-            boolean b = followDAO.follow(ClientSession.getUser().getId(), realTweet.getUserId());
+            boolean b = followDAO.follow(Client.getUser().getId(), realTweet.getUserId());
             if (b) followBTN.setText("Unfollow");
         }
         else {
             //unfollow the user
-            boolean b = followDAO.unfollow(ClientSession.getUser().getId(), realTweet.getUserId());
+            boolean b = followDAO.unfollow(Client.getUser().getId(), realTweet.getUserId());
             if (b) followBTN.setText("Follow");
         }
     }
@@ -174,11 +170,11 @@ public class TweetController {
         ObjectNode retweet = ServerConnection.mapper.createObjectNode();
 
         payload.put("originalTweetId", realTweet.getId());
-        payload.put("userId", ClientSession.getUser().getId());
+        payload.put("userId", Client.getUser().getId());
 
         retweet.put("type", "RETWEET");
         retweet.set("payload", payload);
-        AuthController.getConnection().send(retweet.toString());
+        Client.getConnection().send(retweet.toString());
 
         //repost.setStyle(); ?????????????????
     }

@@ -1,6 +1,6 @@
 package client.controllers;
 
-import client.session.ClientSession;
+import client.session.Client;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -65,7 +65,7 @@ public class HomeController {
     private void initialize() {
 
         String miniPro_address;
-        if (ClientSession.getUser().getProfilePic() != null) miniPro_address = ClientSession.getUser().getProfilePic();
+        if (Client.getUser().getProfilePic() != null) miniPro_address = Client.getUser().getProfilePic();
         else miniPro_address = defaultProfile;
         Image miniPro_pic = new Image(getClass().getResourceAsStream(miniPro_address));
         miniProfilePicture.setImage(miniPro_pic);
@@ -80,12 +80,12 @@ public class HomeController {
             addNewTweets(t);
         }
 
-        ClientSession.setOnHomePage(true);
+        Client.setOnHomePage(true);
     }
 
     @FXML
     private void displayProfile() {
-        mainController.anyProfile(ClientSession.getUser());
+        mainController.anyProfile(Client.getUser());
     }
 
     @FXML

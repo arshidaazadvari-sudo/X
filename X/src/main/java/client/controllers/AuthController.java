@@ -3,6 +3,7 @@ package client.controllers;
 import client.ClientApp;
 import client.network.ResponseListener;
 import client.network.ServerConnection;
+import client.session.Client;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -18,7 +19,7 @@ import java.io.IOException;
 
 public class AuthController {
 
-    private static ServerConnection connection;
+    private ServerConnection connection;
 
     private boolean isLogin;
 
@@ -35,10 +36,15 @@ public class AuthController {
 
     @FXML
     public void initialize() {
+
+        ServerConnection c = new ServerConnection();
+        Client.setConnection(c);
+        connection = c;
+
         boolean b = connection.connect();
         if (!b) {
             System.out.println("Connection failed.");
-            //
+            //?????????????????????
         }
 
         emailText.setVisible(false);
@@ -76,7 +82,7 @@ public class AuthController {
         }
 
         if (ResponseListener.getAuthError() == null) {
-            //open a session ???????????????????
+            //Client.setUser(); ???????????????????
 
             //go to main scene
             try {
@@ -120,9 +126,5 @@ public class AuthController {
             switchPageText.setText("Log in");
         }
 
-    }
-
-    public static ServerConnection getConnection() {
-        return connection;
     }
 }

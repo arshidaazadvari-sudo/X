@@ -1,24 +1,21 @@
 package client.session;
 
-import client.controllers.UserCardController;
-import shared.models.Tweet;
+import client.network.ServerConnection;
 import shared.models.User;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
-
-public class ClientSession {
+public class Client {
 
     private static User user;
-    private static SessionState state;
 
     private static boolean onHomePage;
 
+    private static ServerConnection connection;
+
+    public static void setConnection(ServerConnection c) { connection = c; }
+    public static ServerConnection getConnection() { return connection; }
+
     public static void setUser(User u) { user = u; }
     public static User getUser() { return user; }
-
-    public void setState(SessionState s) { state = s; }
-    public static SessionState getState() { return state; }
 
     public static void setOnHomePage(boolean b) { onHomePage = b; }
     public static boolean isOnHomePage() { return onHomePage; }

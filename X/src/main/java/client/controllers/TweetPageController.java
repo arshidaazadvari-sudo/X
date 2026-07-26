@@ -104,10 +104,8 @@ public class TweetPageController {
         }
 
         //replyTweetsContainer
-        ReplyDAO replyDAO = new ReplyDAO();
-        List<Reply> replies = replyDAO.getRepliesForTweet(tweetController.getTweet().getId());
-        for (Reply r : replies) {
-            Tweet rt = tweetDao.getTweetById(r.getTweetId());
+        List<Tweet> replies = tweetDao.getRepliesForTweet(tweetController.getTweet().getId());
+        for (Tweet rt : replies) {
             VBox vb = new VBox();
             //set style for vb (the line) ?????????????????????????????
             try {
@@ -121,10 +119,10 @@ public class TweetPageController {
 
                 vb.getChildren().add(tweetBox);
 
-                List<Reply> nextR = replyDAO.getRepliesForTweet(rt.getId());
-                while (nextR.size() == 1) {
+                List<Tweet> nextRL = tweetDao.getRepliesForTweet(rt.getId());
+                while (nextRL.size() == 1) {
 
-                    Tweet nextRT = tweetDao.getTweetById(nextR.getFirst().getTweetId());
+                    Tweet nextRT = nextRL.getFirst();
 
                     try {
                         FXMLLoader loader2 = new FXMLLoader(HomeController.class.getResource("tweet-card.fxml"));
@@ -141,7 +139,7 @@ public class TweetPageController {
                         e.printStackTrace();
                     }
 
-                    nextR = replyDAO.getRepliesForTweet(nextRT.getId());
+                    nextRL = tweetDao.getRepliesForTweet(nextRT.getId());
                 }
 
                 replyTweetsContainer.getChildren().add(vb);

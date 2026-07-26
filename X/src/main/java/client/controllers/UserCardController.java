@@ -1,8 +1,7 @@
 package client.controllers;
 
-import client.session.ClientSession;
+import client.session.Client;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -47,12 +46,12 @@ public class UserCardController {
         username.setText("@" + user.getUsername());
         bio.setText(user.getBio());
 
-        if (user.equals(ClientSession.getUser())) {
+        if (user.equals(Client.getUser())) {
             followBTN.setVisible(false);
         }
         else {
             followBTN.setVisible(true);
-            if (followDAO.isFollowing(ClientSession.getUser().getId(), user.getId())) {
+            if (followDAO.isFollowing(Client.getUser().getId(), user.getId())) {
                 followBTN.setText("Unfollow");
             }
             else {
@@ -72,12 +71,12 @@ public class UserCardController {
 
         if (followBTN.getText().equals("Follow")) {
             //follow the user
-            boolean b = followDAO.follow(ClientSession.getUser().getId(), user.getId());
+            boolean b = followDAO.follow(Client.getUser().getId(), user.getId());
             if (b) followBTN.setText("Unfollow");
         }
         else {
             //unfollow the user
-            boolean b = followDAO.unfollow(ClientSession.getUser().getId(), user.getId());
+            boolean b = followDAO.unfollow(Client.getUser().getId(), user.getId());
             if (b) followBTN.setText("Follow");
         }
     }

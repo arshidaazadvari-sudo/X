@@ -1,6 +1,6 @@
 package client.controllers;
 
-import client.session.ClientSession;
+import client.session.Client;
 import client.utils.DateFormatter;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,10 +8,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Circle;
 import server.database.daos.FollowDAO;
 import server.database.daos.TweetDao;
 import shared.models.Tweet;
@@ -89,14 +87,14 @@ public class ProfileController {
         FollowerBTN.setText(followerC + " Followers");
         FollowingBTN.setText(followingC + " Following");
 
-        if (user.equals(ClientSession.getUser())) {
+        if (user.equals(Client.getUser())) {
             editProfileBTN.setVisible(true);
             followBTN.setVisible(false);
         }
         else {
             editProfileBTN.setVisible(false);
             followBTN.setVisible(true);
-            if (followDAO.isFollowing(ClientSession.getUser().getId(), user.getId())) {
+            if (followDAO.isFollowing(Client.getUser().getId(), user.getId())) {
                 followBTN.setText("Unfollow");
             }
             else {
@@ -121,12 +119,12 @@ public class ProfileController {
 
         if (followBTN.getText().equals("Follow")) {
             //follow the user
-            boolean b = followDAO.follow(ClientSession.getUser().getId(), user.getId());
+            boolean b = followDAO.follow(Client.getUser().getId(), user.getId());
             if (b) followBTN.setText("Unfollow");
         }
         else {
             //unfollow the user
-            boolean b = followDAO.unfollow(ClientSession.getUser().getId(), user.getId());
+            boolean b = followDAO.unfollow(Client.getUser().getId(), user.getId());
             if (b) followBTN.setText("Follow");
         }
     }

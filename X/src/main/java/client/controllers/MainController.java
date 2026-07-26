@@ -1,7 +1,7 @@
 package client.controllers;
 
 import client.network.ServerConnection;
-import client.session.ClientSession;
+import client.session.Client;
 import client.utils.DateFormatter;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,7 +10,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 import server.database.daos.UserDao;
 import shared.models.Tweet;
@@ -81,25 +80,25 @@ public class MainController {
         //initial values
 
         String profile_addresss;
-        if (ClientSession.getUser().getProfilePic() != null) profile_addresss = ClientSession.getUser().getProfilePic();
+        if (Client.getUser().getProfilePic() != null) profile_addresss = Client.getUser().getProfilePic();
         else profile_addresss = defaultProfile;
         Image profile_pic = new Image(getClass().getResourceAsStream(profile_addresss));
         profilePic.setImage(profile_pic);
 
         String banner_address;
-        if (ClientSession.getUser().getBannerPic() != null) banner_address = ClientSession.getUser().getBannerPic();
+        if (Client.getUser().getBannerPic() != null) banner_address = Client.getUser().getBannerPic();
         else banner_address = defaultBanner;
         Image banner_pic = new Image(getClass().getResourceAsStream(banner_address));
         bannerPic.setImage(banner_pic);
 
         String miniPro_address;
-        if (ClientSession.getUser().getProfilePic() != null) miniPro_address = ClientSession.getUser().getProfilePic();
+        if (Client.getUser().getProfilePic() != null) miniPro_address = Client.getUser().getProfilePic();
         else miniPro_address = defaultProfile;
         Image miniPro_pic = new Image(getClass().getResourceAsStream(miniPro_address));
         miniProfilePic.setImage(miniPro_pic);
 
-        newDisplayName.setText(ClientSession.getUser().getDisplayName());
-        newBio.setText(ClientSession.getUser().getBio());
+        newDisplayName.setText(Client.getUser().getDisplayName());
+        newBio.setText(Client.getUser().getBio());
 
 
         //bio character limit of 160
@@ -177,8 +176,8 @@ public class MainController {
 
     @FXML
     private void Profile() {
-        ClientSession.setOnHomePage(false);
-        anyProfile(ClientSession.getUser());
+        Client.setOnHomePage(false);
+        anyProfile(Client.getUser());
     }
 
     @FXML
@@ -190,7 +189,7 @@ public class MainController {
 
             HomeController controller = loader.getController();
             controller.setMainController(this);
-            controller.setUser(ClientSession.getUser());
+            controller.setUser(Client.getUser());
 
             container.getChildren().clear();
             container.getChildren().add(hBox);
@@ -201,9 +200,22 @@ public class MainController {
     }
 
     @FXML
-    private void Explore() {
-        ClientSession.setOnHomePage(false);
-        //
+    public void Explore() {
+        Client.setOnHomePage(false);
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("explore.fxml"));
+
+            HBox eBox = loader.load();
+
+            ExploreController controller = loader.getController();
+            controller.setMainController(this);
+
+            container.getChildren().clear();
+            container.getChildren().add(eBox);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -246,10 +258,10 @@ public class MainController {
 
     @FXML
     private void closeEditWindow() {
-        if (ClientSession.getUser().getBannerPic().equals(newBannerPic) &&
-                ClientSession.getUser().getProfilePic().equals(newProfilePic) &&
-                ClientSession.getUser().getDisplayName().equals(newDisplayName.getText()) &&
-                ClientSession.getUser().getBio().equals(newBio.getText())) {
+        if (Client.getUser().getBannerPic().equals(newBannerPic) &&
+                Client.getUser().getProfilePic().equals(newProfilePic) &&
+                Client.getUser().getDisplayName().equals(newDisplayName.getText()) &&
+                Client.getUser().getBio().equals(newBio.getText())) {
             overlay1.setVisible(false);
             editWindow.setVisible(false);
         }
@@ -262,10 +274,10 @@ public class MainController {
     @FXML
     private void saveChanges() {
         if (newDisplayName.getText() != null) {
-            User updatedUser = new User(ClientSession.getUser().getUsername(),
-                    ClientSession.getUser().getEmail(),
-                    ClientSession.getUser().getPasswordHash());
-            updatedUser.setId(ClientSession.getUser().getId());
+            User updatedUser = new User(Client.getUser().getUsername(),
+                    Client.getUser().getEmail(),
+                    Client.getUser().getPasswordHash());
+            updatedUser.setId(Client.getUser().getId());
             updatedUser.setProfilePic(newProfilePic);
             updatedUser.setBannerPic(newBannerPic);
             updatedUser.setDisplayName(newDisplayName.getText());
@@ -273,8 +285,8 @@ public class MainController {
             UserDao userDao = new UserDao();
             boolean b = userDao.updateUser(updatedUser);
             if (b) {
-                User u = userDao.getUserById(ClientSession.getUser().getId());
-                ClientSession.setUser(u);
+                User u = userDao.getUserById(Client.getUser().getId());
+                Client.setUser(u);
             } else {
                 System.out.println("Failed to save the changes. ");
             }
@@ -369,6 +381,37 @@ public class MainController {
             List<Button> btns = displayMedia(images, mediaBox);
             buttonStyling(btns);
         }
+    }
+
+    public void buttonStyling(List<Button> btns) {
+        for (Button b : btns) {
+            b.setText("close icon");
+            //style the button ???????????????????
+        }
+    }
+
+    public void posting(List<Image> imageList, String content) {
+
+        ObjectNode payload = ServerConnection.mapper.createObjectNode();
+        ObjectNode newTweet = ServerConnection.mapper.createObjectNode();
+
+        payload.put("userId", Client.getUser().getId());
+        payload.put("content", content);
+        Timestamp ts = new Timestamp(System.currentTimeMillis());
+        payload.put("timestamp", ts.toString());
+        //????????????????
+        //payload.put("mediaUrls", );
+
+        if (isReplying) {
+            //
+            payload.put("replyToTweetId", R_tweet.getId());
+        }
+        else {
+            //payload.put("replyToTweetId", ); ????????????????????
+        }
+        newTweet.put("type", "CREATE_TWEET");
+        newTweet.set("payload", payload);
+        Client.getConnection().send(newTweet.toString());
     }
 
     private void deleteMedia(List<Image> imageList, int index) {
@@ -513,37 +556,5 @@ public class MainController {
         }
         return BTNs;
     }
-
-    public void buttonStyling(List<Button> btns) {
-        for (Button b : btns) {
-            b.setText("close icon");
-            //style the button ???????????????????
-        }
-    }
-
-    public void posting(List<Image> imageList, String content) {
-
-        ObjectNode payload = ServerConnection.mapper.createObjectNode();
-        ObjectNode newTweet = ServerConnection.mapper.createObjectNode();
-
-        payload.put("userId", ClientSession.getUser().getId());
-        payload.put("content", content);
-        Timestamp ts = new Timestamp(System.currentTimeMillis());
-        payload.put("timestamp", ts.toString());
-        //????????????????
-        //payload.put("mediaUrls", );
-
-        if (isReplying) {
-            //
-            payload.put("replyToTweetId", R_tweet.getId());
-        }
-        else {
-            //payload.put("replyToTweetId", ); ????????????????????
-        }
-        newTweet.put("type", "CREATE_TWEET");
-        newTweet.set("payload", payload);
-        AuthController.getConnection().send(newTweet.toString());
-    }
-
 
 }

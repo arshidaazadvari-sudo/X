@@ -3,11 +3,40 @@ package server.database.daos;
 import server.database.DatabaseConnection;
 import shared.models.Tweet;
 
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TweetDao {
+
+    public List<Tweet> findTweetsByKeyword(String keyword, int limit) {
+        List<Tweet> tweets = new ArrayList<>();
+
+        String sql = """
+                SELECT t.*, u.username, u.display_name FROM tweets t
+                JOIN users u ON  t.user_id = u.id
+                WHERE t.content ILIKE ? AND t.is_deleted = false
+                ORDER BY t.created_at DESC LIMIT ?
+                """;
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, "%" + keyword + "%");
+            ps.setInt(2, limit);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                tweets.add(mapResultSetToTweet(rs));
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tweets;
+    }
 
     public boolean createTweet(Tweet tweet){
         if (tweet.getContent() == null || tweet.getContent().trim().isEmpty()){

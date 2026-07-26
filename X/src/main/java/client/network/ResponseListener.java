@@ -1,15 +1,11 @@
 package client.network;
 
 import client.controllers.HomeController;
-import client.controllers.MainController;
-import client.session.ClientSession;
+import client.session.Client;
 import shared.models.Tweet;
 import tools.jackson.databind.JsonNode;
 
 import java.io.BufferedReader;
-import java.lang.classfile.Label;
-import java.lang.reflect.Array;
-import java.util.List;
 
 public class ResponseListener implements Runnable {
 
@@ -37,7 +33,7 @@ public class ResponseListener implements Runnable {
                         break;
                     }
                     case "tweet": {
-                        if (ClientSession.isOnHomePage()) {
+                        if (Client.isOnHomePage()) {
                             //?????????????
                             JsonNode payload = ServerConnection.mapper.readTree(json.get("payload").toString());
                             Tweet newT = new Tweet();

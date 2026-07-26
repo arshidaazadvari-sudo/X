@@ -40,7 +40,7 @@ public class FollowController {
 
                 UserCardController controller = loader.getController();
                 controller.setMainController(mainController);
-                controller.setUser(user);
+                controller.setUser(u);
 
                 usersContainer.getChildren().clear();
                 usersContainer.getChildren().add(uBox);
