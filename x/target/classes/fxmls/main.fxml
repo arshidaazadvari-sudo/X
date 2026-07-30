@@ -25,19 +25,19 @@
 
             <Button onAction="#Home" text="Home" styleClass="big-hollow-btn" style="-fx-font-size: 20px;" graphicTextGap="8">
                 <graphic>
-                    <FontIcon fx:id="home" iconSize="26" styleClass="primary-icon"/>
+                    <FontIcon fx:id="home" iconSize="32" styleClass="primary-icon"/>
                 </graphic>
             </Button>
 
             <Button onAction="#Explore" text="Explore" styleClass="big-hollow-btn" style="-fx-font-size: 20px;" graphicTextGap="8">
                 <graphic>
-                    <FontIcon fx:id="explore" iconSize="26" styleClass="primary-icon"/>
+                    <FontIcon fx:id="explore" iconSize="32" styleClass="primary-icon"/>
                 </graphic>
             </Button>
 
             <Button onAction="#Profile" text="Profile" styleClass="big-hollow-btn" style="-fx-font-size: 20px;" graphicTextGap="8">
                 <graphic>
-                    <FontIcon fx:id="profile" iconSize="26" styleClass="primary-icon"/>
+                    <FontIcon fx:id="profile" iconSize="32" styleClass="primary-icon"/>
                 </graphic>
             </Button>
 
@@ -46,12 +46,12 @@
             <HBox fillHeight="false" spacing="30" prefWidth="200">
                 <Button onAction="#LogoutWindow" styleClass="big-hollow-btn">
                     <graphic>
-                        <FontIcon fx:id="logoutIcon" iconSize="2" styleClass="primary-icon"/>
+                        <FontIcon fx:id="logoutIcon" iconSize="32" styleClass="primary-icon"/>
                     </graphic>
                 </Button>
                 <Button onAction="#toggleTheme" styleClass="big-hollow-btn">
                     <graphic>
-                        <FontIcon fx:id="toggle" iconSize="24" styleClass="primary-icon"/>
+                        <FontIcon fx:id="toggle" iconSize="32" styleClass="primary-icon"/>
                     </graphic>
                 </Button>
             </HBox>
@@ -193,5 +193,9 @@
         <Button text="Log out" onAction="#logout" styleClass="big-filled-btn"/>
         <Button text="Cancel" onAction="#cancelLogout" styleClass="big-bordered-btn"/>
     </VBox>
+
+    <Pane fx:id="overlay6" onMouseClicked="#closeFullsizeImage" visible="false" managed="false" styleClass="overlay" prefHeight="-Infinity" prefWidth="-Infinity"/>
+
+    <ImageView fx:id="fullsizeImage" preserveRatio="true" fitHeight="700" fitWidth="800" visible="false" managed="false"/>
 
 </StackPane>

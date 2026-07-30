@@ -20,11 +20,7 @@
 
     <ImageView fx:id="xLogo" preserveRatio="true" fitWidth="150" fitHeight="150"/>
 
-    <Label text="Welcome to X" styleClass="header-t" graphicTextGap="5">
-        <graphic>
-            <FontIcon fx:id="icon" iconSize="32" style="-fx-icon-color: black;"/>
-        </graphic>
-    </Label>
+    <Label text="Welcome to X" styleClass="header-t"/>
 
     <Label fx:id="emailText" text="Enter your email:" styleClass="primary-t"/>
 

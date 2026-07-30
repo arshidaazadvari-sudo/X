@@ -194,4 +194,8 @@
         <Button text="Cancel" onAction="#cancelLogout" styleClass="big-bordered-btn"/>
     </VBox>
 
+    <Pane fx:id="overlay6" onMouseClicked="#closeFullsizeImage" visible="false" managed="false" styleClass="overlay" prefHeight="-Infinity" prefWidth="-Infinity"/>
+
+    <ImageView fx:id="fullsizeImage" preserveRatio="true" fitHeight="700" fitWidth="800" visible="false" managed="false"/>
+
 </StackPane>

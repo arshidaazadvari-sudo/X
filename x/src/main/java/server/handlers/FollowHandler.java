@@ -1,6 +1,6 @@
 package server.handlers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import server.database.daos.FollowDAO;
 import server.database.daos.UserDao;          // you need this to resolve username → id
 import server.services.AuthService;          // to get current user from token

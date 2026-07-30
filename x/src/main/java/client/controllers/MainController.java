@@ -64,6 +64,8 @@ public class MainController {
     @FXML private VBox deleteWindow;
     @FXML private Pane overlay5;
     @FXML private VBox logoutWindow;
+    @FXML private Pane overlay6;
+    @FXML private ImageView fullsizeImage;
 
     @FXML private ImageView xLogo1;
     @FXML private ImageView xLogo2;
@@ -445,18 +447,6 @@ public class MainController {
         }
     }
 
-    public void buttonStyling(List<Button> btns) {
-        for (Button b : btns) {
-            FontIcon deleteIcon = new FontIcon(FontAwesomeSolid.WINDOW_CLOSE);
-            deleteIcon.getStyleClass().add("half-transparent-icon");
-            b.setGraphic(deleteIcon);
-            b.setPrefHeight(24);
-            b.setPrefWidth(24);
-            b.setMaxHeight(24);
-            b.setMaxWidth(24);
-        }
-    }
-
     public void posting(List<String> imageList, String content) {
 
         ObjectNode payload = ServerConnection.mapper.createObjectNode();
@@ -486,10 +476,33 @@ public class MainController {
         postText.clear();
     }
 
+    //____________________________________________________________
+    //media display
+
+    public void buttonStyling(List<Button> btns) {
+        for (Button b : btns) {
+            FontIcon deleteIcon = new FontIcon(FontAwesomeSolid.WINDOW_CLOSE);
+            deleteIcon.getStyleClass().add("half-transparent-icon");
+            b.setGraphic(deleteIcon);
+            b.setPrefHeight(24);
+            b.setPrefWidth(24);
+            b.setMaxHeight(24);
+            b.setMaxWidth(24);
+        }
+    }
+
     private void deleteMedia(List<String> imageList, int index) {
         imageList.remove(index);
         List<Button> btns = displayMedia(imageList, mediaBox);
         buttonStyling(btns);
+    }
+
+    private void displayFullSizeImage(Image i) {
+        fullsizeImage.setImage(i);
+        overlay6.setManaged(true);
+        overlay6.setVisible(true);
+        fullsizeImage.setManaged(true);
+        fullsizeImage.setVisible(true);
     }
 
     public List<Button> displayMedia(List<String> imageList, HBox mBox) {
@@ -507,6 +520,9 @@ public class MainController {
             }
             case 1: {
                 ImageView iv = new ImageView(ImageLoader.getTweetImage(imageList.get(0)));
+                iv.setOnMouseClicked(mouseEvent -> {
+                    displayFullSizeImage(ImageLoader.getTweetImage(imageList.get(0)));
+                });
                 iv.setFitWidth(500);
                 iv.setFitHeight(300);
 
@@ -556,10 +572,16 @@ public class MainController {
                     switch (i) {
                         case 0:{
                             btn.setOnAction(actionEvent -> deleteMedia(imageList, 0));
+                            iv.setOnMouseClicked(mouseEvent -> {
+                                displayFullSizeImage(ImageLoader.getTweetImage(imageList.get(0)));
+                            });
                             break;
                         }
                         case 1:{
                             btn.setOnAction(actionEvent -> deleteMedia(imageList, 1));
+                            iv.setOnMouseClicked(mouseEvent -> {
+                                displayFullSizeImage(ImageLoader.getTweetImage(imageList.get(1)));
+                            });
                             break;
                         }
                         default:
@@ -575,6 +597,9 @@ public class MainController {
             }
             case 3: {
                 ImageView iv1 = new ImageView(ImageLoader.getTweetImage(imageList.get(0)));
+                iv1.setOnMouseClicked(mouseEvent -> {
+                    displayFullSizeImage(ImageLoader.getTweetImage(imageList.get(0)));
+                });
                 iv1.setFitWidth(247);
                 iv1.setFitHeight(300);
 
@@ -626,10 +651,16 @@ public class MainController {
                     switch (i) {
                         case 1:{
                             btn.setOnAction(actionEvent -> deleteMedia(imageList, 1));
+                            iv1.setOnMouseClicked(mouseEvent -> {
+                                displayFullSizeImage(ImageLoader.getTweetImage(imageList.get(1)));
+                            });
                             break;
                         }
                         case 2:{
                             btn.setOnAction(actionEvent -> deleteMedia(imageList, 2));
+                            iv1.setOnMouseClicked(mouseEvent -> {
+                                displayFullSizeImage(ImageLoader.getTweetImage(imageList.get(2)));
+                            });
                             break;
                         }
                         default:
@@ -672,18 +703,30 @@ public class MainController {
                         switch (2 * i + j) {
                             case 0:{
                                 btn.setOnAction(actionEvent -> deleteMedia(imageList, 0));
+                                iv.setOnMouseClicked(mouseEvent -> {
+                                    displayFullSizeImage(ImageLoader.getTweetImage(imageList.get(0)));
+                                });
                                 break;
                             }
                             case 1:{
                                 btn.setOnAction(actionEvent -> deleteMedia(imageList, 1));
+                                iv.setOnMouseClicked(mouseEvent -> {
+                                    displayFullSizeImage(ImageLoader.getTweetImage(imageList.get(1)));
+                                });
                                 break;
                             }
                             case 2:{
                                 btn.setOnAction(actionEvent -> deleteMedia(imageList, 2));
+                                iv.setOnMouseClicked(mouseEvent -> {
+                                    displayFullSizeImage(ImageLoader.getTweetImage(imageList.get(2)));
+                                });
                                 break;
                             }
                             case 3:{
                                 btn.setOnAction(actionEvent -> deleteMedia(imageList, 3));
+                                iv.setOnMouseClicked(mouseEvent -> {
+                                    displayFullSizeImage(ImageLoader.getTweetImage(imageList.get(3)));
+                                });
                                 break;
                             }
                             default:
@@ -703,6 +746,14 @@ public class MainController {
         }
 
         return BTNs;
+    }
+
+    @FXML
+    private void closeFullsizeImage() {
+        overlay6.setManaged(false);
+        overlay6.setVisible(false);
+        fullsizeImage.setManaged(false);
+        fullsizeImage.setVisible(false);
     }
 
     //____________________________________________________________

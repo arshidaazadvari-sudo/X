@@ -1,6 +1,6 @@
 package server.handlers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import server.database.daos.TweetDao;
 import server.services.AuthService;
 import shared.models.Tweet;
