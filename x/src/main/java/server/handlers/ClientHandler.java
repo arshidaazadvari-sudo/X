@@ -104,7 +104,7 @@ public class ClientHandler implements Runnable {
             boolean success = authService.register(username, email, password, displayName);
 
             if (success) {
-                return Response.success("REGISTER", request.getRequestId(),
+                return Response.success("SUCCESS", request.getRequestId(),
                         Map.of("message", "User registered successfully"));
             } else {
                 return Response.error(request.getRequestId(), 409,
@@ -126,7 +126,7 @@ public class ClientHandler implements Runnable {
             Map<String, Object> result = authService.login(username, password);
 
             if (result != null) {
-                return Response.success("LOGIN", request.getRequestId(), result);
+                return Response.success("SUCCESS", request.getRequestId(), result);
             } else {
                 return Response.error(request.getRequestId(), 401, "Invalid username or password");
             }
@@ -140,7 +140,7 @@ public class ClientHandler implements Runnable {
         boolean success = authService.logout(request.getToken());
 
         if (success) {
-            return Response.success("LOGOUT", request.getRequestId(),
+            return Response.success("SUCCESS", request.getRequestId(),
                     Map.of("message", "Logged out successfully"));
         } else {
             return Response.error(request.getRequestId(), 400, "Invalid or expired token");
@@ -155,7 +155,7 @@ public class ClientHandler implements Runnable {
         }
 
         currentUser.setPasswordHash(null);
-        return Response.success("ME", request.getRequestId(), currentUser);
+        return Response.success("SUCCESS", request.getRequestId(), currentUser);
     }
 
 
@@ -180,7 +180,7 @@ public class ClientHandler implements Runnable {
             boolean success = tweetDAO.createTweet(tweet);
 
             if (success) {
-                return Response.success("CREATE_TWEET", request.getRequestId(), tweet);
+                return Response.success("SUCCESS", request.getRequestId(), tweet);
             } else {
                 return Response.error(request.getRequestId(), 500, "Failed to create tweet");
             }
@@ -203,7 +203,7 @@ public class ClientHandler implements Runnable {
             boolean success = tweetDAO.deleteTweet(tweetId, currentUser.getId());
 
             if (success) {
-                return Response.success("DELETE_TWEET", request.getRequestId(),
+                return Response.success("SUCCESS", request.getRequestId(),
                         Map.of("message", "Tweet deleted successfully"));
             } else {
                 return Response.error(request.getRequestId(), 403, "You can only delete your own tweets");
@@ -237,7 +237,7 @@ public class ClientHandler implements Runnable {
             boolean success = tweetDAO.createTweet(reply);
 
             if (success) {
-                return Response.success("CREATE_REPLY", request.getRequestId(), reply);
+                return Response.success("TWEET", request.getRequestId(), reply);
             } else {
                 return Response.error(request.getRequestId(), 500, "Failed to create reply");
             }
@@ -265,7 +265,7 @@ public class ClientHandler implements Runnable {
             boolean success = tweetDAO.createTweet(retweet);
 
             if (success) {
-                return Response.success("CREATE_RETWEET", request.getRequestId(), retweet);
+                return Response.success("TWEET", request.getRequestId(), retweet);
             } else {
                 return Response.error(request.getRequestId(), 500, "Failed to retweet");
             }
