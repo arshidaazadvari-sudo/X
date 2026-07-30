@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.text.TextFlow?>
+<?import javafx.scene.text.Text?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="client.controllers.TweetPageController"
+      alignment="CENTER" spacing="20">
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <VBox>
+
+        <TextFlow fx:id="replyToText">
+            <Text fx:id="replyToUsername" styleClass="secondary-t"/>
+            <Text text="See the tweet" onMouseClicked="#showRepliedTweet" styleClass="secondary-btn"/>
+        </TextFlow>
+
+        <HBox>
+            <ImageView fx:id="profilePicture" onMouseClicked="#profile">
+                <clip>
+                    <Circle centerX="24" centerY="24" radius="24"/>
+                </clip>
+            </ImageView>
+
+            <VBox onMouseClicked="#profile">
+                <Label fx:id="displayName" styleClass="primary-t" style="-fx-font-weight: bold;"/>
+                <Label fx:id="username" styleClass="secondary-t"/>
+            </VBox>
+        </HBox>
+
+        <TextFlow fx:id="tweetText" styleClass="post-ta"/>
+
+        <HBox fx:id="mediaBox"/>
+
+        <Label fx:id="postingDate" styleClass="secondary-t"/>
+
+        <HBox>
+            <Button onAction="#reply" text="reply icon" styleClass="gray-reply-btn"/>
+            <Label fx:id="replyCount" styleClass="secondary-t"/>
+
+            <Button fx:id="repost" onAction="#repost" text="repost icon" styleClass="gray-repost-btn"/>
+            <Label fx:id="repostCount" styleClass="secondary-t"/>
+
+            <Button fx:id="like" onAction="#like" text="like icon" styleClass="gray-like-btn"/>
+            <Label fx:id="likeCount" styleClass="secondary-t"/>
+        </HBox>
+
+    </VBox>
+
+    <VBox fx:id="replyTweetsContainer"/>
+
+</VBox>

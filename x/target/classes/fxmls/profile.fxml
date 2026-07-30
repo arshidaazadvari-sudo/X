@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.shape.Circle?>
+
+<?import javafx.scene.shape.Rectangle?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="client.controllers.ProfileController"
+      alignment="CENTER" spacing="20">
+    <BorderPane>
+
+        <center>
+            <VBox>
+                <StackPane>
+
+                    <ImageView fx:id="banner" preserveRatio="true"/>
+                    <AnchorPane>
+                        <ImageView fx:id="profile" preserveRatio="true">
+                            <clip>
+                                <Circle centerX="65" centerY="65" radius="65"/>
+                            </clip>
+                        </ImageView>
+                    </AnchorPane>
+
+                    <HBox>
+                        <Button fx:id="editProfileBTN" onAction="#editProfile" text="Edit profile" styleClass="small-bordered-btn"/>
+                        <Button fx:id="followBTN" onAction="#follow" text="Follow" styleClass="small-filled-btn"/>
+                    </HBox>
+
+                </StackPane>
+
+                <VBox>
+                    <Label fx:id="displayName" styleClass="header-t"/>
+                    <Label fx:id="username" styleClass="secondary-t"/>
+                    <Label fx:id="bio" styleClass="primary-t"/>
+                    <Label fx:id="dateOfJoining" styleClass="secondary-t"/>
+                    <HBox>
+                        <Label fx:id="tweetsCount" styleClass="secondary-t"/>
+                        <Label fx:id="FollowingBTN" onMouseClicked="#displayFollowings" styleClass="secondary-btn"/>
+                        <Label fx:id="FollowerBTN" onMouseClicked="#displayFollowers" styleClass="secondary-btn"/>
+                    </HBox>
+                </VBox>
+
+                <HBox>
+
+                    <VBox>
+                        <Button onAction="#displayPosts" text="Posts" styleClass="big-hollow-btn"/>
+                        <Rectangle fx:id="pIndicator" width="80" height="4" arcWidth="8" arcHeight="8" styleClass="indicator-line"/>
+                    </VBox>
+
+                    <VBox>
+                        <Button onAction="#displayReplies" text="Replies"/>
+                        <Rectangle fx:id="rIndicator" width="80" height="4" arcWidth="8" arcHeight="8" styleClass="indicator-line"/>
+                    </VBox>
+
+                    <VBox>
+                        <Button onAction="#displayMedia" text="Media"/>
+                        <Rectangle fx:id="mIndicator" width="80" height="4" arcWidth="8" arcHeight="8" styleClass="indicator-line"/>
+                    </VBox>
+
+                </HBox>
+
+                <HBox fx:id="noPosts" managed="false" visible="false">
+                    <Label text="No posts yet " styleClass="header-t"/>
+                </HBox>
+
+                <VBox fx:id="tweetsContainer"/>
+            </VBox>
+        </center>
+    </BorderPane>
+
+</VBox>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.TextFlow?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.text.Text?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="client.controllers.TweetController"
+      prefHeight="400.0" prefWidth="600.0" onMouseClicked="#tweetPage" onMouseEntered="#MEntered" onMouseDragExited="#MExited">
+
+    <TextFlow fx:id="replyToText">
+        <Label fx:id="replyToUsername" styleClass="secondary-t">
+            <graphic>
+                <FontIcon iconLiteral="fas-reply" iconSize="18" styleClass="secondary-icon"/>
+            </graphic>
+        </Label>
+        <Text text="See the tweet" onMouseClicked="#showRepliedTweet" styleClass="secondary-btn"/>
+    </TextFlow>
+
+    <HBox>
+
+        <ImageView fx:id="profilePicture" onMouseClicked="#profile" preserveRatio="true">
+            <clip>
+                <Circle centerX="22" centerY="22" radius="22"/>
+            </clip>
+        </ImageView>
+
+        <VBox>
+
+            <HBox>
+                <TextFlow>
+                    <Text fx:id="name" onMouseClicked="#profile" styleClass="primary-t" style="-fx-font-weight: bold;"/>
+                    <Text fx:id="username" onMouseClicked="#profile" styleClass="secondary-t"/>
+                    <Text fx:id="postingDate"/>
+                </TextFlow>
+                <Button fx:id="followBTN" onAction="#follow" text="Follow" styleClass="small-filled-btn"/>
+                <Button fx:id="deleteBTN" onAction="#delete" text="delete" styleClass="delete-btn"/>
+            </HBox>
+
+            <TextFlow fx:id="tweetText" styleClass="primary-t"/>
+
+            <HBox fx:id="mediaBox"/>
+
+            <HBox>
+                <Button fx:id="reply" onAction="#reply" styleClass="gray-reply-btn">
+                    <graphic>
+                        <FontIcon iconLiteral="far-comment" iconSize="18" styleClass="gray-reply-icon"/>
+                    </graphic>
+                </Button>
+
+                <Button fx:id="repost" onAction="#repost" styleClass="gray-repost-btn">
+                    <graphic>
+                        <FontIcon fx:id="repostIcon" iconLiteral="fas-retweet" iconSize="18" styleClass="gray-repost-icon"/>
+                    </graphic>
+                </Button>
+
+                <Button fx:id="like" onAction="#like" styleClass="gray-like-btn">
+                    <graphic>
+                        <FontIcon fx:id="likeIcon" iconLiteral="far-heart" iconSize="18" styleClass="gray-like-icon"/>
+                    </graphic>
+                </Button>
+            </HBox>
+
+        </VBox>
+
+    </HBox>
+
+</VBox>

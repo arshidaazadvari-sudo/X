@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="client.controllers.MainController">
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <HBox fillHeight="false">
+
+        <VBox fillWidth="false" spacing="30" prefWidth="250" maxWidth="250">
+
+            <ImageView fx:id="xLogo1" preserveRatio="true" fitHeight="120" fitWidth="120"/>
+
+            <Button onAction="#Home" text="Home" styleClass="big-hollow-btn" style="-fx-font-size: 20px;">
+                <graphic>
+                    <FontIcon fx:id="home" iconLiteral="far-house" iconSize="26" styleClass="primary-icon"/>
+                </graphic>
+            </Button>
+
+            <Button onAction="#Explore" text="Explore" styleClass="big-hollow-btn" style="-fx-font-size: 20px;">
+                <graphic>
+                    <FontIcon fx:id="explore" iconLiteral="fas-magnifying-glass" iconSize="26" styleClass="primary-icon"/>
+                </graphic>
+            </Button>
+
+            <Button onAction="#Profile" text="Profile" styleClass="big-hollow-btn" style="-fx-font-size: 20px;">
+                <graphic>
+                    <FontIcon fx:id="profile" iconLiteral="far-user" iconSize="26" styleClass="primary-icon"/>
+                </graphic>
+            </Button>
+
+            <Button onAction="#PostWindow" text="Post" styleClass="big-hollow-btn" style="-fx-font-size: 20px;"/>
+
+            <HBox fillHeight="false" spacing="30" prefWidth="200">
+                <Button onAction="#LogoutWindow" styleClass="big-hollow-btn">
+                    <graphic>
+                        <FontIcon iconLiteral="fas-arrow-right-from-bracket" iconSize="24" styleClass="primary-icon"/>
+                    </graphic>
+                </Button>
+                <Button onAction="#toggleTheme" styleClass="big-hollow-btn">
+                    <graphic>
+                        <FontIcon fx:id="toggle" iconLiteral="fas-sun" iconSize="24" styleClass="primary-icon"/>
+                    </graphic>
+                </Button>
+            </HBox>
+
+        </VBox>
+
+        <ScrollPane prefWidth="600" maxWidth="600">
+            <VBox fx:id="container" maxWidth="600" alignment="CENTER"/>
+        </ScrollPane>
+
+    </HBox>
+
+    <Pane fx:id="overlay1" visible="false" managed="false" styleClass="overlay" prefWidth="-Infinity" prefHeight="-Infinity"/>
+
+    <VBox fx:id="editWindow" visible="false" managed="false" prefWidth="600" prefHeight="500" alignment="CENTER" spacing="20" padding="20">
+        <HBox spacing="20">
+            <Button onAction="#closeEditWindow" text="close icon" styleClass="small-hollow-btn" maxWidth="50">
+                <graphic>
+                    <FontIcon iconLiteral="fas-xmark" iconSize="24" styleClass="primary-icon"/>
+                </graphic>
+            </Button>
+            <Label text="Edit profile" styleClass="header-t" prefWidth="400" maxWidth="400"/>
+            <Button onAction="#saveChanges" text="save" styleClass="small-filled-btn" maxWidth="70"/>
+        </HBox>
+
+        <StackPane>
+
+            <ImageView fx:id="bannerPic" preserveRatio="true"/>
+            <Button onAction="#chooseBannerPic" styleClass="small-hollow-btn">
+                <graphic>
+                    <FontIcon iconLiteral="fas-camera" iconSize="18" styleClass="half-transparent-icon"/>
+                </graphic>
+            </Button>
+
+            <ImageView fx:id="profilePic" preserveRatio="true">
+                <clip>
+                    <Circle centerX="60" centerY="60" radius="60"/>
+                </clip>
+            </ImageView>
+
+            <Button onAction="#chooseProfilePic" styleClass="small-hollow-btn">
+                <graphic>
+                    <FontIcon iconLiteral="fas-camera" iconSize="18" styleClass="half-transparent-icon"/>
+                </graphic>
+            </Button>
+
+        </StackPane>
+
+        <VBox spacing="20">
+            <VBox spacing="10">
+                <Label text="Name" styleClass="secondary-t"/>
+                <TextField fx:id="newDisplayName" styleClass="edit-tf"/>
+                <Label fx:id="blankNameMSG" text="Name can't be blank" visible="false" styleClass="blank-name-t"/>
+            </VBox>
+
+            <VBox spacing="10">
+                <Label text="Bio" styleClass="secondary-t"/>
+                <TextArea fx:id="newBio" styleClass="edit-tf"/>
+            </VBox>
+        </VBox>
+
+    </VBox>
+
+    <Pane fx:id="overlay2" visible="false" managed="false" styleClass="overlay" prefHeight="-Infinity" prefWidth="-Infinity"/>
+
+    <VBox fx:id="discardWindow" visible="false" managed="false">
+        <Label text="Discard changes?" styleClass="header-t"/>
+        <Text text="This can’t be undone and you’ll lose your changes. " styleClass="secondary-t"/>
+        <Button text="Discard" onAction="#discard" styleClass="red-btn"/>
+        <Button text="Cancel" onAction="#cancelDiscard" styleClass="big-bordered-btn"/>
+    </VBox>
+
+    <Pane fx:id="overlay3" visible="false" managed="false" styleClass="overlay" prefWidth="-Infinity" prefHeight="-Infinity"/>
+
+    <VBox fx:id="postWindow" visible="false" managed="false">
+
+        <Button onAction="#closePostWindow" text="close icon" styleClass="small-hollow-btn">
+            <graphic>
+                <FontIcon iconLiteral="fas-xmark" iconSize="24" styleClass="primary-icon"/>
+            </graphic>
+        </Button>
+
+        <HBox fx:id="replyingTo">
+
+            <ImageView fx:id="R_ProfilePic" preserveRatio="true">
+                <clip>
+                    <Circle centerX="22" centerY="22" radius="22"/>
+                </clip>
+            </ImageView>
+
+            <VBox>
+                <TextFlow>
+                    <Text fx:id="R_name" styleClass="primary-t" style="-fx-font-weight: bold;"/>
+                    <Text fx:id="R_username" styleClass="secondary-t"/>
+                    <Text fx:id="R_postingDate" styleClass="secondary-t"/>
+                </TextFlow>
+                <TextArea fx:id="R_tweetText" styleClass="primary-t"/>
+            </VBox>
+
+        </HBox>
+
+        <HBox>
+            <ImageView fx:id="miniProfilePic" preserveRatio="true">
+                <clip>
+                    <Circle centerX="22" centerY="22" radius="22"/>
+                </clip>
+            </ImageView>
+            <TextArea fx:id="postText" promptText="What's happening? " styleClass="post-ta"/>
+        </HBox>
+
+        <HBox fx:id="mediaBox" prefHeight="300" prefWidth="500"/>
+
+        <HBox>
+            <Button onAction="#Media" text="media icon" styleClass="small-hallow-btn">
+                <graphic>
+                    <FontIcon iconLiteral="fas-image" iconSize="24" styleClass="primary-icon"/>
+                </graphic>
+            </Button>
+            <Button fx:id="postBTN" onAction="#Post" text="Post" styleClass="small-filled-btn"/>
+        </HBox>
+
+    </VBox>
+
+    <Pane fx:id="overlay4" visible="false" managed="false" styleClass="overlay" prefHeight="-Infinity" prefWidth="-Infinity"/>
+
+    <VBox fx:id="deleteWindow" visible="false" managed="false">
+        <Label text="Delete post?" styleClass="header-t"/>
+        <Text text="This can’t be undone and it will be removed from your profile, the timeline of any accounts that follow you, and from search results. " styleClass="secondary-t"/>
+        <Button text="Delete" onAction="#delete" styleClass="red-btn"/>
+        <Button text="Cancel" onAction="#cancelDelete" styleClass="big-bordered-btn"/>
+    </VBox>
+
+    <Pane fx:id="overlay5" visible="false" managed="false" styleClass="overlay" prefWidth="-Infinity" prefHeight="-Infinity"/>
+
+    <VBox fx:id="logoutWindow" visible="false" managed="false">
+        <ImageView fx:id="xLogo2" preserveRatio="true" fitHeight="150" fitWidth="150"/>
+        <Label text="Log out of X?" styleClass="header-t"/>
+        <Text text="You can always log back in at any time." styleClass="secondary-t"/>
+        <Button text="Log out" onAction="#logout" styleClass="big-filled-btn"/>
+        <Button text="Cancel" onAction="#cancelLogout" styleClass="big-bordered-btn"/>
+    </VBox>
+
+</StackPane>

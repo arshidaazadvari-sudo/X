@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.image.ImageView?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="client.controllers.HomeController"
+      alignment="CENTER" spacing="20">
+
+    <HBox fx:id="TLTweetCard">
+
+        <ImageView fx:id="miniProfilePicture" onMouseClicked="#displayProfile" preserveRatio="true">
+            <clip>
+                <Circle centerX="22" centerY="22" radius="22"/>
+            </clip>
+        </ImageView>
+
+        <VBox>
+
+            <TextArea fx:id="postText" wrapText="true" promptText="What's happening?" styleClass="post-ta"/>
+
+            <HBox fx:id="mediaBox" prefHeight="300" prefWidth="500"/>
+
+            <HBox>
+                <Button onAction="#Media" styleClass="small-hollow-btn"/>
+                <Button text="Post" onAction="#Post" styleClass="small-filled-btn"/>
+            </HBox>
+
+        </VBox>
+
+    </HBox>
+
+    <VBox fx:id="tweetsContainer"/>
+
+</VBox>

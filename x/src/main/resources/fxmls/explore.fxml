@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="client.controllers.ExploreController"
+      minHeight="100.0" prefWidth="600.0" maxWidth="600">
+
+    <HBox maxWidth="600">
+        <Button fx:id="returnBTN" onAction="#Return" styleClass="small-hollow-btn" maxWidth="50">
+            <graphic>
+                <FontIcon iconLiteral="fas-arrow-left" iconSize="24" styleClass="primary-icon"/>
+            </graphic>
+        </Button>
+        <TextField fx:id="searchText" promptText="Search" styleClass="regular-tf" prefWidth="480"/>
+        <Button onAction="#search" styleClass="small-hollow-btn" maxWidth="50">
+            <graphic>
+                <FontIcon iconLiteral="fas-magnifying-glass" iconSize="24" styleClass="primary-icon"/>
+            </graphic>
+        </Button>
+    </HBox>
+
+    <VBox maxWidth="600">
+        <VBox fx:id="trendingHashtags">
+            <VBox>
+                <Label text="Trending hashtags" styleClass="header-t"/>
+            </VBox>
+            <!-- hashtags -->
+        </VBox>
+        <VBox fx:id="resultsContainer"/>
+    </VBox>
+
+</VBox>
