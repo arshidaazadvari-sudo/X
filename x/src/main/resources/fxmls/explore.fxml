@@ -12,13 +12,13 @@
     <HBox maxWidth="600">
         <Button fx:id="returnBTN" onAction="#Return" styleClass="small-hollow-btn" maxWidth="50">
             <graphic>
-                <FontIcon iconLiteral="fas-arrow-left" iconSize="24" styleClass="primary-icon"/>
+                <FontIcon fx:id="returnIcon" iconSize="24" styleClass="primary-icon"/>
             </graphic>
         </Button>
         <TextField fx:id="searchText" promptText="Search" styleClass="regular-tf" prefWidth="480"/>
         <Button onAction="#search" styleClass="small-hollow-btn" maxWidth="50">
             <graphic>
-                <FontIcon iconLiteral="fas-magnifying-glass" iconSize="24" styleClass="primary-icon"/>
+                <FontIcon fx:id="searchIcon" iconSize="24" styleClass="primary-icon"/>
             </graphic>
         </Button>
     </HBox>

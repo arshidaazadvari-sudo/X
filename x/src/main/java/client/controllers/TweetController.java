@@ -13,6 +13,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import org.kordamp.ikonli.fontawesome6.FontAwesomeRegular;
+import org.kordamp.ikonli.fontawesome6.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
 import server.database.daos.*;
 import shared.models.Tweet;
@@ -39,6 +41,9 @@ public class TweetController {
     @FXML private Button repost;
     @FXML private Button like;
 
+    @FXML private FontIcon deleteIcon;
+    @FXML private FontIcon repliedIcon;
+    @FXML private FontIcon replyIcon;
     @FXML private FontIcon repostIcon;
     @FXML private FontIcon likeIcon;
 
@@ -64,6 +69,29 @@ public class TweetController {
     @FXML
     private void initialize() {
 
+
+        //icons
+
+        deleteIcon.setIconCode(FontAwesomeSolid.WINDOW_CLOSE);
+        repliedIcon.setIconCode(FontAwesomeSolid.REPLY);
+        replyIcon.setIconCode(FontAwesomeRegular.COMMENT);
+        likeIcon.setIconCode(FontAwesomeRegular.HEART);
+        repostIcon.setIconCode(FontAwesomeSolid.RETWEET);
+
+        boolean b1 = likeDAO.isLikedByUser(realTweet.getUserId(), realTweet.getId());
+        if (b1) {
+            likeIcon.setIconCode(FontAwesomeSolid.HEART);
+            likeIcon.getStyleClass().clear();
+            likeIcon.getStyleClass().add("red-like-icon");
+        }
+
+        boolean b2 = true;
+        // isRepostedByUser  ?????????????????????
+        if (b2) {
+            repostIcon.getStyleClass().clear();
+            repostIcon.getStyleClass().add("green-repost-icon");
+        }
+
         //find the real tweet owner
 
         Integer tweetId = givenTweet.getRetweetOfTweetId();
@@ -87,30 +115,17 @@ public class TweetController {
 
         UserDao userDao = new UserDao();
 
-        //set initial properties of the tweet
+        //set initial data of the tweet
 
         profilePicture.setImage(ImageLoader.getProfileImage(userDao.getUserById(realTweet.getUserId()).getProfilePic()));
 
-        reply.setText(" " + realTweet.getRepliesCount());
-        like.setText(" " + realTweet.getLikesCount());
-        repost.setText(" " + realTweet.getRetweetsCount());
+        int r = tweetDao.getRepliesForTweet(realTweet.getId()).size();
+        reply.setText(String.valueOf(r));
+        like.setText(String.valueOf(realTweet.getLikesCount()));
+        //repost.setText(); ??????????????????????
         name.setText(realTweet.getDisplayName());
         username.setText(" @" + realTweet.getUsername());
         postingDate.setText(" . " + DateFormatter.postingDate(realTweet.getCreatedAt()));
-
-        boolean b1 = likeDAO.isLikedByUser(realTweet.getUserId(), realTweet.getId());
-        if (b1) {
-            likeIcon.setIconLiteral("fas-heart");
-            likeIcon.getStyleClass().clear();
-            likeIcon.getStyleClass().add("red-like-icon");
-        }
-
-        boolean b2 = true;
-        // isRepostedByUser  ?????????????????????
-        if (b2) {
-            repostIcon.getStyleClass().clear();
-            repostIcon.getStyleClass().add("green-repost-icon");
-        }
 
         Text t = new Text(realTweet.getContent());
         tweetText = new TextFlow(t);
@@ -222,7 +237,7 @@ public class TweetController {
         if (b1) {
             b2 = likeDAO.unlike(realTweet.getUserId(), realTweet.getId());
             if (b2) {
-                likeIcon.setIconLiteral("far-heart");
+                likeIcon.setIconCode(FontAwesomeRegular.HEART);
                 likeIcon.getStyleClass().clear();
                 likeIcon.getStyleClass().add("gray-like-icon");
             }
@@ -230,7 +245,7 @@ public class TweetController {
         else {
             b2 = likeDAO.like(realTweet.getUserId(), realTweet.getId());
             if (b2) {
-                likeIcon.setIconLiteral("fas-heart");
+                likeIcon.setIconCode(FontAwesomeSolid.HEART);
                 likeIcon.getStyleClass().clear();
                 likeIcon.getStyleClass().add("red-like-icon");
             }

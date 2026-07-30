@@ -21,9 +21,9 @@
     <VBox>
 
         <TextFlow fx:id="replyToText">
-            <Label fx:id="replyToUsername" styleClass="secondary-t">
+            <Label fx:id="replyToUsername" styleClass="secondary-t" graphicTextGap="8">
                 <graphic>
-                    <FontIcon iconLiteral="fas-reply" iconSize="18" styleClass="secondary-icon"/>
+                    <FontIcon fx:id="repliedIcon" iconSize="18" styleClass="secondary-icon"/>
                 </graphic>
             </Label>
             <Text text="See the tweet" onMouseClicked="#showRepliedTweet" styleClass="secondary-btn"/>
@@ -49,19 +49,19 @@
         <Label fx:id="postingDate" styleClass="secondary-t"/>
 
         <HBox>
-            <Button fx:id="reply" onAction="#reply" styleClass="gray-reply-btn">
+            <Button fx:id="reply" onAction="#reply" styleClass="gray-reply-btn" graphicTextGap="5">
                 <graphic>
-                    <FontIcon iconLiteral="far-comment" iconSize="18" styleClass="gray-reply-icon"/>
+                    <FontIcon fx:id="replyIcon" iconSize="18" styleClass="gray-reply-icon"/>
                 </graphic>
             </Button>
 
-            <Button fx:id="repost" onAction="#repost" styleClass="gray-repost-btn">
+            <Button fx:id="repost" onAction="#repost" styleClass="gray-repost-btn" graphicTextGap="5">
                 <graphic>
                     <FontIcon fx:id="repostIcon" iconLiteral="fas-retweet" iconSize="18" styleClass="gray-repost-icon"/>
                 </graphic>
             </Button>
 
-            <Button fx:id="like" onAction="#like" styleClass="gray-like-btn">
+            <Button fx:id="like" onAction="#like" styleClass="gray-like-btn" graphicTextGap="5">
                 <graphic>
                     <FontIcon fx:id="likeIcon" iconLiteral="far-heart" iconSize="18" styleClass="gray-like-icon"/>
                 </graphic>

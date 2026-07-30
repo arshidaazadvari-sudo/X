@@ -4,13 +4,18 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.scene.shape.Rectangle?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="client.controllers.FollowController"
       prefHeight="400.0" prefWidth="600.0">
 
     <HBox>
-        <Button text="return icon" onAction="#goToProfile" styleClass="big-hollow-btn"/>
+        <Button onAction="#goToProfile" styleClass="big-hollow-btn">
+            <graphic>
+                <FontIcon fx:id="returnIcon" iconSize="24" styleClass="primary-icon"/>
+            </graphic>
+        </Button>
         <VBox>
             <Button text="Followers" onAction="#followers" styleClass="small-hollow-btn" style="-fx-background-radius: 0;"/>
             <Rectangle fx:id="followerInd" width="80" height="4" arcWidth="8" arcHeight="8" styleClass="indicator-line"/>

@@ -133,21 +133,6 @@
     -fx-background-color: -h-gray;
 }
 
-.delete-btn {
-    -fx-background-color: transparent;
-    -fx-border-color: rgb(244 33 44);
-    -fx-text-fill: rgb(244 33 44);
-    -fx-font-size: 15px;
-    -fx-font-weight: bold;
-    -fx-padding: 10 16;
-    -fx-background-radius: 999px;
-    -fx-cursor: hand;
-}
-
-.delete-btn:hover {
-    -fx-background-color: rgba(244 33 44 0.4);
-}
-
 .red-btn {
     -fx-background-color: rgb(244 33 44);
     -fx-border-color: transparent;

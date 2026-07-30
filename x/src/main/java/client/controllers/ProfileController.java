@@ -12,6 +12,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
+import org.kordamp.ikonli.fontawesome6.FontAwesomeSolid;
+import org.kordamp.ikonli.javafx.FontIcon;
 import server.database.daos.FollowDAO;
 import server.database.daos.TweetDao;
 import shared.models.Tweet;
@@ -45,6 +47,8 @@ public class ProfileController {
 
     @FXML private VBox tweetsContainer;
 
+    @FXML private FontIcon joiningDateIcon;
+
     private final FollowDAO followDAO = new FollowDAO();
 
     private List<Tweet> allPosts;
@@ -61,6 +65,9 @@ public class ProfileController {
 
     @FXML
     private void initialize() {
+
+        //icon
+        joiningDateIcon.setIconCode(FontAwesomeSolid.CALENDAR);
 
         //get all the user's posts
         allPosts = tweetDao.getTweetByUserId(user.getId());

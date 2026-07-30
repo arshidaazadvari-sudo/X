@@ -13,6 +13,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import org.kordamp.ikonli.fontawesome6.FontAwesomeRegular;
+import org.kordamp.ikonli.fontawesome6.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
 import server.database.daos.LikeDAO;
 import server.database.daos.TweetDao;
@@ -37,6 +39,8 @@ public class TweetPageController {
     @FXML private Button reply;
     @FXML private Button like;
 
+    @FXML private FontIcon repliedIcon;
+    @FXML private FontIcon replyIcon;
     @FXML private FontIcon repostIcon;
     @FXML private FontIcon likeIcon;
 
@@ -53,35 +57,19 @@ public class TweetPageController {
     @FXML
     private void initialize() {
 
-        CurrentClient.setOnHomePage(false);
-
-        tweet = tweetController.getTweet();
-
-        TweetDao tweetDao = new TweetDao();
-
-        if (tweet.getReplyToTweetId() != null) {
-            replyToUsername.setText("Reply to @" + tweetDao.getTweetById(tweet.getReplyToTweetId()).getUsername());
-            replyToText.setVisible(true);
-        }
-        else {
-            replyToText.setVisible(false);
-        }
-
         UserDao userDao = new UserDao();
         LikeDAO likeDAO = new LikeDAO();
 
-        profilePicture.setImage(ImageLoader.getProfileImage(userDao.getUserById(tweet.getUserId()).getProfilePic()));
+        //icons
 
-        reply.setText(" " + tweet.getRepliesCount());
-        like.setText(" " + tweet.getLikesCount());
-        repost.setText(" " + tweet.getRetweetsCount());
-        displayName.setText(tweet.getDisplayName());
-        username.setText(" @" + tweet.getUsername());
-        postingDate.setText(" . " + DateFormatter.postingDateInPage(tweet.getCreatedAt()));
+        repliedIcon.setIconCode(FontAwesomeSolid.REPLY);
+        replyIcon.setIconCode(FontAwesomeRegular.COMMENT);
+        repostIcon.setIconCode(FontAwesomeSolid.RETWEET);
+        likeIcon.setIconCode(FontAwesomeRegular.HEART);
 
         boolean b1 = likeDAO.isLikedByUser(tweet.getUserId(), tweet.getId());
         if (b1) {
-            likeIcon.setIconLiteral("fas-heart");
+            likeIcon.setIconCode(FontAwesomeSolid.HEART);
             likeIcon.getStyleClass().clear();
             likeIcon.getStyleClass().add("red-like-icon");
         }
@@ -92,6 +80,36 @@ public class TweetPageController {
             repostIcon.getStyleClass().clear();
             repostIcon.getStyleClass().add("green-repost-icon");
         }
+
+
+
+        CurrentClient.setOnHomePage(false);
+
+        tweet = tweetController.getTweet();
+
+        TweetDao tweetDao = new TweetDao();
+
+        //name the account you're replying to (if you are)
+
+        if (tweet.getReplyToTweetId() != null) {
+            replyToUsername.setText("Reply to @" + tweetDao.getTweetById(tweet.getReplyToTweetId()).getUsername());
+            replyToText.setVisible(true);
+        }
+        else {
+            replyToText.setVisible(false);
+        }
+
+        //set initial data of the tweet
+
+        profilePicture.setImage(ImageLoader.getProfileImage(userDao.getUserById(tweet.getUserId()).getProfilePic()));
+
+        int r = tweetDao.getRepliesForTweet(tweet.getId()).size();
+        reply.setText(String.valueOf(r));
+        like.setText(String.valueOf(tweet.getLikesCount()));
+        //repost.setText(); ?????????????????????
+        displayName.setText(tweet.getDisplayName());
+        username.setText(" @" + tweet.getUsername());
+        postingDate.setText(" . " + DateFormatter.postingDateInPage(tweet.getCreatedAt()));
 
         Text text = new Text(tweet.getContent());
         tweetText = new TextFlow(text);
@@ -178,11 +196,11 @@ public class TweetPageController {
         boolean b = tweetController.like();
         likeIcon.getStyleClass().clear();
         if (b) {
-            likeIcon.setIconLiteral("fas-heart");
+            likeIcon.setIconCode(FontAwesomeSolid.HEART);
             likeIcon.getStyleClass().add("red-like-icon");
         }
         else {
-            likeIcon.setIconLiteral("far-heart");
+            likeIcon.setIconCode(FontAwesomeRegular.HEART);
             likeIcon.getStyleClass().add("gray-like-icon");
         }
     }

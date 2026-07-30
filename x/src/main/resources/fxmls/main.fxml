@@ -23,21 +23,21 @@
 
             <ImageView fx:id="xLogo1" preserveRatio="true" fitHeight="120" fitWidth="120"/>
 
-            <Button onAction="#Home" text="Home" styleClass="big-hollow-btn" style="-fx-font-size: 20px;">
+            <Button onAction="#Home" text="Home" styleClass="big-hollow-btn" style="-fx-font-size: 20px;" graphicTextGap="8">
                 <graphic>
-                    <FontIcon fx:id="home" iconLiteral="far-house" iconSize="26" styleClass="primary-icon"/>
+                    <FontIcon fx:id="home" iconSize="32" styleClass="primary-icon"/>
                 </graphic>
             </Button>
 
-            <Button onAction="#Explore" text="Explore" styleClass="big-hollow-btn" style="-fx-font-size: 20px;">
+            <Button onAction="#Explore" text="Explore" styleClass="big-hollow-btn" style="-fx-font-size: 20px;" graphicTextGap="8">
                 <graphic>
-                    <FontIcon fx:id="explore" iconLiteral="fas-magnifying-glass" iconSize="26" styleClass="primary-icon"/>
+                    <FontIcon fx:id="explore" iconSize="32" styleClass="primary-icon"/>
                 </graphic>
             </Button>
 
-            <Button onAction="#Profile" text="Profile" styleClass="big-hollow-btn" style="-fx-font-size: 20px;">
+            <Button onAction="#Profile" text="Profile" styleClass="big-hollow-btn" style="-fx-font-size: 20px;" graphicTextGap="8">
                 <graphic>
-                    <FontIcon fx:id="profile" iconLiteral="far-user" iconSize="26" styleClass="primary-icon"/>
+                    <FontIcon fx:id="profile" iconSize="32" styleClass="primary-icon"/>
                 </graphic>
             </Button>
 
@@ -46,12 +46,12 @@
             <HBox fillHeight="false" spacing="30" prefWidth="200">
                 <Button onAction="#LogoutWindow" styleClass="big-hollow-btn">
                     <graphic>
-                        <FontIcon iconLiteral="fas-arrow-right-from-bracket" iconSize="24" styleClass="primary-icon"/>
+                        <FontIcon fx:id="logoutIcon" iconSize="32" styleClass="primary-icon"/>
                     </graphic>
                 </Button>
                 <Button onAction="#toggleTheme" styleClass="big-hollow-btn">
                     <graphic>
-                        <FontIcon fx:id="toggle" iconLiteral="fas-sun" iconSize="24" styleClass="primary-icon"/>
+                        <FontIcon fx:id="toggle" iconSize="32" styleClass="primary-icon"/>
                     </graphic>
                 </Button>
             </HBox>
@@ -70,7 +70,7 @@
         <HBox spacing="20">
             <Button onAction="#closeEditWindow" text="close icon" styleClass="small-hollow-btn" maxWidth="50">
                 <graphic>
-                    <FontIcon iconLiteral="fas-xmark" iconSize="24" styleClass="primary-icon"/>
+                    <FontIcon fx:id="editCloseIcon" iconSize="24" styleClass="primary-icon"/>
                 </graphic>
             </Button>
             <Label text="Edit profile" styleClass="header-t" prefWidth="400" maxWidth="400"/>
@@ -82,7 +82,7 @@
             <ImageView fx:id="bannerPic" preserveRatio="true"/>
             <Button onAction="#chooseBannerPic" styleClass="small-hollow-btn">
                 <graphic>
-                    <FontIcon iconLiteral="fas-camera" iconSize="18" styleClass="half-transparent-icon"/>
+                    <FontIcon fx:id="bannerCameraIcon" iconSize="18" styleClass="half-transparent-icon"/>
                 </graphic>
             </Button>
 
@@ -94,7 +94,7 @@
 
             <Button onAction="#chooseProfilePic" styleClass="small-hollow-btn">
                 <graphic>
-                    <FontIcon iconLiteral="fas-camera" iconSize="18" styleClass="half-transparent-icon"/>
+                    <FontIcon fx:id="profileCameraIcon" iconSize="18" styleClass="half-transparent-icon"/>
                 </graphic>
             </Button>
 
@@ -130,7 +130,7 @@
 
         <Button onAction="#closePostWindow" text="close icon" styleClass="small-hollow-btn">
             <graphic>
-                <FontIcon iconLiteral="fas-xmark" iconSize="24" styleClass="primary-icon"/>
+                <FontIcon fx:id="postCloseIcon" iconSize="24" styleClass="primary-icon"/>
             </graphic>
         </Button>
 
@@ -167,7 +167,7 @@
         <HBox>
             <Button onAction="#Media" text="media icon" styleClass="small-hallow-btn">
                 <graphic>
-                    <FontIcon iconLiteral="fas-image" iconSize="24" styleClass="primary-icon"/>
+                    <FontIcon fx:id="mediaIcon" iconSize="24" styleClass="primary-icon"/>
                 </graphic>
             </Button>
             <Button fx:id="postBTN" onAction="#Post" text="Post" styleClass="small-filled-btn"/>

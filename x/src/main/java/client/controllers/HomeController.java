@@ -11,6 +11,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import org.kordamp.ikonli.fontawesome6.FontAwesomeSolid;
+import org.kordamp.ikonli.javafx.FontIcon;
 import server.database.daos.TweetDao;
 import shared.models.Tweet;
 import shared.models.User;
@@ -29,6 +31,8 @@ public class HomeController {
     @FXML private HBox mediaBox;
 
     @FXML private static VBox tweetsContainer;
+
+    @FXML private FontIcon mediaIcon;
 
     private List<String> images;
 
@@ -63,6 +67,9 @@ public class HomeController {
 
     @FXML
     private void initialize() {
+
+        //icon
+        mediaIcon.setIconCode(FontAwesomeSolid.IMAGE);
 
         //initial values and feed tweets from db
 
