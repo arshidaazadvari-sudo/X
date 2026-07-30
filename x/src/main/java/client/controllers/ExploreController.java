@@ -7,6 +7,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import org.kordamp.ikonli.fontawesome6.FontAwesomeRegular;
+import org.kordamp.ikonli.fontawesome6.FontAwesomeSolid;
+import org.kordamp.ikonli.javafx.FontIcon;
 import server.database.daos.HashtagDAO;
 import server.database.daos.TweetDao;
 import server.database.daos.UserDao;
@@ -23,6 +26,9 @@ public class ExploreController {
     @FXML private VBox resultsContainer;
     @FXML private VBox trendingHashtags;
 
+    @FXML private FontIcon returnIcon;
+    @FXML private FontIcon searchIcon;
+
     private static String givenHashtag;
     private static String givenMention;
 
@@ -36,6 +42,10 @@ public class ExploreController {
 
     @FXML
     private void initialize() {
+
+        //icons
+        returnIcon.setIconCode(FontAwesomeSolid.ARROW_LEFT);
+        searchIcon.setIconCode(FontAwesomeSolid.SEARCH);
 
         //automatically search the given mention or hashtag if there's any; if not, display trending hashtags
 

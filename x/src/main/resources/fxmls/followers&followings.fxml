@@ -13,7 +13,7 @@
     <HBox>
         <Button onAction="#goToProfile" styleClass="big-hollow-btn">
             <graphic>
-                <FontIcon iconLiteral="fas-arrow-left" iconSize="24" styleClass="primary-icon"/>
+                <FontIcon fx:id="returnIcon" iconSize="24" styleClass="primary-icon"/>
             </graphic>
         </Button>
         <VBox>

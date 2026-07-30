@@ -8,6 +8,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
+import org.kordamp.ikonli.fontawesome6.FontAwesomeSolid;
+import org.kordamp.ikonli.javafx.FontIcon;
 import server.database.daos.FollowDAO;
 import shared.models.User;
 
@@ -24,6 +26,8 @@ public class FollowController {
     @FXML private HBox noFollowings;
     @FXML private HBox noFollowers;
 
+    @FXML private FontIcon returnIcon;
+
     private final FollowDAO followDAO = new FollowDAO();
 
     private boolean isOnFollowers;
@@ -39,6 +43,9 @@ public class FollowController {
     public void setMainController(MainController mc) { mainController = mc; }
 
     private void displayUsers(List<User> users) {
+
+        //icon
+        returnIcon.setIconCode(FontAwesomeSolid.ARROW_LEFT);
 
         usersContainer.getChildren().clear();
 

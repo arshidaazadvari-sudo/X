@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
@@ -10,6 +7,7 @@
 <?import javafx.scene.shape.Circle?>
 
 <?import javafx.scene.shape.Rectangle?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="client.controllers.ProfileController"
@@ -40,7 +38,11 @@
                     <Label fx:id="displayName" styleClass="header-t"/>
                     <Label fx:id="username" styleClass="secondary-t"/>
                     <Label fx:id="bio" styleClass="primary-t"/>
-                    <Label fx:id="dateOfJoining" styleClass="secondary-t"/>
+                    <Label fx:id="dateOfJoining" styleClass="secondary-t" graphicTextGap="8">
+                        <graphic>
+                            <FontIcon fx:id="joiningDateIcon" iconSize="18" styleClass="secondary-icon"/>
+                        </graphic>
+                    </Label>
                     <HBox>
                         <Label fx:id="tweetsCount" styleClass="secondary-t"/>
                         <Label fx:id="FollowingBTN" onMouseClicked="#displayFollowings" styleClass="secondary-btn"/>

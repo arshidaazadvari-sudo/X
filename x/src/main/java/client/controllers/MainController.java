@@ -17,6 +17,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.kordamp.ikonli.fontawesome6.FontAwesomeRegular;
+import org.kordamp.ikonli.fontawesome6.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
 import server.database.daos.UserDao;
 import shared.models.Tweet;
@@ -44,7 +46,13 @@ public class MainController {
     @FXML private FontIcon home;
     @FXML private FontIcon explore;
     @FXML private FontIcon profile;
+    @FXML private FontIcon logoutIcon;
     @FXML private FontIcon toggle;
+    @FXML private FontIcon editCloseIcon;
+    @FXML private FontIcon bannerCameraIcon;
+    @FXML private FontIcon profileCameraIcon;
+    @FXML private FontIcon postCloseIcon;
+    @FXML private FontIcon mediaIcon;
 
     @FXML private Pane overlay1;
     @FXML private VBox editWindow;
@@ -88,6 +96,18 @@ public class MainController {
 
     @FXML
     private void initialize() {
+
+        //icons
+        home.setIconCode(FontAwesomeSolid.HOME);
+        profile.setIconCode(FontAwesomeSolid.USER);
+        explore.setIconCode(FontAwesomeSolid.SEARCH);
+        logoutIcon.setIconCode(FontAwesomeSolid.SIGN_OUT_ALT);
+        toggle.setIconCode(FontAwesomeSolid.SUN);
+        editCloseIcon.setIconCode(FontAwesomeRegular.WINDOW_CLOSE);
+        bannerCameraIcon.setIconCode(FontAwesomeSolid.CAMERA);
+        profileCameraIcon.setIconCode(FontAwesomeSolid.CAMERA);
+        postCloseIcon.setIconCode(FontAwesomeRegular.WINDOW_CLOSE);
+        mediaIcon.setIconCode(FontAwesomeSolid.IMAGE);
 
         //initial value for post box
         miniProfilePic.setImage(ImageLoader.getProfileImage(CurrentClient.getUser().getProfilePic()));
@@ -182,6 +202,7 @@ public class MainController {
 
     @FXML
     private void Home() {
+
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/home.fxml"));
 
@@ -263,14 +284,14 @@ public class MainController {
         if (!CurrentClient.isDark()) {
             //Switch to Light mode
             toggle.getScene().getStylesheets().add(getClass().getResource("/styles/light-theme.css").toExternalForm());
-            toggle.setIconLiteral("fas-sun");
+            toggle.setIconCode(FontAwesomeSolid.SUN);
             xLogo1.setImage(new Image(getClass().getResourceAsStream("/black_logo.png")));
             xLogo2.setImage(new Image(getClass().getResourceAsStream("/black_logo.png")));
         }
         else {
             //Switch to Dark mode
             toggle.getScene().getStylesheets().add(getClass().getResource("/styles/dark-theme.css").toExternalForm());
-            toggle.setIconLiteral("fas-moon");
+            toggle.setIconCode(FontAwesomeSolid.MOON);
             xLogo1.setImage(new Image(getClass().getResourceAsStream("/white_logo.png")));
             xLogo2.setImage(new Image(getClass().getResourceAsStream("/white_logo.png")));
         }
@@ -426,8 +447,13 @@ public class MainController {
 
     public void buttonStyling(List<Button> btns) {
         for (Button b : btns) {
-            b.setText("\uD83C\uDD67");
-            b.getStyleClass().add("gray-btn");
+            FontIcon deleteIcon = new FontIcon(FontAwesomeSolid.WINDOW_CLOSE);
+            deleteIcon.getStyleClass().add("half-transparent-icon");
+            b.setGraphic(deleteIcon);
+            b.setPrefHeight(24);
+            b.setPrefWidth(24);
+            b.setMaxHeight(24);
+            b.setMaxWidth(24);
         }
     }
 

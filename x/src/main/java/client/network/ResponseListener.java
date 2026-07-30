@@ -30,47 +30,41 @@ public class ResponseListener implements Runnable {
                 JsonNode json = ServerConnection.mapper.readTree(message);
 
                 // deciding what to do with the received message from server based on its type
-                switch (json.get("type").toString()) {
-                    case "AUTH_ERROR": {
-                        authError = json;
-                        break;
+                if (json.get("type").toString().equals("SUCCESS") || json.get("type").toString().equals("ERROR")) {
+                    authError = json;
+                }
+                else if (json.get("type").toString().equals("TWEET")) {
+                    if (CurrentClient.isOnHomePage()) {
+
+                        JsonNode payload = ServerConnection.mapper.readTree(json.get("payload").toString());
+
+                        Tweet newT = new Tweet();
+
+                        newT.setId(payload.get("id").asInt());
+                        newT.setUserId(payload.get("userId").asInt());
+                        newT.setContent(payload.get("content").toString());
+
+                        String str = payload.get("timestamp").toString();
+                        Timestamp ts = Timestamp.valueOf(str);
+                        newT.setCreatedAt(ts);
+
+                        newT.setLikesCount(payload.get("likesCount").asInt());
+                        newT.setRetweetsCount(payload.get("retweetsCount").asInt());
+                        newT.setRepliesCount(payload.get("repliesCount").asInt());
+                        newT.setHashtags(ServerConnection.mapper.convertValue(payload.get("hashtags"), new TypeReference<List<String>>() {}));
+                        newT.setMediaUrls(ServerConnection.mapper.convertValue(payload.get("mediaUrls"), String[].class));
+
+                        boolean b1 = payload.get("isRetweet").asBoolean();
+                        if (b1) newT.setRetweetOfTweetId(payload.get("originalTweetId").asInt());
+
+                        boolean b2 = payload.get("isReply").asBoolean();
+                        if (b2) newT.setReplyToTweetId(payload.get("replyToTweetId").asInt());
+
+                        newT.setLikedByCurrentUser(payload.get("isLiked").asBoolean());
+                        newT.setRetweetedByCurrentUser(payload.get("isRetweeted").asBoolean());
+
+                        HomeController.addNewTweets(newT);
                     }
-                    case "TWEET": {
-                        if (CurrentClient.isOnHomePage()) {
-
-                            JsonNode payload = ServerConnection.mapper.readTree(json.get("payload").toString());
-
-                            Tweet newT = new Tweet();
-
-                            newT.setId(payload.get("id").asInt());
-                            newT.setUserId(payload.get("userId").asInt());
-                            newT.setContent(payload.get("content").toString());
-
-                            String str = payload.get("timestamp").toString();
-                            Timestamp ts = Timestamp.valueOf(str);
-                            newT.setCreatedAt(ts);
-
-                            newT.setLikesCount(payload.get("likesCount").asInt());
-                            newT.setRetweetsCount(payload.get("retweetsCount").asInt());
-                            newT.setRepliesCount(payload.get("repliesCount").asInt());
-                            newT.setHashtags(ServerConnection.mapper.convertValue(payload.get("hashtags"), new TypeReference<List<String>>() {}));
-                            newT.setMediaUrls(ServerConnection.mapper.convertValue(payload.get("mediaUrls"), String[].class));
-
-                            boolean b1 = payload.get("isRetweet").asBoolean();
-                            if (b1) newT.setRetweetOfTweetId(payload.get("originalTweetId").asInt());
-
-                            boolean b2 = payload.get("isReply").asBoolean();
-                            if (b2) newT.setReplyToTweetId(payload.get("replyToTweetId").asInt());
-
-                            newT.setLikedByCurrentUser(payload.get("isLiked").asBoolean());
-                            newT.setRetweetedByCurrentUser(payload.get("isRetweeted").asBoolean());
-
-                            HomeController.addNewTweets(newT);
-                        }
-                        break;
-                    }
-                    default:
-                        break;
                 }
 
             }

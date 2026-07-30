@@ -14,6 +14,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import org.kordamp.ikonli.fontawesome6.FontAwesomeRegular;
+import org.kordamp.ikonli.fontawesome6.FontAwesomeSolid;
+import org.kordamp.ikonli.javafx.FontIcon;
 import server.database.daos.UserDao;
 import shared.models.User;
 import tools.jackson.databind.node.ObjectNode;
@@ -96,7 +99,7 @@ public class AuthController {
             System.out.println(e.getMessage());
         }
 
-        if (ResponseListener.getAuthError() == null) {
+        if (ResponseListener.getAuthError().get("type").toString().equals("SUCCESS")) {
 
             //get the user
             UserDao userDao = new UserDao();

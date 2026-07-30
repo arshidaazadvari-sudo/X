@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
@@ -11,10 +8,10 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
-           fx:controller="client.controllers.MainController"
-           alignment="CENTER">
+           fx:controller="client.controllers.MainController">
 
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>
@@ -26,22 +23,42 @@
 
             <ImageView fx:id="xLogo1" preserveRatio="true" fitHeight="120" fitWidth="120"/>
 
-            <Button fx:id="home" onAction="#Home" text="icon + Home" styleClass="big-hollow-btn" style="-fx-font-size: 20px;"/>
+            <Button onAction="#Home" text="Home" styleClass="big-hollow-btn" style="-fx-font-size: 20px;" graphicTextGap="8">
+                <graphic>
+                    <FontIcon fx:id="home" iconSize="26" styleClass="primary-icon"/>
+                </graphic>
+            </Button>
 
-            <Button fx:id="explore" onAction="#Explore" text="icon + Explore" styleClass="big-hollow-btn" style="-fx-font-size: 20px;"/>
+            <Button onAction="#Explore" text="Explore" styleClass="big-hollow-btn" style="-fx-font-size: 20px;" graphicTextGap="8">
+                <graphic>
+                    <FontIcon fx:id="explore" iconSize="26" styleClass="primary-icon"/>
+                </graphic>
+            </Button>
 
-            <Button fx:id="profile" onAction="#Profile" text="icon + Profile" styleClass="big-hollow-btn" style="-fx-font-size: 20px;"/>
+            <Button onAction="#Profile" text="Profile" styleClass="big-hollow-btn" style="-fx-font-size: 20px;" graphicTextGap="8">
+                <graphic>
+                    <FontIcon fx:id="profile" iconSize="26" styleClass="primary-icon"/>
+                </graphic>
+            </Button>
 
-            <Button fx:id="post" onAction="#PostWindow" text="icon + Post" styleClass="big-hollow-btn" style="-fx-font-size: 20px;"/>
+            <Button onAction="#PostWindow" text="Post" styleClass="big-hollow-btn" style="-fx-font-size: 20px;"/>
 
             <HBox fillHeight="false" spacing="30" prefWidth="200">
-                <Button fx:id="logout" onAction="#LogoutWindow" text="logout icon" styleClass="big-hollow-btn"/>
-                <Button fx:id="toggle" onAction="#toggleTheme" text="☀" styleClass="big-hollow-btn"/>
+                <Button onAction="#LogoutWindow" styleClass="big-hollow-btn">
+                    <graphic>
+                        <FontIcon fx:id="logoutIcon" iconSize="2" styleClass="primary-icon"/>
+                    </graphic>
+                </Button>
+                <Button onAction="#toggleTheme" styleClass="big-hollow-btn">
+                    <graphic>
+                        <FontIcon fx:id="toggle" iconSize="24" styleClass="primary-icon"/>
+                    </graphic>
+                </Button>
             </HBox>
 
         </VBox>
 
-        <ScrollPane prefWidth="600" maxWidth="600" styleClass="box">
+        <ScrollPane prefWidth="600" maxWidth="600">
             <VBox fx:id="container" maxWidth="600" alignment="CENTER"/>
         </ScrollPane>
 
@@ -51,7 +68,11 @@
 
     <VBox fx:id="editWindow" visible="false" managed="false" prefWidth="600" prefHeight="500" alignment="CENTER" spacing="20" padding="20">
         <HBox spacing="20">
-            <Button onAction="#closeEditWindow" text="close icon" styleClass="small-hollow-btn" maxWidth="50"/>
+            <Button onAction="#closeEditWindow" text="close icon" styleClass="small-hollow-btn" maxWidth="50">
+                <graphic>
+                    <FontIcon fx:id="editCloseIcon" iconSize="24" styleClass="primary-icon"/>
+                </graphic>
+            </Button>
             <Label text="Edit profile" styleClass="header-t" prefWidth="400" maxWidth="400"/>
             <Button onAction="#saveChanges" text="save" styleClass="small-filled-btn" maxWidth="70"/>
         </HBox>
@@ -59,28 +80,34 @@
         <StackPane>
 
             <ImageView fx:id="bannerPic" preserveRatio="true"/>
-            <Button onAction="#chooseBannerPic" text="picture icon" styleClass="gray-btn"/>
+            <Button onAction="#chooseBannerPic" styleClass="small-hollow-btn">
+                <graphic>
+                    <FontIcon fx:id="bannerCameraIcon" iconSize="18" styleClass="half-transparent-icon"/>
+                </graphic>
+            </Button>
 
-            <AnchorPane>
-                <ImageView fx:id="profilePic" preserveRatio="true">
-                    <clip>
-                        <Circle centerX="60" centerY="60" radius="60"/>
-                    </clip>
-                </ImageView>
-            </AnchorPane>
-            <Button onAction="#chooseProfilePic" text="picture icon" styleClass="gray-btn"/>
+            <ImageView fx:id="profilePic" preserveRatio="true">
+                <clip>
+                    <Circle centerX="60" centerY="60" radius="60"/>
+                </clip>
+            </ImageView>
+
+            <Button onAction="#chooseProfilePic" styleClass="small-hollow-btn">
+                <graphic>
+                    <FontIcon fx:id="profileCameraIcon" iconSize="18" styleClass="half-transparent-icon"/>
+                </graphic>
+            </Button>
 
         </StackPane>
 
         <VBox spacing="20">
-            <VBox spacing="5">
+            <VBox spacing="10">
                 <Label text="Name" styleClass="secondary-t"/>
                 <TextField fx:id="newDisplayName" styleClass="edit-tf"/>
+                <Label fx:id="blankNameMSG" text="Name can't be blank" visible="false" styleClass="blank-name-t"/>
             </VBox>
 
-            <Label fx:id="blankNameMSG" text="Name can't be blank" visible="false" styleClass="blank-name-t"/>
-
-            <VBox>
+            <VBox spacing="10">
                 <Label text="Bio" styleClass="secondary-t"/>
                 <TextArea fx:id="newBio" styleClass="edit-tf"/>
             </VBox>
@@ -101,7 +128,11 @@
 
     <VBox fx:id="postWindow" visible="false" managed="false">
 
-        <Button onAction="#closePostWindow" text="close icon" styleClass="small-hollow-btn"/>
+        <Button onAction="#closePostWindow" text="close icon" styleClass="small-hollow-btn">
+            <graphic>
+                <FontIcon fx:id="postCloseIcon" iconSize="24" styleClass="primary-icon"/>
+            </graphic>
+        </Button>
 
         <HBox fx:id="replyingTo">
 
@@ -134,7 +165,11 @@
         <HBox fx:id="mediaBox" prefHeight="300" prefWidth="500"/>
 
         <HBox>
-            <Button onAction="#Media" text="media icon" styleClass="small-hallow-btn"/>
+            <Button onAction="#Media" text="media icon" styleClass="small-hallow-btn">
+                <graphic>
+                    <FontIcon fx:id="mediaIcon" iconSize="24" styleClass="primary-icon"/>
+                </graphic>
+            </Button>
             <Button fx:id="postBTN" onAction="#Post" text="Post" styleClass="small-filled-btn"/>
         </HBox>
 

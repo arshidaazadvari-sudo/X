@@ -8,6 +8,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.text.TextFlow?>
 <?import javafx.scene.text.Text?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="client.controllers.TweetPageController"
@@ -20,7 +21,11 @@
     <VBox>
 
         <TextFlow fx:id="replyToText">
-            <Text fx:id="replyToUsername" styleClass="secondary-t"/>
+            <Label fx:id="replyToUsername" styleClass="secondary-t" graphicTextGap="8">
+                <graphic>
+                    <FontIcon fx:id="repliedIcon" iconSize="18" styleClass="secondary-icon"/>
+                </graphic>
+            </Label>
             <Text text="See the tweet" onMouseClicked="#showRepliedTweet" styleClass="secondary-btn"/>
         </TextFlow>
 
@@ -44,14 +49,23 @@
         <Label fx:id="postingDate" styleClass="secondary-t"/>
 
         <HBox>
-            <Button onAction="#reply" text="reply icon" styleClass="gray-reply-btn"/>
-            <Label fx:id="replyCount" styleClass="secondary-t"/>
+            <Button fx:id="reply" onAction="#reply" styleClass="gray-reply-btn" graphicTextGap="5">
+                <graphic>
+                    <FontIcon fx:id="replyIcon" iconSize="18" styleClass="gray-reply-icon"/>
+                </graphic>
+            </Button>
 
-            <Button fx:id="repost" onAction="#repost" text="repost icon" styleClass="gray-repost-btn"/>
-            <Label fx:id="repostCount" styleClass="secondary-t"/>
+            <Button fx:id="repost" onAction="#repost" styleClass="gray-repost-btn" graphicTextGap="5">
+                <graphic>
+                    <FontIcon fx:id="repostIcon" iconLiteral="fas-retweet" iconSize="18" styleClass="gray-repost-icon"/>
+                </graphic>
+            </Button>
 
-            <Button fx:id="like" onAction="#like" text="like icon" styleClass="gray-like-btn"/>
-            <Label fx:id="likeCount" styleClass="secondary-t"/>
+            <Button fx:id="like" onAction="#like" styleClass="gray-like-btn" graphicTextGap="5">
+                <graphic>
+                    <FontIcon fx:id="likeIcon" iconLiteral="far-heart" iconSize="18" styleClass="gray-like-icon"/>
+                </graphic>
+            </Button>
         </HBox>
 
     </VBox>

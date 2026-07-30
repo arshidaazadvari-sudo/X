@@ -38,9 +38,9 @@
                     <Label fx:id="displayName" styleClass="header-t"/>
                     <Label fx:id="username" styleClass="secondary-t"/>
                     <Label fx:id="bio" styleClass="primary-t"/>
-                    <Label fx:id="dateOfJoining" styleClass="secondary-t">
+                    <Label fx:id="dateOfJoining" styleClass="secondary-t" graphicTextGap="8">
                         <graphic>
-                            <FontIcon iconLiteral="fas-calendar-days" iconSize="18" styleClass="secondary-icon"/>
+                            <FontIcon fx:id="joiningDateIcon" iconSize="18" styleClass="secondary-icon"/>
                         </graphic>
                     </Label>
                     <HBox>

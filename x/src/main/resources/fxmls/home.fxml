@@ -28,7 +28,7 @@
             <HBox>
                 <Button onAction="#Media" styleClass="small-hollow-btn">
                     <graphic>
-                        <FontIcon iconLiteral="fas-image" iconSize="24" styleClass="primary-icon"/>
+                        <FontIcon fx:id="mediaIcon" iconSize="24" styleClass="primary-icon"/>
                     </graphic>
                 </Button>
                 <Button text="Post" onAction="#Post" styleClass="small-filled-btn"/>
