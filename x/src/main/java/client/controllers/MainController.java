@@ -427,7 +427,7 @@ public class MainController {
     public void buttonStyling(List<Button> btns) {
         for (Button b : btns) {
             b.setText("\uD83C\uDD67");
-            b.getStyleClass().add("small-hollow-btn");
+            b.getStyleClass().add("gray-btn");
         }
     }
 

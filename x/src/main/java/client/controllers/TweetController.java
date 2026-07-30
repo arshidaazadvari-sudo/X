@@ -114,7 +114,6 @@ public class TweetController {
 
         Text t = new Text(realTweet.getContent());
         tweetText = new TextFlow(t);
-        //linked hashtags & mentions (Bonus)
 
         //mediaBox
         List<String> images = new ArrayList<>(Arrays.asList(realTweet.getMediaUrls()));

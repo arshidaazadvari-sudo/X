@@ -160,6 +160,21 @@
     -fx-cursor: hand;
 }
 
+.gray-btn {
+    -fx-background-color: rgba(0 0 0 0.65);
+    -fx-border-color: transparent;
+    -fx-text-fill: transparent;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 5 5;
+    -fx-background-radius: 999px;
+    -fx-cursor: hand;
+}
+
+.gray-btn:hover{
+    -fx-background-color: rgba(0 0 0 0.85);
+}
+
 .secondary-btn {
     -fx-background-color: transparent;
     -fx-border-color: transparent;

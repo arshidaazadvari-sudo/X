@@ -10,6 +10,40 @@
     -fx-font-family: "Segoe UI", "DejaVu Sans", sans-serif;
 }
 
+/* icons */
+
+.primary-icon {
+    -fx-icon-color: -text-primary;
+}
+
+.secondary-icon {
+    -fx-icon-color: -text-secondary;
+}
+
+.half-transparent-icon {
+    -fx-icon-color: rgba(0 0 0 0.65);
+}
+
+.gray-like-icon {
+    -fx-icon-color: -text-secondary;
+}
+
+.gray-repost-icon {
+    -fx-icon-color: -text-secondary;
+}
+
+.gray-reply-icon {
+    -fx-icon-color: -text-secondary;
+}
+
+.red-like-icon {
+    -fx-icon-color: rgb(249 24 128);
+}
+
+.green-repost-icon {
+    -fx-icon-color: rgb(0 186 124);
+}
+
 /* buttons */
 
 .big-filled-btn {
@@ -164,18 +198,8 @@
     -fx-cursor: hand;
 }
 
-.gray-like-btn:hover {
-    -fx-text-fill: rgba(249 24 128 0.10);
-}
-
-.red-heart-btn {
-    -fx-background-color: transparent;
-    -fx-border-color: transparent;
-    -fx-text-fill: rgb(249 24 128);
-    -fx-font-size: 15px;
-    -fx-font-weight: bold;
-    -fx-padding: 7 7;
-    -fx-cursor: hand;
+.gray-like-btn:hover .gray-like-icon {
+    -fx-icon-color: rgba(249 24 128 0.10);
 }
 
 .gray-repost-btn {
@@ -188,18 +212,8 @@
     -fx-cursor: hand;
 }
 
-.gray-repost-btn:hover {
-    -fx-text-fill: rgba(0 186 124 0.10);
-}
-
-.green-repost-btn {
-    -fx-background-color: transparent;
-    -fx-border-color: transparent;
-    -fx-text-fill: rgb(0 186 124);
-    -fx-font-size: 15px;
-    -fx-font-weight: bold;
-    -fx-padding: 7 7;
-    -fx-cursor: hand;
+.gray-repost-btn:hover .gray-repost-icon {
+    -fx-icon-color: rgba(0 186 124 0.10);
 }
 
 .gray-reply-btn {
@@ -212,8 +226,8 @@
     -fx-cursor: hand;
 }
 
-.gray-reply-btn:hover {
-    -fx-text-fill: rgba(29 155 240 0.10);
+.gray-reply-btn:hover .gray-reply-icon {
+    -fx-icon-color: rgba(29 155 240 0.10);
 }
 
 /* texts & text fields */

@@ -95,7 +95,6 @@ public class TweetPageController {
 
         Text text = new Text(tweet.getContent());
         tweetText = new TextFlow(text);
-        //linked hashtags & mentions (Bonus)
 
         //mediaBox
         List<String> images = new ArrayList<>(Arrays.asList(tweet.getMediaUrls()));
