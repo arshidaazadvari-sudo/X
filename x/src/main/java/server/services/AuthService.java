@@ -1,115 +1,66 @@
 package server.services;
-
-
 import server.database.daos.UserDao;
 import shared.models.User;
 import shared.utils.PasswordUtil;
 
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+
 public class AuthService {
-
-    private final UserDao userDao;
-
-    public AuthService(UserDao userDao) {
-        this.userDao = userDao;
+    private final UserDao userDAO = new UserDao();
+    private final ConcurrentHashMap<String, Integer> sessions = new ConcurrentHashMap<>();
+    public User getCurrentUser(String token) {
+        if (token == null || token.isBlank()) {
+            return null;
+        }
+        Integer userId = sessions.get(token);
+        if (userId == null) {
+            return null;
+        }
+        return userDAO.getUserById(userId);
     }
-
-    public User register(String username, String email, String password, String displayName, String bio){
-        if (username == null || username.trim().isEmpty()){
-            System.out.println("Username  cannot be empty");
-            return null;
+    public Map<String, Object> login(String username, String password) {
+        User user = userDAO.getUserByUsername(username);
+        if (user == null) {
+            return null; // user not found
         }
-
-        if (email == null || email.trim().isEmpty()){
-            System.out.println("Email  cannot be empty");
-            return null;
+        if (!userDAO.checkPassword(user.getId(), password)) {
+            return null; // wrong password
         }
-
-        if (!PasswordUtil.isValidPassword(password)){
-            System.out.println("Password must be at least 6 character");
-            return null;
+        String token = generateToken();
+        sessions.put(token, user.getId());
+        return Map.of(
+                "token", token,
+                "user", user
+        );
+    }
+    public boolean register(String username, String email, String password, String displayName) {
+        if (username == null || username.length() < 3) return false;
+        if (email == null || email.isBlank()) return false;
+        if (password == null || password.length() < 6) return false;
+        if (userDAO.getUserByUsername(username) != null) {
+            return false;
         }
-
-        if (userDao.isUsernameTaken(username)){
-            System.out.println("Username is already taken: " + username);
-            return null;
+        if (userDAO.getUserByEmail(email) != null) {
+            return false;
         }
-
-        if (userDao.isEmailTaken(username)){
-            System.out.println("Email is already taken: " + email);
-            return null;
-        }
-
         String hashedPassword = PasswordUtil.hashPassword(password);
-
-        User user = new User();
-        user.setUsername(username.trim());
-        user.setEmail(username.trim());
-        user.setPasswordHash(hashedPassword);
-        user.setDisplayName(displayName != null ? displayName.trim() : username);
-        user.setBio(bio != null ? bio.trim() : "");
-
-        boolean success = userDao.createUser(user);
-        if (success){
-            System.out.println("User registered successfully: " + username);
-            return user;
-        }else {
-            System.out.println("registration failed for: " + username);
-            return null;
-        }
+        User newUser = new User();
+        newUser.setUsername(username);
+        newUser.setEmail(email);
+        newUser.setPasswordHash(hashedPassword);
+        newUser.setDisplayName(displayName != null ? displayName : username);
+        newUser.setBio("");
+        newUser.setActive(true);
+        newUser.setVerified(false);
+        return userDAO.createUser(newUser);
     }
-
-    public User login(String username, String password){
-        if (username == null || username.trim().isEmpty()){
-            System.out.println("Username  cannot be empty");
-            return null;
-        }
-
-        if (password == null || password.isEmpty()){
-            System.out.println("Password cannot ba empty");
-        }
-
-        User user = userDao.getUserByUsername(username.trim());
-        if (user == null){
-            System.out.println("User not found");
-            return null;
-        }
-
-        if (!PasswordUtil.checkPassword(password, user.getPasswordHash())){
-            System.out.println("Incorrect password for: " + username);
-            return null;
-        }
-
-        if (!user.isActive()){
-            System.out.println("Account is deactivated: " + username);
-            return null;
-        }
-
-        System.out.println("User logged in successfully: " + username);
-        return user;
+    public boolean logout(String token) {
+        if (token == null) return false;
+        return sessions.remove(token) != null;
     }
-
-    public boolean changePassword(int userId, String oldPassword, String newPassword){
-
-        User user = userDao.getUserById(userId);
-        if (user == null){
-            System.out.println("User not found with id: " + userId);
-            return false;
-        }
-
-        if (!PasswordUtil.checkPassword(oldPassword, user.getPasswordHash())){
-            System.out.println("Current Password is incorrect");
-            return false;
-        }
-
-        if (!PasswordUtil.isValidPassword(newPassword)){
-            System.out.println("New password must be at least 6 characters");
-            return false;
-        }
-
-        return userDao.updatePassword(userId, newPassword);
-    }
-
-    public boolean deactivateAccount(int userId){
-        return userDao.deleteUser(userId);
+    private String generateToken() {
+        return UUID.randomUUID().toString();
     }
 }
