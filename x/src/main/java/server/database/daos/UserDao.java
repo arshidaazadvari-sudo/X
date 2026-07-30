@@ -287,4 +287,32 @@ public class UserDao {
         user.setActive(rs.getBoolean("is_active"));
         return user;
     }
+    public boolean isRetweetedByUser(int userId, int tweetId) {
+        String sql = """
+            SELECT COUNT(*) FROM tweets
+            WHERE user_id = ? AND retweet_of_tweet_id = ? AND is_deleted = false
+            """;
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, userId);
+            pstmt.setInt(2, tweetId);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public boolean checkPassword(int userId, String plainPassword) {
+        User user = getUserById(userId);
+        if (user == null || user.getPasswordHash() == null) {
+            return false;
+        }
+
+        // Assumes you have PasswordUtil.checkPassword(plain, hashed)
+        return PasswordUtil.checkPassword(plainPassword, user.getPasswordHash());
+    }
 }
