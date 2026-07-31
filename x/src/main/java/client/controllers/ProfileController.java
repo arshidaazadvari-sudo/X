@@ -5,11 +5,14 @@ import client.utils.DateFormatter;
 import client.utils.ImageLoader;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import org.kordamp.ikonli.fontawesome6.FontAwesomeSolid;
@@ -26,6 +29,7 @@ public class ProfileController {
 
     @FXML private ImageView banner;
     @FXML private ImageView profile;
+    @FXML private HBox btnBox;
 
     @FXML private Button editProfileBTN;
     @FXML private Button followBTN;
@@ -57,7 +61,7 @@ public class ProfileController {
 
     private TweetDao tweetDao = new TweetDao();
 
-    private User user;
+    private User user = new User();
 
     public void setUser(User u) { this.user = u; }
 
@@ -65,6 +69,9 @@ public class ProfileController {
 
     @FXML
     private void initialize() {
+
+        StackPane.setMargin(profile, new Insets(0, 0, 10, 20));
+        StackPane.setMargin(btnBox, new Insets(0, 20, 10, 0));
 
         //icon
         joiningDateIcon.setIconCode(FontAwesomeSolid.CALENDAR);
@@ -83,7 +90,7 @@ public class ProfileController {
         displayName.setText(user.getDisplayName());
         username.setText(user.getUsername());
         bio.setText(user.getBio());
-        dateOfJoining.setText( "Joined " + DateFormatter.joiningDate(user.getCreatedAt()));
+        //dateOfJoining.setText( "Joined " + DateFormatter.joiningDate(user.getCreatedAt()));
 
         //set text for tweets, followings & followers (include counts)
         int tweetC = tweetDao.getTweetByUserId(user.getId()).size();
@@ -156,7 +163,7 @@ public class ProfileController {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/tweet-card.fxml"));
 
-                HBox tweetBox = loader.load();
+                VBox tweetBox = loader.load();
 
                 TweetController controller = loader.getController();
                 controller.setTweet(t);
@@ -194,7 +201,7 @@ public class ProfileController {
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/tweet-card.fxml"));
 
-                    HBox tweetBox = loader.load();
+                    VBox tweetBox = loader.load();
 
                     TweetController controller = loader.getController();
                     controller.setTweet(t);
@@ -233,7 +240,7 @@ public class ProfileController {
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/tweet-card.fxml"));
 
-                    HBox tweetBox = loader.load();
+                    VBox tweetBox = loader.load();
 
                     TweetController controller = loader.getController();
                     controller.setTweet(t);

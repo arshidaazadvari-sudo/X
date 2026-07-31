@@ -104,7 +104,7 @@
     -fx-background-color: transparent;
     -fx-border-color: -text-primary;
     -fx-text-fill: -text-primary;
-    -fx-border-width: bold;
+    -fx-border-width: 1px;
     -fx-font-size: 15px;
     -fx-font-weight: bold;
     -fx-padding: 12 24;
@@ -121,7 +121,7 @@
     -fx-background-color: transparent;
     -fx-border-color: -text-primary;
     -fx-text-fill: -text-primary;
-    -fx-border-width: bold;
+    -fx-border-width: 1px;
     -fx-font-size: 15px;
     -fx-font-weight: bold;
     -fx-padding: 10 16;
@@ -221,7 +221,7 @@
     -fx-background-color: transparent;
     -fx-border-color: -text-primary;
     -fx-text-fill: -text-primary;
-    -fx-border-width: 1;
+    -fx-border-width: 1px;
     -fx-font-size: 15px;
     -fx-padding: 10 16;
     -fx-border-radius: 999px;
@@ -232,7 +232,7 @@
     -fx-background-color: transparent;
     -fx-border-color: -text-secondary;
     -fx-text-fill: -text-primary;
-    -fx-border-width: 2;
+    -fx-border-width: 2px;
     -fx-font-size: 15px;
     -fx-padding: 8 8;
     -fx-border-radius: 3;
@@ -243,9 +243,14 @@
     -fx-background-color: transparent;
     -fx-border-color: transparent;
     -fx-text-fill: -text-primary;
-    -fx-font-size: 20xp;
+    -fx-font-size: 20px;
     -fx-padding: 0 2;
     -fx-cursor: text;
+}
+
+.post-ta .content {
+    -fx-background-color: transparent;
+    -fx-border-width: 0px;
 }
 
 .header-t {
@@ -285,8 +290,7 @@
     -fx-background-color: rgba(244, 33, 44, 0.4);
     -fx-border-color: rgb(244, 33, 44);
     -fx-text-fill: rgb(244, 33, 44);
-    -fx-text-background-color
-    -fx-border-width: 1;
+    -fx-border-width: 1px;
     -fx-font-size: 14px;
     -fx-font-weight: bold;
     -fx-padding: 10 10;
@@ -294,7 +298,7 @@
     -fx-border-radius: 5;
 }
 
-/* backdrop, indicator, box */
+/* backdrop, indicator, box & scroll-pane*/
 
 .overlay {
     -fx-background-color: rgba(0, 0, 0, 0.40);
@@ -307,5 +311,15 @@
 .box {
     -fx-background-color: -bg;
     -fx-border-color: -border;
-    -fx-border-width: 1;
+    -fx-border-width: 1px;
+}
+
+.scroll-pane {
+    -fx-background-color: -bg;
+    -fx-border-color: -border;
+    -fx-border-width: 1px;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: -bg;
 }

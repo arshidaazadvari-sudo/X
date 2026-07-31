@@ -32,7 +32,7 @@ public class FollowController {
 
     private boolean isOnFollowers;
 
-    private User user;
+    private User user = new User();
 
     private static MainController mainController;
 
@@ -53,7 +53,7 @@ public class FollowController {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/user-card.fxml"));
 
-                HBox uBox = loader.load();
+                VBox uBox = loader.load();
 
                 UserCardController controller = loader.getController();
                 controller.setMainController(mainController);
@@ -93,6 +93,8 @@ public class FollowController {
             usersContainer.setVisible(false);
             noFollowers.setManaged(true);
             noFollowers.setVisible(true);
+            noFollowings.setManaged(false);
+            noFollowings.setVisible(false);
         }
 
         //change style (the underline)
@@ -112,6 +114,8 @@ public class FollowController {
             usersContainer.setVisible(false);
             noFollowings.setManaged(true);
             noFollowings.setVisible(true);
+            noFollowers.setManaged(false);
+            noFollowers.setVisible(false);
         }
 
         //change style (the underline)

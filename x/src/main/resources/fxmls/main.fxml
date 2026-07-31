@@ -59,8 +59,8 @@
 
         </VBox>
 
-        <ScrollPane prefWidth="600" maxWidth="600">
-            <VBox fx:id="container" maxWidth="600" alignment="CENTER"/>
+        <ScrollPane prefWidth="650" maxWidth="650" minHeight="750" fitToWidth="true" styleClass="scroll-pane">
+            <VBox fx:id="container" maxWidth="600" minHeight="300" prefWidth="600" alignment="CENTER"/>
         </ScrollPane>
 
     </HBox>
@@ -187,7 +187,7 @@
 
     <Pane fx:id="overlay5" visible="false" managed="false" styleClass="overlay" prefWidth="-Infinity" prefHeight="-Infinity"/>
 
-    <VBox fx:id="logoutWindow" visible="false" managed="false">
+    <VBox fx:id="logoutWindow" visible="false" managed="false" alignment="TOP_CENTER">
         <ImageView fx:id="xLogo2" preserveRatio="true" fitHeight="150" fitWidth="150"/>
         <Label text="Log out of X?" styleClass="header-t"/>
         <Text text="You can always log back in at any time." styleClass="secondary-t"/>

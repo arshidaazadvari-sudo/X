@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import org.kordamp.ikonli.fontawesome6.FontAwesomeRegular;
@@ -69,6 +70,17 @@ public class TweetController {
     @FXML
     private void initialize() {
 
+        //find the real tweet owner
+
+        Integer tweetId = givenTweet.getRetweetOfTweetId();
+        while (tweetId != null) {
+            Integer temp = tweetDao.getTweetById(tweetId).getRetweetOfTweetId();
+            tweetId = temp;
+        }
+
+        if (tweetId != null) realTweet = tweetDao.getTweetById(tweetId);
+        else realTweet = givenTweet;
+
 
         //icons
 
@@ -91,17 +103,6 @@ public class TweetController {
             repostIcon.getStyleClass().clear();
             repostIcon.getStyleClass().add("green-repost-icon");
         }
-
-        //find the real tweet owner
-
-        Integer tweetId = givenTweet.getRetweetOfTweetId();
-        while (tweetId != null) {
-            Integer temp = tweetDao.getTweetById(tweetId).getRetweetOfTweetId();
-            tweetId = temp;
-        }
-
-        if (tweetId != null) realTweet = tweetDao.getTweetById(tweetId);
-        else realTweet = givenTweet;
 
 
         //name the account you're replying to (if you are)
@@ -152,7 +153,7 @@ public class TweetController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/tweet-page.fxml"));
 
-            HBox tBox = loader.load();
+            VBox tBox = loader.load();
 
             TweetPageController controller = loader.getController();
             controller.setTweetController(this);
@@ -266,7 +267,7 @@ public class TweetController {
 
             FXMLLoader loader2 = new FXMLLoader(getClass().getResource("/fxmls/tweet-page.fxml"));
 
-            HBox tBox = loader2.load();
+            VBox tBox = loader2.load();
 
             TweetPageController controller2 = loader2.getController();
             controller2.setTweetController(controller1);

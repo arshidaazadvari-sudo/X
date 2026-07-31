@@ -108,3 +108,74 @@ CREATE INDEX idx_sessions_user_id ON sessions(user_id);
 CREATE INDEX idx_sessions_token ON sessions(token);
 CREATE INDEX idx_users_username ON users(username);
 CREATE INDEX idx_users_email ON users(email);
+
+--fake data
+
+-- kimia follows ali and sara
+INSERT INTO follows (follower_id, followee_id)
+SELECT u1.id, u2.id FROM users u1, users u2
+WHERE u1.username = 'kimia' AND u2.username IN ('ali', 'sara');
+
+-- ali follows kimia
+INSERT INTO follows (follower_id, followee_id)
+SELECT u1.id, u2.id FROM users u1, users u2
+WHERE u1.username = 'ali' AND u2.username = 'kimia';
+
+-- Make sure the users exist first (from previous step)
+
+-- Normal tweets
+INSERT INTO tweets (user_id, content, is_deleted)
+SELECT id, 'Hello everyone! This is my first tweet. #hello #firstTweet', false
+FROM users WHERE username = 'kimia';
+
+INSERT INTO tweets (user_id, content, is_deleted)
+SELECT id, 'Working on my Advanced Programming final project. Java + JavaFX + PostgreSQL 💻', false
+FROM users WHERE username = 'kimia';
+
+INSERT INTO tweets (user_id, content, is_deleted)
+SELECT id, 'Just finished the authentication part. Feeling good!', false
+FROM users WHERE username = 'ali';
+
+INSERT INTO tweets (user_id, content, is_deleted)
+SELECT id, 'Does anyone know a good resource for learning JavaFX?', false
+FROM users WHERE username = 'ali';
+
+INSERT INTO tweets (user_id, content, is_deleted)
+SELECT id, 'UI design is harder than I thought 😅 #JavaFX #design', false
+FROM users WHERE username = 'sara';
+
+INSERT INTO tweets (user_id, content, is_deleted)
+SELECT id, 'Backend is done, now fighting with the client side...', false
+FROM users WHERE username = 'reza';
+
+INSERT INTO tweets (user_id, content, is_deleted)
+SELECT id, 'Welcome to our Twitter clone project! Feel free to test everything.', false
+FROM users WHERE username = 'admin';
+
+INSERT INTO tweets (user_id, content, is_deleted)
+SELECT id, 'This is just a test user. Ignore me.', false
+FROM users WHERE username = 'testuser';
+
+INSERT INTO tweets (user_id, content, is_deleted)
+SELECT id, 'Coffee + coding = perfect morning ☕️', false
+FROM users WHERE username = 'kimia';
+
+INSERT INTO tweets (user_id, content, is_deleted)
+SELECT id, 'Who else is still awake working on the project at 3 AM?', false
+FROM users WHERE username = 'sara';
+
+-- Reply example (sara replies to ali's tweet)
+INSERT INTO tweets (user_id, content, reply_to_tweet_id, is_deleted)
+SELECT u.id, 'I recommend the official OpenJFX documentation!', t.id, false
+FROM users u, tweets t
+WHERE u.username = 'sara'
+  AND t.content LIKE 'Does anyone know a good resource%'
+  AND t.user_id = (SELECT id FROM users WHERE username = 'ali');
+
+-- kimia retweets admin's welcome tweet
+INSERT INTO tweets (user_id, content, retweet_of_tweet_id, is_deleted)
+SELECT u.id, '', t.id, false
+FROM users u, tweets t
+WHERE u.username = 'kimia'
+  AND t.content LIKE 'Welcome to our Twitter clone%'
+  AND t.user_id = (SELECT id FROM users WHERE username = 'admin');

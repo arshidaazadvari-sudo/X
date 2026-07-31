@@ -169,16 +169,16 @@ public class TweetDao {
         List<Tweet> tweets = new ArrayList<>();
         String sql = """
             SELECT t.*, u.username, u.display_name,
-                   COUNT(DISTINCT l.user_id) AS likes_count
+            COUNT(DISTINCT l.user_id) AS likes_count,
             EXISTS(SELECT 1 FROM likes WHERE user_id = ? AND tweet_id = t.id) AS is_liked
             FROM tweets t
             JOIN users u ON t.user_id = u.id
             LEFT JOIN likes l ON t.id = l.tweet_id
             WHERE (t.user_id = ? OR t.user_id IN (SELECT followee_id FROM follows WHERE follower_id = ?))
-                AND t.is_deleted = false AND t.reply_to_tweet_id IS NULL
-            GROUP BY t.id, u.id
+            AND t.is_deleted = false AND t.reply_to_tweet_id IS NULL
+            GROUP BY t.id, u.id, u.username, u.display_name
             ORDER BY t.created_at DESC LIMIT ?
-        """;
+            """;
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)){

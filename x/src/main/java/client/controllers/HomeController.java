@@ -19,6 +19,7 @@ import shared.models.User;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class HomeController {
@@ -34,7 +35,7 @@ public class HomeController {
 
     @FXML private FontIcon mediaIcon;
 
-    private List<String> images;
+    private List<String> images = new ArrayList<>();
 
     private static MainController mainController;
 
@@ -51,7 +52,7 @@ public class HomeController {
         try {
             FXMLLoader loader = new FXMLLoader(HomeController.class.getResource("/fxmls/tweet-card.fxml"));
 
-            HBox tweetBox = loader.load();
+            VBox tweetBox = loader.load();
 
             TweetController controller = loader.getController();
             controller.setTweet(t);

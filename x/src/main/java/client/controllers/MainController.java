@@ -79,7 +79,7 @@ public class MainController {
     @FXML private ImageView miniProfilePic;
     @FXML private TextArea postText;
     @FXML private HBox mediaBox;
-    private List<String> images;
+    private List<String> images = new ArrayList<>();
 
     @FXML private VBox container;
 
@@ -157,7 +157,7 @@ public class MainController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/followers&followings.fxml"));
 
-            HBox fBox = loader.load();
+            VBox fBox = loader.load();
 
             FollowController controller = loader.getController();
             controller.setOnFollowers(onFollowers);
@@ -180,7 +180,7 @@ public class MainController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/profile.fxml"));
 
-            HBox uBox = loader.load();
+            VBox uBox = loader.load();
 
             ProfileController controller = loader.getController();
             controller.setUser(u);
@@ -212,7 +212,7 @@ public class MainController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/home.fxml"));
 
-            HBox hBox = loader.load();
+            VBox hBox = loader.load();
 
             HomeController controller = loader.getController();
             controller.setMainController(this);
@@ -235,7 +235,7 @@ public class MainController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/explore.fxml"));
 
-            HBox eBox = loader.load();
+            VBox eBox = loader.load();
 
             ExploreController controller = loader.getController();
             controller.setMainController(this);
@@ -517,12 +517,13 @@ public class MainController {
         mBox.setVisible(true);
         mBox.setManaged(true);
 
+        if (imageList.isEmpty()) {
+            mBox.setVisible(false);
+            mBox.setManaged(false);
+            return BTNs;
+        }
+
         switch (imageList.size()) {
-            case 0: {
-                mBox.setVisible(false);
-                mBox.setManaged(false);
-                break;
-            }
             case 1: {
                 ImageView iv = new ImageView(ImageLoader.getTweetImage(imageList.get(0)));
                 iv.setOnMouseClicked(mouseEvent -> {
@@ -832,7 +833,7 @@ public class MainController {
         try {
             Stage stage = (Stage) postBTN.getScene().getWindow();
             FXMLLoader fxmlLoader = new FXMLLoader(ClientApp.class.getResource("/fxmls/authentication.fxml"));
-            Scene newScene = new Scene(fxmlLoader.load(), 500, 500);
+            Scene newScene = new Scene(fxmlLoader.load(), 500, 750);
             newScene.getStylesheets().add(getClass().getResource("/styles/light-theme.css").toExternalForm());
 
             stage.setScene(newScene);

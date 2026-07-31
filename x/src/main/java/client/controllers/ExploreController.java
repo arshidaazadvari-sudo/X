@@ -84,7 +84,6 @@ public class ExploreController {
             resultsContainer.setManaged(false);
             resultsContainer.setVisible(false);
 
-            returnBTN.setManaged(false);
             returnBTN.setVisible(false);
         }
     }
@@ -96,7 +95,6 @@ public class ExploreController {
         resultsContainer.setManaged(true);
         resultsContainer.setVisible(true);
 
-        returnBTN.setManaged(true);
         returnBTN.setVisible(true);
 
         resultsContainer.getChildren().clear();
@@ -129,7 +127,7 @@ public class ExploreController {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/user-card.fxml"));
 
-                HBox uBox = loader.load();
+                VBox uBox = loader.load();
 
                 UserCardController controller = loader.getController();
                 controller.setMainController(mainController);
@@ -152,7 +150,7 @@ public class ExploreController {
             try {
                 FXMLLoader loader = new FXMLLoader(HomeController.class.getResource("/fxmls/tweet-card.fxml"));
 
-                HBox tweetBox = loader.load();
+                VBox tweetBox = loader.load();
 
                 TweetController controller = loader.getController();
                 controller.setTweet(t);
@@ -175,7 +173,7 @@ public class ExploreController {
             try {
                 FXMLLoader loader = new FXMLLoader(HomeController.class.getResource("/fxmls/tweet-card.fxml"));
 
-                HBox tweetBox = loader.load();
+                VBox tweetBox = loader.load();
 
                 TweetController controller = loader.getController();
                 controller.setTweet(t);

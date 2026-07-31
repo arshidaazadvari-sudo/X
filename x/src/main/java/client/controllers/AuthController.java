@@ -111,7 +111,7 @@ public class AuthController {
                 Stage stage = (Stage) AuthBTN.getScene().getWindow();
                 stage.setTitle("X");
                 FXMLLoader fxmlLoader = new FXMLLoader(ClientApp.class.getResource("/fxmls/main.fxml"));
-                Scene newScene = new Scene(fxmlLoader.load(), 850, 750);
+                Scene newScene = new Scene(fxmlLoader.load(), 900, 750);
                 newScene.getStylesheets().add(getClass().getResource("/styles/light-theme.css").toExternalForm());
 
                 stage.setScene(newScene);

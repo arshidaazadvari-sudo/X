@@ -132,7 +132,7 @@ public class TweetPageController {
             try {
                 FXMLLoader loader = new FXMLLoader(HomeController.class.getResource("/fxmls/tweet-card.fxml"));
 
-                HBox tweetBox = loader.load();
+                VBox tweetBox = loader.load();
 
                 TweetController controller = loader.getController();
                 controller.setTweet(rt);
@@ -148,7 +148,7 @@ public class TweetPageController {
                     try {
                         FXMLLoader loader2 = new FXMLLoader(HomeController.class.getResource("/fxmls/tweet-card.fxml"));
 
-                        HBox tweetBox2 = loader2.load();
+                        VBox tweetBox2 = loader2.load();
 
                         TweetController controller2 = loader2.getController();
                         controller2.setTweet(nextRT);
