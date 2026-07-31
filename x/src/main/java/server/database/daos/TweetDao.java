@@ -82,6 +82,14 @@ public class TweetDao {
                 System.out.println("Tweet created: ID = " + tweet.getId());
                 return true;
             }
+            if (tweet.getMediaUrls() == null) {
+                System.out.println("mediaUrls: null");
+            } else {
+                System.out.println("mediaUrls length: " + tweet.getMediaUrls().length);
+                for (String url : tweet.getMediaUrls()) {
+                    System.out.println("  - " + url);
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
