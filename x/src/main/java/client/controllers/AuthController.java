@@ -16,9 +16,11 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import server.database.daos.UserDao;
 import shared.models.User;
+import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class AuthController {
 
@@ -96,7 +98,8 @@ public class AuthController {
             System.out.println(e.getMessage());
         }
 
-        if (ResponseListener.getAuthResponse().get("type").toString().equals("SUCCESS")) {
+        JsonNode success = ServerConnection.mapper.readTree("{ \"type\": \"SUCCESS\" }");
+        if (Objects.equals(ResponseListener.getAuthResponse().get("type").toString(), success.get("type").toString())) {
 
             //get the user
             UserDao userDao = new UserDao();
