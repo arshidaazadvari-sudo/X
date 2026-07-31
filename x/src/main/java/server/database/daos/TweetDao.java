@@ -38,23 +38,30 @@ public class TweetDao {
         return tweets;
     }
 
-    public boolean createTweet(Tweet tweet){
-        if (tweet.getContent() == null || tweet.getContent().trim().isEmpty()){
+    public boolean createTweet(Tweet tweet) {
+        // Allow empty content if this is a retweet
+        boolean isRetweet = tweet.getRetweetOfTweetId() != null && tweet.getRetweetOfTweetId() > 0;
+
+        if (!isRetweet && (tweet.getContent() == null || tweet.getContent().trim().isEmpty())) {
             System.out.println("Tweet content cannot be empty");
             return false;
         }
+
         String sql = "INSERT INTO tweets (user_id, content, media_urls, reply_to_tweet_id, retweet_of_tweet_id) " +
                 "VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
+             PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            pstmt.setInt(1,tweet.getUserId());
-            pstmt.setString(2,tweet.getContent().trim());
+            pstmt.setInt(1, tweet.getUserId());
 
-            if (tweet.getMediaUrls() != null && tweet.getMediaUrls().length > 0){
+            // For retweets we allow empty content
+            String content = tweet.getContent() == null ? "" : tweet.getContent().trim();
+            pstmt.setString(2, content);
+
+            if (tweet.getMediaUrls() != null && tweet.getMediaUrls().length > 0) {
                 pstmt.setArray(3, conn.createArrayOf("text", tweet.getMediaUrls()));
-            }else {
+            } else {
                 pstmt.setNull(3, Types.ARRAY);
             }
 
@@ -62,15 +69,16 @@ public class TweetDao {
             pstmt.setObject(5, tweet.getRetweetOfTweetId());
 
             int affected = pstmt.executeUpdate();
-            if (affected > 0){
+            if (affected > 0) {
                 ResultSet keys = pstmt.getGeneratedKeys();
-                if (keys.next()){
+                if (keys.next()) {
                     tweet.setId(keys.getInt(1));
                 }
 
-                if (tweet.getId() > 0){
-                    processHashtags(tweet.getId(), tweet.getContent());
+                if (tweet.getId() > 0 && !content.isEmpty()) {
+                    processHashtags(tweet.getId(), content);
                 }
+
                 System.out.println("Tweet created: ID = " + tweet.getId());
                 return true;
             }
