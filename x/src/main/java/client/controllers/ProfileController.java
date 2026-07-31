@@ -93,9 +93,9 @@ public class ProfileController {
         banner.setImage(banner_pic);
 
         displayName.setText(user.getDisplayName());
-        username.setText(user.getUsername());
+        username.setText("@" + user.getUsername());
         bio.setText(user.getBio());
-        //dateOfJoining.setText( "Joined " + DateFormatter.joiningDate(user.getCreatedAt()));
+        dateOfJoining.setText( "Joined " + DateFormatter.joiningDate(user.getCreatedAt()));
 
         //set text for tweets, followings & followers (include counts)
         int tweetC = tweetDao.getTweetByUserId(user.getId()).size();

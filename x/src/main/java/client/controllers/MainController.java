@@ -256,7 +256,7 @@ public class MainController {
             UserDao userDao = new UserDao();
 
             R_ProfilePic.setImage(ImageLoader.getProfileImage(userDao.getUserById(R_tweet.getUserId()).getProfilePic()));
-            R_username.setText(R_tweet.getUsername());
+            R_username.setText(" " + R_tweet.getUsername());
             R_name.setText(R_tweet.getDisplayName());
             R_postingDate.setText(DateFormatter.postingDate(R_tweet.getCreatedAt()));
             R_tweetText.setText(R_tweet.getContent());
@@ -484,7 +484,9 @@ public class MainController {
         for (Button b : btns) {
             FontIcon deleteIcon = new FontIcon(FontAwesomeSolid.WINDOW_CLOSE);
             deleteIcon.getStyleClass().add("half-transparent-icon");
+            deleteIcon.setIconSize(24);
             b.setGraphic(deleteIcon);
+            b.getStyleClass().add("hollow-delete-btn");
             b.setPrefHeight(24);
             b.setPrefWidth(24);
             b.setMaxHeight(24);
@@ -493,7 +495,9 @@ public class MainController {
     }
 
     private void deleteMedia(List<String> imageList, int index) {
-        imageList.remove(index);
+        if (imageList.size() > index) {
+            imageList.remove(index);
+        }
         List<Button> btns = displayMedia(imageList, mediaBox);
         buttonStyling(btns);
     }

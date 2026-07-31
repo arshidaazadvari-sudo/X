@@ -31,7 +31,7 @@ public class TweetPageController {
     @FXML private ImageView profilePicture;
     @FXML private Label displayName;
     @FXML private Label username;
-    @FXML private TextFlow tweetText;
+    @FXML private Label tweetText;
     @FXML private HBox mediaBox;
     @FXML private Label postingDate;
 
@@ -61,6 +61,11 @@ public class TweetPageController {
     @FXML
     private void initialize() {
 
+        CurrentClient.setOnHomePage(false);
+
+        tweet = tweetController.getTweet();
+
+        TweetDao tweetDao = new TweetDao();
         UserDao userDao = new UserDao();
         LikeDAO likeDAO = new LikeDAO();
 
@@ -86,17 +91,10 @@ public class TweetPageController {
         }
 
 
-
-        CurrentClient.setOnHomePage(false);
-
-        tweet = tweetController.getTweet();
-
-        TweetDao tweetDao = new TweetDao();
-
         //name the account you're replying to (if you are)
 
         if (tweet.getReplyToTweetId() != null) {
-            replyToUsername.setText("Reply to @" + tweetDao.getTweetById(tweet.getReplyToTweetId()).getUsername());
+            replyToUsername.setText("Reply to @" + tweetDao.getTweetById(tweet.getReplyToTweetId()).getUsername() + " ");
             replyToText.setVisible(true);
         }
         else {
@@ -113,13 +111,18 @@ public class TweetPageController {
         //repost.setText(); ?????????????????????
         displayName.setText(tweet.getDisplayName());
         username.setText(" @" + tweet.getUsername());
-        postingDate.setText(" . " + DateFormatter.postingDateInPage(tweet.getCreatedAt()));
+        postingDate.setText(DateFormatter.postingDateInPage(tweet.getCreatedAt()));
 
-        Text text = new Text(tweet.getContent());
-        tweetText = new TextFlow(text);
+        tweetText.setText(tweet.getContent());
 
         //mediaBox
-        List<String> images = new ArrayList<>(Arrays.asList(tweet.getMediaUrls()));
+        List<String> images;
+        if (tweet.getMediaUrls() != null) {
+            images = new ArrayList<>(Arrays.asList(tweet.getMediaUrls()));
+        }
+        else {
+            images = new ArrayList<>();
+        }
         List<Button> btns = tweetController.getMainController().displayMedia(images, mediaBox);
         for (Button b : btns) {
             b.setManaged(false);

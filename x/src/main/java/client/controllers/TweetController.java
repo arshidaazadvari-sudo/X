@@ -37,7 +37,7 @@ public class TweetController {
     @FXML private Button followBTN;
     @FXML private Button deleteBTN;
 
-    @FXML private TextFlow tweetText;
+    @FXML private Label tweetText;
     @FXML private Button reply;
     @FXML private Button repost;
     @FXML private Button like;
@@ -113,7 +113,7 @@ public class TweetController {
         //name the account you're replying to (if you are)
 
         if (realTweet.getReplyToTweetId() != null) {
-            replyToUsername.setText("Reply to @" + tweetDao.getTweetById(realTweet.getReplyToTweetId()).getUsername());
+            replyToUsername.setText("Reply to @" + tweetDao.getTweetById(realTweet.getReplyToTweetId()).getUsername() + " ");
             replyToText.setVisible(true);
         } else {
             replyToText.setVisible(false);
@@ -133,8 +133,7 @@ public class TweetController {
         username.setText(" @" + realTweet.getUsername());
         postingDate.setText(" . " + DateFormatter.postingDate(realTweet.getCreatedAt()));
 
-        Text t = new Text(realTweet.getContent());
-        tweetText = new TextFlow(t);
+        tweetText.setText(realTweet.getContent());
 
         //mediaBox
         List<String> images;
@@ -154,10 +153,16 @@ public class TweetController {
         if (realTweet.getUserId() == CurrentClient.getUser().getId()) {
             followBTN.setManaged(false);
             followBTN.setVisible(false);
+            deleteBTN.setManaged(true);
+            deleteBTN.setVisible(true);
+        }
+        else {
+            deleteBTN.setManaged(false);
+            deleteBTN.setVisible(false);
+            followBTN.setManaged(true);
+            followBTN.setVisible(true);
         }
 
-        deleteBTN.setManaged(false);
-        deleteBTN.setVisible(false);
     }
 
     @FXML

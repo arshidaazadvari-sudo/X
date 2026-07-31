@@ -14,7 +14,7 @@
     <HBox fx:id="TLTweetCard" VBox.vgrow="NEVER" alignment="TOP_CENTER" styleClass="box" spacing="10">
 
         <padding>
-            <Insets top="10" bottom="10" left="10" right="10"/>
+            <Insets top="20" bottom="20" left="20" right="20"/>
         </padding>
 
         <ImageView fx:id="miniProfilePicture" onMouseClicked="#displayProfile" preserveRatio="true" fitWidth="44" fitHeight="44">
@@ -27,7 +27,7 @@
 
             <TextArea fx:id="postText" wrapText="true" promptText="What's happening?" styleClass="post-ta" minHeight="150" prefHeight="150" maxHeight="300"/>
 
-            <HBox fx:id="mediaBox" prefHeight="200" prefWidth="500"/>
+            <HBox fx:id="mediaBox" prefHeight="300" prefWidth="500" maxHeight="300" maxWidth="500"/>
 
             <HBox spacing="350">
                 <Button onAction="#Media" styleClass="small-hollow-btn">

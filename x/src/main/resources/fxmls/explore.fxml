@@ -11,6 +11,9 @@
       minHeight="100.0" prefWidth="600.0" maxWidth="600" styleClass="box">
 
     <HBox maxWidth="600" alignment="TOP_CENTER">
+        <padding>
+            <Insets top="20" right="20" bottom="20" left="20"/>
+        </padding>
         <Button fx:id="returnBTN" onAction="#Return" styleClass="small-hollow-btn" maxWidth="50">
             <graphic>
                 <FontIcon fx:id="returnIcon" iconSize="24" styleClass="primary-icon"/>
