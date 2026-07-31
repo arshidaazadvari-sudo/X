@@ -78,7 +78,7 @@ public class HomeController {
         mediaBox.setVisible(false);
         mediaBox.setManaged(false);
 
-        tweetsContainer.getChildren().clear();
+        //tweetsContainer.getChildren().clear();
         TweetDao tweetDao = new TweetDao();
         List<Tweet> posts = tweetDao.getFeedForUser(user.getId(), 100);
         for (Tweet t : posts) {

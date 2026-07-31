@@ -9,7 +9,7 @@
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="client.controllers.HomeController"
-      alignment="CENTER" spacing="20">
+      alignment="CENTER" spacing="20" styleClass="box">
 
     <HBox fx:id="TLTweetCard">
 

@@ -12,6 +12,7 @@
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="client.controllers.TweetPageController"
+      styleClass="box"
       alignment="CENTER" spacing="20">
 
     <padding>

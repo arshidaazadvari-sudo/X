@@ -174,6 +174,9 @@ public class MainController {
     }
 
     public void anyProfile(User u) {
+
+        if (!container.getChildren().isEmpty()) container.getChildren().clear();
+
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/profile.fxml"));
 
@@ -183,7 +186,6 @@ public class MainController {
             controller.setUser(u);
             controller.setMainController(this);
 
-            container.getChildren().clear();
             container.getChildren().add(uBox);
 
         } catch (IOException e) {
@@ -205,6 +207,8 @@ public class MainController {
     @FXML
     private void Home() {
 
+        if (!container.getChildren().isEmpty()) container.getChildren().clear();
+
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/home.fxml"));
 
@@ -214,7 +218,6 @@ public class MainController {
             controller.setMainController(this);
             controller.setUser(CurrentClient.getUser());
 
-            container.getChildren().clear();
             container.getChildren().add(hBox);
 
         } catch (IOException e) {
@@ -225,6 +228,9 @@ public class MainController {
 
     @FXML
     public void Explore() {
+
+        if (!container.getChildren().isEmpty()) container.getChildren().clear();
+
         CurrentClient.setOnHomePage(false);
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/explore.fxml"));
@@ -234,7 +240,6 @@ public class MainController {
             ExploreController controller = loader.getController();
             controller.setMainController(this);
 
-            container.getChildren().clear();
             container.getChildren().add(eBox);
 
         } catch (IOException e) {
