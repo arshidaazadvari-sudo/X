@@ -88,9 +88,9 @@ public class AuthController {
         auth.set("payload", payload);
         connection.send(auth.toString());
 
-        //wait 500 milliseconds while server & response listener do their part (& set an auth error if there's any)
+        //wait 2000 milliseconds while server & response listener do their part (& set an auth error if there's any)
         try {
-            Thread.sleep(500);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
