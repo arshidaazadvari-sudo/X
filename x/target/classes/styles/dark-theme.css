@@ -185,7 +185,7 @@
 }
 
 .gray-like-btn:hover .gray-like-icon {
-    -fx-icon-color: rgba(249, 24, 128, 0.10);
+    -fx-icon-color: rgba(249, 24, 128, 0.50);
 }
 
 .gray-repost-btn {
@@ -199,7 +199,7 @@
 }
 
 .gray-repost-btn:hover .gray-repost-icon {
-    -fx-icon-color: rgba(0, 186, 124, 0.10);
+    -fx-icon-color: rgba(0, 186, 124, 0.50);
 }
 
 .gray-reply-btn {
@@ -213,7 +213,7 @@
 }
 
 .gray-reply-btn:hover .gray-reply-icon {
-    -fx-icon-color: rgba(29, 155, 240, 0.10);
+    -fx-icon-color: rgba(29, 155, 240, 0.50);
 }
 
 /* texts & text fields */

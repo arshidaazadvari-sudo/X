@@ -157,12 +157,10 @@ public class MainController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/followers&followings.fxml"));
 
-            VBox fBox = loader.load();
+            FollowController controller = new FollowController(this, user, onFollowers);
+            loader.setController(controller);
 
-            FollowController controller = loader.getController();
-            controller.setOnFollowers(onFollowers);
-            controller.setUser(user);
-            controller.setMainController(this);
+            VBox fBox = loader.load();
 
             container.getChildren().clear();
             container.getChildren().add(fBox);
@@ -180,11 +178,10 @@ public class MainController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/profile.fxml"));
 
-            VBox uBox = loader.load();
+            ProfileController controller = new ProfileController(this, u);
+            loader.setController(controller);
 
-            ProfileController controller = loader.getController();
-            controller.setUser(u);
-            controller.setMainController(this);
+            VBox uBox = loader.load();
 
             container.getChildren().add(uBox);
 
@@ -212,11 +209,10 @@ public class MainController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/home.fxml"));
 
-            VBox hBox = loader.load();
+            HomeController controller = new HomeController(this);
+            loader.setController(controller);
 
-            HomeController controller = loader.getController();
-            controller.setMainController(this);
-            //controller.setUser(CurrentClient.getUser());
+            VBox hBox = loader.load();
 
             container.getChildren().add(hBox);
 
@@ -235,10 +231,10 @@ public class MainController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/explore.fxml"));
 
-            VBox eBox = loader.load();
+            ExploreController controller = new ExploreController(this);
+            loader.setController(controller);
 
-            ExploreController controller = loader.getController();
-            controller.setMainController(this);
+            VBox eBox = loader.load();
 
             container.getChildren().add(eBox);
 

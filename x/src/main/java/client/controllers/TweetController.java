@@ -59,13 +59,18 @@ public class TweetController {
     private ReplyDAO replyDAO = new ReplyDAO();
     private TweetDao tweetDao = new TweetDao();
 
-    public void setTweet(Tweet tweet) { this.givenTweet = tweet; }
+    //public void setTweet(Tweet tweet) { this.givenTweet = tweet; }
 
     public Tweet getTweet() { return realTweet; }
 
-    public void setMainController(MainController mc) { mainController = mc; }
+    //public void setMainController(MainController mc) { mainController = mc; }
 
     public MainController getMainController() { return mainController;}
+
+    public TweetController(MainController mc, Tweet t) {
+        mainController = mc;
+        this.givenTweet = t;
+    }
 
     @FXML
     private void initialize() {
@@ -132,7 +137,14 @@ public class TweetController {
         tweetText = new TextFlow(t);
 
         //mediaBox
-        List<String> images = new ArrayList<>(Arrays.asList(realTweet.getMediaUrls()));
+        List<String> images;
+        if (realTweet.getMediaUrls() != null) {
+            images = new ArrayList<>(Arrays.asList(realTweet.getMediaUrls()));
+        }
+        else {
+            images = new ArrayList<>();
+        }
+
         List<Button> btns = mainController.displayMedia(images, mediaBox);
         for (Button b : btns) {
             b.setManaged(false);
@@ -153,10 +165,10 @@ public class TweetController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/tweet-page.fxml"));
 
-            VBox tBox = loader.load();
+            TweetPageController controller = new TweetPageController(this);
+            loader.setController(controller);
 
-            TweetPageController controller = loader.getController();
-            controller.setTweetController(this);
+            VBox tBox = loader.load();
 
             mainController.getContainer().getChildren().clear();
             mainController.getContainer().getChildren().add(tBox);
@@ -260,17 +272,17 @@ public class TweetController {
         try {
             FXMLLoader loader1 = new FXMLLoader(HomeController.class.getResource("/fxmls/tweet-card.fxml"));
 
-            TweetController controller1 = loader1.getController();
-            controller1.setTweet(tweetDao.getTweetById(realTweet.getReplyToTweetId()));
-            controller1.setMainController(mainController);
+
+            TweetController controller1 = new TweetController(mainController, tweetDao.getTweetById(realTweet.getReplyToTweetId()));
+            loader1.setController(controller1);
 
 
             FXMLLoader loader2 = new FXMLLoader(getClass().getResource("/fxmls/tweet-page.fxml"));
 
-            VBox tBox = loader2.load();
+            TweetPageController controller2 = new TweetPageController(controller1);
+            loader2.setController(controller2);
 
-            TweetPageController controller2 = loader2.getController();
-            controller2.setTweetController(controller1);
+            VBox tBox = loader2.load();
 
             mainController.getContainer().getChildren().clear();
             mainController.getContainer().getChildren().add(tBox);

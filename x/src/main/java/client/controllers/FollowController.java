@@ -11,6 +11,7 @@ import javafx.scene.shape.Rectangle;
 import org.kordamp.ikonli.fontawesome6.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
 import server.database.daos.FollowDAO;
+import server.database.daos.UserDao;
 import shared.models.User;
 
 import java.io.IOException;
@@ -36,11 +37,17 @@ public class FollowController {
 
     private static MainController mainController;
 
-    public void setOnFollowers(boolean b) { this.isOnFollowers = b; }
+    //public void setOnFollowers(boolean b) { this.isOnFollowers = b; }
 
-    public void setUser(User u) { this.user = u; }
+    //public void setUser(User u) { this.user = u; }
 
-    public void setMainController(MainController mc) { mainController = mc; }
+    //public void setMainController(MainController mc) { mainController = mc; }
+
+    public FollowController(MainController mc, User u, boolean b) {
+        mainController = mc;
+        this.user = u;
+        this.isOnFollowers = b;
+    }
 
     private void displayUsers(List<User> users) {
 
@@ -53,11 +60,10 @@ public class FollowController {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/user-card.fxml"));
 
-                VBox uBox = loader.load();
+                UserCardController controller = new UserCardController(mainController, u);
+                loader.setController(controller);
 
-                UserCardController controller = loader.getController();
-                controller.setMainController(mainController);
-                controller.setUser(u);
+                VBox uBox = loader.load();
 
                 usersContainer.getChildren().add(uBox);
 

@@ -9,7 +9,6 @@
 <?import javafx.geometry.Insets?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="client.controllers.HomeController"
       alignment="TOP_CENTER" spacing="20" styleClass="box">
 
     <HBox fx:id="TLTweetCard" VBox.vgrow="NEVER" alignment="TOP_CENTER" styleClass="box" spacing="10">

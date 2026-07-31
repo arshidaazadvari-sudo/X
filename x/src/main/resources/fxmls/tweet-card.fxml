@@ -10,9 +10,8 @@
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="client.controllers.TweetController"
-      styleClass="box"
-      prefHeight="400.0" prefWidth="600.0" onMouseClicked="#tweetPage" onMouseEntered="#MEntered" onMouseDragExited="#MExited">
+      styleClass="box" style="-fx-backgound-color: red;"
+      prefHeight="400.0" maxWidth="600" maxHeight="400" prefWidth="600.0" onMouseClicked="#tweetPage" onMouseEntered="#MEntered" onMouseDragExited="#MExited">
 
     <TextFlow fx:id="replyToText">
         <Label fx:id="replyToUsername" styleClass="secondary-t" graphicTextGap="8">
@@ -42,12 +41,12 @@
                 <Button fx:id="followBTN" onAction="#follow" text="Follow" styleClass="small-filled-btn"/>
                 <Button fx:id="deleteBTN" onAction="#delete" maxWidth="24" maxHeight="24" prefWidth="24" prefHeight="24">
                     <graphic>
-                        <FontIcon fx:id="deleteIcon" iconSize="24" style="-fx-icon-color: rgba(244 33 44 0.4);"/>
+                        <FontIcon fx:id="deleteIcon" iconSize="24" style="-fx-icon-color: rgba(244, 33, 44, 0.4);"/>
                     </graphic>
                 </Button>
             </HBox>
 
-            <TextFlow fx:id="tweetText" styleClass="primary-t"/>
+            <TextFlow fx:id="tweetText" styleClass="primary-t" maxWidth="500"/>
 
             <HBox fx:id="mediaBox"/>
 

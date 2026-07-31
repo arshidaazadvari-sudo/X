@@ -52,7 +52,11 @@ public class TweetPageController {
     private TweetController tweetController;
     private Tweet tweet;
 
-    public void setTweetController(TweetController tc) { this.tweetController = tc; }
+    //public void setTweetController(TweetController tc) { this.tweetController = tc; }
+
+    public TweetPageController(TweetController tc) {
+        this.tweetController = tc;
+    }
 
     @FXML
     private void initialize() {
@@ -132,11 +136,11 @@ public class TweetPageController {
             try {
                 FXMLLoader loader = new FXMLLoader(HomeController.class.getResource("/fxmls/tweet-card.fxml"));
 
-                VBox tweetBox = loader.load();
 
-                TweetController controller = loader.getController();
-                controller.setTweet(rt);
-                controller.setMainController(tweetController.getMainController());
+                TweetController controller = new TweetController(tweetController.getMainController(), rt);
+                loader.setController(controller);
+
+                VBox tweetBox = loader.load();
 
                 vb.getChildren().add(tweetBox);
 
@@ -148,11 +152,10 @@ public class TweetPageController {
                     try {
                         FXMLLoader loader2 = new FXMLLoader(HomeController.class.getResource("/fxmls/tweet-card.fxml"));
 
-                        VBox tweetBox2 = loader2.load();
+                        TweetController controller2 = new TweetController(tweetController.getMainController(), nextRT);
+                        loader2.setController(controller2);
 
-                        TweetController controller2 = loader2.getController();
-                        controller2.setTweet(nextRT);
-                        controller2.setMainController(tweetController.getMainController());
+                        VBox tweetBox2 = loader2.load();
 
                         vb.getChildren().add(tweetBox2);
                     }

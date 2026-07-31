@@ -9,6 +9,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import server.database.daos.FollowDAO;
+import server.database.daos.UserDao;
 import shared.models.User;
 
 public class UserCardController {
@@ -22,13 +23,18 @@ public class UserCardController {
 
     private User user;
 
-    private MainController mainController;
+    private static MainController mainController;
 
     private final FollowDAO followDAO = new FollowDAO();
 
-    public void setUser(User u) { this.user = u; }
+    //public void setUser(User u) { this.user = u; }
 
-    public void setMainController(MainController mc) { this.mainController = mc; }
+    //public void setMainController(MainController mc) { mainController = mc; }
+
+    public UserCardController(MainController mc, User u) {
+        mainController = mc;
+        this.user = u;
+    }
 
     @FXML
     private void initialize() {

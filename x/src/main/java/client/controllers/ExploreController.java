@@ -1,5 +1,6 @@
 package client.controllers;
 
+import client.CurrentClient;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -30,15 +31,21 @@ public class ExploreController {
     @FXML private FontIcon searchIcon;
 
     private static String givenHashtag;
-    private static String givenMention;
 
     private MainController mainController;
 
-    public void setMainController(MainController mc) { mainController = mc; }
+    //public void setMainController(MainController mc) { mainController = mc; }
 
-    public static void setHashtag(String s) { givenHashtag = s; }
+    //public static void setHashtag(String s) { givenHashtag = s; }
 
-    public static void setMention(String s) { givenMention = s; }
+    public ExploreController(MainController mc) {
+        this.mainController = mc;
+        givenHashtag = null;
+    }
+    public ExploreController(MainController mc, String s) {
+        this.mainController = mc;
+        givenHashtag = s;
+    }
 
     @FXML
     private void initialize() {
@@ -54,11 +61,6 @@ public class ExploreController {
             search();
             givenHashtag = null;
         }
-        else if (givenMention != null) {
-            searchText.setText("@" + givenMention);
-            search();
-            givenMention = null;
-        }
         else {
             HashtagDAO hD = new HashtagDAO();
             List<String> trending= hD.getTrendingHashtags(10);
@@ -66,7 +68,7 @@ public class ExploreController {
 
                 VBox vb = new VBox();
                 vb.setOnMouseClicked(mouseEvent -> {
-                    ExploreController.setHashtag(s);
+                    givenHashtag = s;
                     mainController.Explore();
                 });
                 Text t = new Text("#" + s);
@@ -127,12 +129,11 @@ public class ExploreController {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/user-card.fxml"));
 
+                UserCardController controller = new UserCardController(mainController, CurrentClient.getUser());
+                loader.setController(controller);
+
                 VBox uBox = loader.load();
-
-                UserCardController controller = loader.getController();
-                controller.setMainController(mainController);
-                controller.setUser(u);
-
+                
                 resultsContainer.getChildren().add(uBox);
 
             } catch (IOException e) {
@@ -150,11 +151,10 @@ public class ExploreController {
             try {
                 FXMLLoader loader = new FXMLLoader(HomeController.class.getResource("/fxmls/tweet-card.fxml"));
 
-                VBox tweetBox = loader.load();
+                TweetController controller = new TweetController(mainController, t);
+                loader.setController(controller);
 
-                TweetController controller = loader.getController();
-                controller.setTweet(t);
-                controller.setMainController(mainController);
+                VBox tweetBox = loader.load();
 
                 resultsContainer.getChildren().add(tweetBox);
 
@@ -173,11 +173,10 @@ public class ExploreController {
             try {
                 FXMLLoader loader = new FXMLLoader(HomeController.class.getResource("/fxmls/tweet-card.fxml"));
 
-                VBox tweetBox = loader.load();
+                TweetController controller = new TweetController(mainController, t);
+                loader.setController(controller);
 
-                TweetController controller = loader.getController();
-                controller.setTweet(t);
-                controller.setMainController(mainController);
+                VBox tweetBox = loader.load();
 
                 resultsContainer.getChildren().add(tweetBox);
 

@@ -31,7 +31,7 @@ public class HomeController {
 
     @FXML private HBox mediaBox;
 
-    @FXML private static VBox tweetsContainer;
+    @FXML private static VBox tweetsContainer = new VBox();
 
     @FXML private FontIcon mediaIcon;
 
@@ -41,7 +41,11 @@ public class HomeController {
 
     //private User user;
 
-    public void setMainController(MainController mc) { mainController = mc; }
+    //public void setMainController(MainController mc) { mainController = mc; }
+
+    public HomeController(MainController mc) {
+        mainController = mc;
+    }
 
     //public void setUser(User u) { this.user = u; }
 
@@ -52,11 +56,10 @@ public class HomeController {
         try {
             FXMLLoader loader = new FXMLLoader(HomeController.class.getResource("/fxmls/tweet-card.fxml"));
 
-            VBox tweetBox = loader.load();
+            TweetController controller = new TweetController(mainController, t);
+            loader.setController(controller);
 
-            TweetController controller = loader.getController();
-            controller.setTweet(t);
-            controller.setMainController(mainController);
+            VBox tweetBox = loader.load();
 
             tweetsContainer.getChildren().add(tweetBox);
 

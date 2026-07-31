@@ -11,7 +11,6 @@
 <?import javafx.geometry.Insets?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="client.controllers.ProfileController"
       alignment="TOP_CENTER" spacing="20" styleClass="box">
     <BorderPane>
 
@@ -27,7 +26,7 @@
                         </clip>
                     </ImageView>
 
-                    <HBox fx:id="btnBox" StackPane.alignment="BOTTOM_RIGHT" alignment="CENTER" maxWidth="80" maxHeight="35">
+                    <HBox fx:id="btnBox" StackPane.alignment="BOTTOM_RIGHT" alignment="CENTER" maxWidth="120" maxHeight="35">
                         <Button fx:id="editProfileBTN" onAction="#editProfile" text="Edit profile" styleClass="small-bordered-btn"/>
                         <Button fx:id="followBTN" onAction="#follow" text="Follow" styleClass="small-filled-btn"/>
                     </HBox>
