@@ -138,13 +138,13 @@ public class AuthController {
         isLogin = !isLogin;
         if (isLogin) {
             AuthBTN.setText("Log in");
-            switchPageBTN.setText("New to X?");
-            switchPageText.setText("Sign up");
+            switchPageText.setText("New to X?");
+            switchPageBTN.setText("Sign up");
         }
         else {
             AuthBTN.setText("Sign up");
-            switchPageBTN.setText("Already have an account?");
-            switchPageText.setText("Log in");
+            switchPageText.setText("Already have an account?");
+            switchPageBTN.setText("Log in");
         }
 
     }
