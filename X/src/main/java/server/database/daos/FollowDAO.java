@@ -12,6 +12,10 @@ import java.util.List;
 
 public class FollowDAO {
     public boolean follow(int followerId, int followeeId){
+        if (followerId == followeeId){
+            System.out.println("You cannot follow your self");
+            return false;
+        }
 
         if (isFollowing(followerId, followeeId)){
             System.out.println("Already following this user");
