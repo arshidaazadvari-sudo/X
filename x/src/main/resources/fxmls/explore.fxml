@@ -7,7 +7,7 @@
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="client.controllers.ExploreController"
-      minHeight="100.0" prefWidth="600.0" maxWidth="600">
+      minHeight="100.0" prefWidth="600.0" maxWidth="600" styleClass="box">
 
     <HBox maxWidth="600">
         <Button fx:id="returnBTN" onAction="#Return" styleClass="small-hollow-btn" maxWidth="50">

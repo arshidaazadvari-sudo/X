@@ -3,12 +3,13 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<?import javafx.geometry.Insets?>
+
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
+<?import javafx.geometry.Insets?>
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
            fx:controller="client.controllers.MainController">
@@ -41,7 +42,7 @@
                 </graphic>
             </Button>
 
-            <Button onAction="#PostWindow" text="Post" styleClass="big-hollow-btn" style="-fx-font-size: 20px;"/>
+            <Button onAction="#PostWindow" text="Post" styleClass="big-filled-btn" style="-fx-font-size: 20px; -fx-padding: 12 72;"/>
 
             <HBox fillHeight="false" spacing="30" prefWidth="200">
                 <Button onAction="#LogoutWindow" styleClass="big-hollow-btn">
@@ -66,7 +67,7 @@
 
     <Pane fx:id="overlay1" visible="false" managed="false" styleClass="overlay" prefWidth="-Infinity" prefHeight="-Infinity"/>
 
-    <VBox fx:id="editWindow" visible="false" managed="false" prefWidth="600" prefHeight="500" alignment="CENTER" spacing="20" padding="20">
+    <VBox fx:id="editWindow" visible="false" managed="false" prefWidth="600" prefHeight="500" alignment="CENTER" spacing="20">
         <HBox spacing="20">
             <Button onAction="#closeEditWindow" text="close icon" styleClass="small-hollow-btn" maxWidth="50">
                 <graphic>
@@ -109,7 +110,7 @@
 
             <VBox spacing="10">
                 <Label text="Bio" styleClass="secondary-t"/>
-                <TextArea fx:id="newBio" styleClass="edit-tf"/>
+                <TextArea fx:id="newBio" styleClass="edit-tf" wrapText="true"/>
             </VBox>
         </VBox>
 

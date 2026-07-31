@@ -3,7 +3,7 @@
     -text-primary: #0F1419;
     -text-secondary: #536471;
     -border: #EFF3F4;
-    -h-gary: rgba(83 100 113 0.2);
+    -h-gray: rgba(83, 100, 113, 0.2);
     -twitter-blue: #1D9BF0;
 
     -fx-background-color: -bg;
@@ -292,10 +292,6 @@
     -fx-padding: 10 10;
     -fx-background-radius: 5;
     -fx-border-radius: 5;
-}
-
-.error-t .content {
-    -fx-background-color: transparent;
 }
 
 /* backdrop, indicator, box */
