@@ -53,12 +53,12 @@ public class TweetDao {
     public Tweet getTweetById(int tweetId){
         String sql = """
                SELECT t.*, u.username, u.display_name,
-                       COUNT(DISTINCT l.user_id) as likes_count,
-                       COUNT(DISTINCT r.id) as replies_count
+                       COUNT(DISTINCT l.user_id) AS likes_count,
+                       COUNT(DISTINCT r.id) AS replies_count
                FROM tweets t
                JOIN users u ON t.user_id = u.id
                LEFT JOIN likes l ON t.id = l.tweet_id
-               LEFT JOIN replies r ON t.id = r.tweet_id
+               LEFT JOIN tweets r ON t.id = r.reply_to_tweet_id
                WHERE t.id = ? AND t.is_deleted = false
                GROUP BY t.id, u.id
                """;

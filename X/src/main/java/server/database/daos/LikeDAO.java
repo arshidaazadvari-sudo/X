@@ -46,7 +46,7 @@ public class LikeDAO {
             int affected = pstmt.executeUpdate();
 
             if (affected > 0){
-                System.out.println("User " + userId + "unliked tweet" + tweetId);
+                System.out.println("User : " + userId + "unliked tweet : " + tweetId);
                 return true;
             }
         }catch (SQLException e) {

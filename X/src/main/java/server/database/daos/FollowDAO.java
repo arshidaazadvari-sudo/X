@@ -29,7 +29,7 @@ public class FollowDAO {
             int affected = pstmt.executeUpdate();
 
             if (affected > 0){
-                System.out.println("User " + followerId + "followed " + followeeId);
+                System.out.println("User : " + followerId + "followed : " + followeeId);
                 return true;
             }
         }catch (SQLException e) {
@@ -50,7 +50,7 @@ public class FollowDAO {
             int affected = pstmt.executeUpdate();
 
             if (affected > 0){
-                System.out.println("User " + followerId + "unfollowed " + followeeId);
+                System.out.println("User : " + followerId + "unfollowed : " + followeeId);
                 return true;
             }
         }catch (SQLException e) {

@@ -23,7 +23,6 @@ public class TestAllDao {
         TweetDao tweetDao = new TweetDao();
         FollowDAO followDAO = new FollowDAO();
         LikeDAO likeDAO = new LikeDAO();
-        //ReplyDAO replyDAO = new ReplyDAO();
         HashtagDAO hashtagDAO = new HashtagDAO();
         MediaDAO mediaDAO = new MediaDAO();
 
