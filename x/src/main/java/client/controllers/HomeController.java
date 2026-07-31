@@ -38,11 +38,11 @@ public class HomeController {
 
     private static MainController mainController;
 
-    private User user;
+    //private User user;
 
     public void setMainController(MainController mc) { mainController = mc; }
 
-    public void setUser(User u) { this.user = u; }
+    //public void setUser(User u) { this.user = u; }
 
     public static void addNewTweets(Tweet t) {
 
@@ -80,7 +80,7 @@ public class HomeController {
 
         //tweetsContainer.getChildren().clear();
         TweetDao tweetDao = new TweetDao();
-        List<Tweet> posts = tweetDao.getFeedForUser(user.getId(), 100);
+        List<Tweet> posts = tweetDao.getFeedForUser(CurrentClient.getUser().getId(), 100);
         for (Tweet t : posts) {
             addNewTweets(t);
         }

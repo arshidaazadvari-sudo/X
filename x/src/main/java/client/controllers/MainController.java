@@ -216,7 +216,7 @@ public class MainController {
 
             HomeController controller = loader.getController();
             controller.setMainController(this);
-            controller.setUser(CurrentClient.getUser());
+            //controller.setUser(CurrentClient.getUser());
 
             container.getChildren().add(hBox);
 
