@@ -19,7 +19,7 @@
     <VBox>
         <Label fx:id="displayName" styleClass="primary-t"/>
         <Label fx:id="username" styleClass="secondary-t"/>
-        <TextArea fx:id="bio" styleClass="secondary-t"/>
+        <Label fx:id="bio" styleClass="secondary-t" wrapText="true"/>
     </VBox>
 
     <Button fx:id="followBTN" onAction="#follow" styleClass="small-filled-btn"/>

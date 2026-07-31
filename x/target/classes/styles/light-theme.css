@@ -294,6 +294,10 @@
     -fx-border-radius: 5;
 }
 
+.error-t .content {
+    -fx-background-color: transparent;
+}
+
 /* backdrop, indicator, box */
 
 .overlay {

@@ -32,7 +32,7 @@
 
     <TextField fx:id="passwordField" promptText="your password" styleClass="regular-tf" maxWidth="460"/>
 
-    <TextArea fx:id="error" styleClass="error-t" maxWidth="460"/>
+    <Label fx:id="error" styleClass="error-t" maxWidth="460" wrapText="true"/>
 
     <Button fx:id="AuthBTN" onAction="#authentication" text="Login" styleClass="big-filled-btn"/>
 
