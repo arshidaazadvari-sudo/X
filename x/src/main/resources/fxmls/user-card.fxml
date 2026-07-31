@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.shape.Circle?>
+<HBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="client.controllers.UserCardController"
+      styleClass="box"
+      prefHeight="400.0" prefWidth="600.0" onMouseClicked="#displayProfile">
+
+    <ImageView fx:id="profile" preserveRatio="true">
+        <clip>
+            <Circle centerX="24" centerY="24" radius="24"/>
+        </clip>
+    </ImageView>
+
+    <VBox>
+        <Label fx:id="displayName" styleClass="primary-t"/>
+        <Label fx:id="username" styleClass="secondary-t"/>
+        <Label fx:id="bio" styleClass="secondary-t" wrapText="true"/>
+    </VBox>
+
+    <Button fx:id="followBTN" onAction="#follow" styleClass="small-filled-btn"/>
+
+</HBox>

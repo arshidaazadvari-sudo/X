@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.shape.Rectangle?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="client.controllers.FollowController"
+      prefHeight="400.0" prefWidth="600.0" styleClass="box">
+
+    <HBox>
+        <Button onAction="#goToProfile" styleClass="big-hollow-btn">
+            <graphic>
+                <FontIcon fx:id="returnIcon" iconSize="24" styleClass="primary-icon"/>
+            </graphic>
+        </Button>
+        <VBox>
+            <Button text="Followers" onAction="#followers" styleClass="small-hollow-btn" style="-fx-background-radius: 0;"/>
+            <Rectangle fx:id="followerInd" width="80" height="4" arcWidth="8" arcHeight="8" styleClass="indicator-line"/>
+        </VBox>
+        <VBox>
+            <Button text="Following" onAction="#following" styleClass="small-hollow-btn" style="-fx-background-radius: 0;"/>
+            <Rectangle fx:id="followingInd" width="80" height="4" arcWidth="8" arcHeight="8" styleClass="indicator-line"/>
+        </VBox>
+    </HBox>
+
+    <HBox fx:id="noFollowers" managed="false" visible="false">
+        <Label text="No followers" styleClass="header-t"/>
+    </HBox>
+
+    <HBox fx:id="noFollowings" managed="false" visible="false">
+        <Label text="No followings" styleClass="header-t"/>
+    </HBox>
+
+    <VBox fx:id="usersContainer"/>
+
+</VBox>
