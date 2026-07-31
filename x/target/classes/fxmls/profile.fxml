@@ -37,7 +37,7 @@
                 <VBox>
                     <Label fx:id="displayName" styleClass="header-t"/>
                     <Label fx:id="username" styleClass="secondary-t"/>
-                    <Label fx:id="bio" styleClass="primary-t"/>
+                    <Label fx:id="bio" styleClass="primary-t" wrapText="true"/>
                     <Label fx:id="dateOfJoining" styleClass="secondary-t" graphicTextGap="8">
                         <graphic>
                             <FontIcon fx:id="joiningDateIcon" iconSize="18" styleClass="secondary-icon"/>

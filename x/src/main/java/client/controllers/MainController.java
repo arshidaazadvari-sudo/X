@@ -41,7 +41,7 @@ public class MainController {
     @FXML private Text R_username;
     @FXML private Text R_name;
     @FXML private Text R_postingDate;
-    @FXML private TextArea R_tweetText;
+    @FXML private Label R_tweetText;
 
     @FXML private FontIcon home;
     @FXML private FontIcon explore;

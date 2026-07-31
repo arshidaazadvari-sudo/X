@@ -16,7 +16,7 @@ public class UserCardController {
     @FXML private ImageView profile;
     @FXML private Label displayName;
     @FXML private Label username;
-    @FXML private TextArea bio;
+    @FXML private Label bio;
 
     @FXML private Button followBTN;
 

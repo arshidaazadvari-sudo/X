@@ -148,7 +148,7 @@
                     <Text fx:id="R_username" styleClass="secondary-t"/>
                     <Text fx:id="R_postingDate" styleClass="secondary-t"/>
                 </TextFlow>
-                <TextArea fx:id="R_tweetText" styleClass="primary-t"/>
+                <Label fx:id="R_tweetText" styleClass="primary-t" wrapText="true"/>
             </VBox>
 
         </HBox>

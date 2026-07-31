@@ -37,7 +37,7 @@ public class AuthController {
 
     @FXML private Label emailText;
     @FXML private TextField emailField;
-    @FXML private TextArea error;
+    @FXML private Label error;
 
     @FXML
     public void initialize() {
