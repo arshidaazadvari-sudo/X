@@ -10,18 +10,20 @@ public class AuthService {
 
     private final UserDao userDAO = new UserDao();
 
-    public User getCurrentUser(String username) {
-        if (username == null || username.isBlank()) {
+    public User getCurrentUser(int userId) {
+        if (userId <= 0) {
             return null;
         }
-        return userDAO.getUserByUsername(username);
+        return userDAO.getUserById(userId);
     }
 
     public Map<String, Object> login(String username, String password) {
         User user = userDAO.getUserByUsername(username);
-        if (user == null) {
+
+        if (user == null || !user.isActive()) {
             return null;
         }
+
         if (!userDAO.checkPassword(user.getId(), password)) {
             return null;
         }
@@ -29,9 +31,11 @@ public class AuthService {
         user.setPasswordHash(null);
 
         return Map.of(
+                "userId", user.getId(),
                 "user", user
         );
     }
+
 
     public boolean register(String username, String email, String password, String displayName) {
         if (username == null || username.length() < 3) return false;
@@ -55,7 +59,9 @@ public class AuthService {
         return userDAO.createUser(newUser);
     }
 
-    public boolean logout(String username) {
-        return true;
+
+    public boolean logout(int userId) {
+        // Nothing to clear on server when using plain userId
+        return userId > 0;
     }
 }

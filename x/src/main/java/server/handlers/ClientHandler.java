@@ -62,13 +62,11 @@ public class ClientHandler implements Runnable {
 
         return switch (request.getType().toUpperCase()) {
 
-            // Auth
             case "REGISTER"     -> handleRegister(request);
             case "LOGIN"        -> handleLogin(request);
             case "LOGOUT"       -> handleLogout(request);
             case "ME", "AUTH"   -> handleMe(request);
 
-            // Tweet
             case "CREATE_TWEET"     -> handleCreateTweet(request);
             case "DELETE_TWEET"     -> handleDeleteTweet(request);
             case "CREATE_REPLY"     -> handleCreateReply(request);
@@ -76,15 +74,12 @@ public class ClientHandler implements Runnable {
             case "GET_HOME_TIMELINE", "GET_USER_TIMELINE" ->
                     Response.error(request.getRequestId(), 501, "Timeline not implemented yet");
 
-            // Follow
             case "FOLLOW", "UNFOLLOW", "GET_FOLLOWERS", "GET_FOLLOWING" ->
                     followHandler.handle(request);
 
-            // Search
             case "SEARCH_USERS", "SEARCH_TWEETS" ->
                     searchHandler.handle(request);
 
-            // Like
             case "LIKE_TWEET", "UNLIKE_TWEET" ->
                     Response.error(request.getRequestId(), 501, "Like not implemented yet");
 
@@ -92,6 +87,17 @@ public class ClientHandler implements Runnable {
                     "Unknown request type: " + request.getType());
         };
     }
+
+    private int extractUserId(Request request) {
+        try {
+            Map<String, Object> payload = mapper.convertValue(request.getPayload(), Map.class);
+            if (payload != null && payload.get("userId") != null) {
+                return ((Number) payload.get("userId")).intValue();
+            }
+        } catch (Exception ignored) {}
+        return -1;
+    }
+
     private Response handleRegister(Request request) {
         try {
             Map<String, Object> payload = mapper.convertValue(request.getPayload(), Map.class);
@@ -137,18 +143,20 @@ public class ClientHandler implements Runnable {
     }
 
     private Response handleLogout(Request request) {
-        boolean success = authService.logout(request.getToken());
+        int userId = extractUserId(request);
+        boolean success = authService.logout(userId);
 
         if (success) {
             return Response.success("SUCCESS", request.getRequestId(),
                     Map.of("message", "Logged out successfully"));
         } else {
-            return Response.error(request.getRequestId(), 400, "Invalid or expired token");
+            return Response.error(request.getRequestId(), 400, "Invalid user");
         }
     }
 
     private Response handleMe(Request request) {
-        User currentUser = authService.getCurrentUser(request.getToken());
+        int userId = extractUserId(request);
+        User currentUser = authService.getCurrentUser(userId);
 
         if (currentUser == null) {
             return Response.error(request.getRequestId(), 401, "You are not logged in");
@@ -158,10 +166,10 @@ public class ClientHandler implements Runnable {
         return Response.success("SUCCESS", request.getRequestId(), currentUser);
     }
 
-
     private Response handleCreateTweet(Request request) {
         try {
-            User currentUser = authService.getCurrentUser(request.getToken());
+            int userId = extractUserId(request);
+            User currentUser = authService.getCurrentUser(userId);
             if (currentUser == null) {
                 return Response.error(request.getRequestId(), 401, "You must be logged in");
             }
@@ -192,7 +200,8 @@ public class ClientHandler implements Runnable {
 
     private Response handleDeleteTweet(Request request) {
         try {
-            User currentUser = authService.getCurrentUser(request.getToken());
+            int userId = extractUserId(request);
+            User currentUser = authService.getCurrentUser(userId);
             if (currentUser == null) {
                 return Response.error(request.getRequestId(), 401, "You must be logged in");
             }
@@ -216,7 +225,8 @@ public class ClientHandler implements Runnable {
 
     private Response handleCreateReply(Request request) {
         try {
-            User currentUser = authService.getCurrentUser(request.getToken());
+            int userId = extractUserId(request);
+            User currentUser = authService.getCurrentUser(userId);
             if (currentUser == null) {
                 return Response.error(request.getRequestId(), 401, "You must be logged in");
             }
@@ -249,7 +259,8 @@ public class ClientHandler implements Runnable {
 
     private Response handleCreateRetweet(Request request) {
         try {
-            User currentUser = authService.getCurrentUser(request.getToken());
+            int userId = extractUserId(request);
+            User currentUser = authService.getCurrentUser(userId);
             if (currentUser == null) {
                 return Response.error(request.getRequestId(), 401, "You must be logged in");
             }
@@ -259,7 +270,7 @@ public class ClientHandler implements Runnable {
 
             Tweet retweet = new Tweet();
             retweet.setUserId(currentUser.getId());
-            retweet.setContent(""); // retweets usually have empty content
+            retweet.setContent("");
             retweet.setRetweetOfTweetId(originalTweetId);
 
             boolean success = tweetDAO.createTweet(retweet);

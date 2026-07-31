@@ -7,7 +7,7 @@ public class Request {
 
     private String type;
     private String requestId;
-    private String token;
+    private int userId;
     private Object payload;
 
 
@@ -18,13 +18,13 @@ public class Request {
         this.type = type;
         this.requestId = UUID.randomUUID().toString();
         this.payload = payload;
-        this.token = null;
+        this.userId = 0;
     }
 
-    public Request(String type, String token, Object payload) {
+    public Request(String type, int userId, Object payload) {
         this.type = type;
         this.requestId = UUID.randomUUID().toString();
-        this.token = token;
+        this.userId = userId;
         this.payload = payload;
     }
 
@@ -45,12 +45,12 @@ public class Request {
         this.requestId = requestId;
     }
 
-    public String getToken() {
-        return token;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setUserId(int  userId) {
+        this.userId= userId;
     }
 
     public Object getPayload() {
