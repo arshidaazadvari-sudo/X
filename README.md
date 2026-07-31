@@ -3,7 +3,20 @@
 A desktop social media application inspired by Twitter/X, built with **Java**, **JavaFX**, and **PostgreSQL**.
 
 ---
+## 📖 Table of Contents
 
+- [Features](#-features)
+- [Project Architecture](#-project-architecture)
+- [Technologies](#-technologies)
+- [Installation & Setup](#-installation--setup)
+- [Database Schema](#-database-schema)
+- [API Protocol](#-api-protocol)
+- [Team Members](#-team-members)
+- [Contributing](#-contributing)
+- [Changelog](#-changelog)
+- [Contact](#-contact)
+- [License](#-license)
+- 
 ## 📌 Features
 
 ### ✅ Implemented
@@ -16,12 +29,6 @@ A desktop social media application inspired by Twitter/X, built with **Java**, *
 - **Replies:** Reply to tweets
 - **Hashtags:** Auto-detection and search by hashtag
 - **Media:** Upload and display images
-
-### ⏳ In Progress
-
-- Advanced search
-- Notifications
-- Dark mode
 
 ---
 
@@ -37,6 +44,14 @@ XClone/
 └── run/             # Execution scripts
 
 ```
+
+---
+
+### Communication Flow
+
+- **Client ↔ Server:** JSON messages over TCP sockets
+- **Server ↔ Database:** JDBC with PreparedStatement
+- **Concurrency:** Thread pool for handling multiple clients
 
 ---
 
@@ -73,6 +88,8 @@ cd xclone
 ```bash
 # Create database
 psql -U postgres -c "CREATE DATABASE x_clone;"
+psql -U postgres -c "CREATE USER ap_user WITH PASSWORD 'your password';"
+psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE x_clone TO ap_user;"
 
 # Run schema script
 psql -U postgres -d x_clone -f docs/database-schema.sql
@@ -107,13 +124,28 @@ docs/ERD.png
 For detailed table descriptions and relationships, see docs/database-schema.md.
 
 ---
+## 📝 API Protocol
 
+Communication between client and server uses **JSON** messages.
+
+### Request Format
+
+```json
+{
+  "type": "LOGIN",
+  "payload": {
+    "username": "john_doe",
+    "password": "123456"
+  }
+}
+```
 👥 Team Members
 
-Role Name
-Person Zahra Database, DAO, Models, Services
-Person Kimia Server, Network, Handlers
-Person Arshida Client, GUI, User Experience
+| Name | Responsibilities |
+|------|------------------|
+| Zahra | Database, DAO, Models, Services, password hashing |
+| Kimia | Server, Network, Handlers |
+| Arshida | Client, GUI, User Experience, controller |
 
 ---
 

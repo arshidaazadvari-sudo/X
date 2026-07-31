@@ -3,7 +3,10 @@
 ## 🧾 Overview
 
 The database for this project is designed using **PostgreSQL**.  
-It consists of 9 main tables that manage users, tweets, social interactions, hashtags, and media.
+It consists of 8 main tables that manage users, tweets, social interactions, hashtags, and media.
+
+>**Note:** Replies are stored in the 'tweet' table using the 'reply_to_tweet_id' field.
+> The separate 'replies' table has been removed to simplify the architecture.
 
 ---
 
@@ -16,10 +19,9 @@ It consists of 9 main tables that manage users, tweets, social interactions, has
 | 3 | `tweets` | Tweets, replies, and retweets |
 | 4 | `follows` | Follower/following relationships |
 | 5 | `likes` | User likes on tweets |
-| 6 | `replies` | User replies to tweets |
-| 7 | `hashtags` | Hashtags used in tweets |
-| 8 | `tweet_hashtags` | Many-to-many relationship between tweets and hashtags |
-| 9 | `media` | Multimedia files (images, videos) |
+| 6 | `hashtags` | Hashtags used in tweets |
+| 7 | `tweet_hashtags` | Many-to-many relationship between tweets and hashtags |
+| 8 | `media` | Multimedia files (images, videos) |
 
 ---
 
@@ -105,20 +107,6 @@ It consists of 9 main tables that manage users, tweets, social interactions, has
 
 ---
 
-### 6. `replies`
-
-**Purpose:** Store user replies to tweets
-
-| Column | Type | Description |
-|--------|------|-------------|
-| `id` | SERIAL PRIMARY KEY | Reply ID |
-| `user_id` | INTEGER REFERENCES users(id) | User who replied |
-| `tweet_id` | INTEGER REFERENCES tweets(id) | Target tweet |
-| `content` | TEXT NOT NULL | Reply content |
-| `created_at` | TIMESTAMP DEFAULT NOW() | Reply timestamp |
-
----
-
 ### 7. `hashtags`
 
 **Purpose:** Store hashtags used in tweets
@@ -172,8 +160,6 @@ users (1) ----< (M) tweets
 │                  │
 │                  │
 └----< (M) sessions
-│
-└----< (M) replies ──┘
 │
 └----< (M) tweet_hashtags >---- (1) hashtags
 │
