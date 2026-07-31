@@ -16,8 +16,8 @@ public class ServerConnection {
     private boolean isConnected;
 
     public boolean connect() {
-        try (Socket socket_ = new Socket(ClientConfig.HOST, ClientConfig.PORT)) {
-            socket = socket_;
+        try {
+            socket= new Socket(ClientConfig.HOST, ClientConfig.PORT);
 
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream(), true);
@@ -27,6 +27,8 @@ public class ServerConnection {
             listener.start();
 
             isConnected = true;
+
+            System.out.println("Client connected successfully. ");
 
             return isConnected;
 

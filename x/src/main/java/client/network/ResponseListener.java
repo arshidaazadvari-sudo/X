@@ -5,36 +5,45 @@ import client.CurrentClient;
 import shared.models.Tweet;
 import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.node.ObjectNode;
 
 import java.io.BufferedReader;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Objects;
 
 public class ResponseListener implements Runnable {
 
     private final BufferedReader in;
 
-    private static JsonNode authError;
+    private static JsonNode authResponse;
 
     public ResponseListener(BufferedReader br) { this.in = br; }
 
-    public static JsonNode getAuthError() { return authError; }
+    public static JsonNode getAuthResponse() { return authResponse; }
 
-    public static void setAuthErrorNull() { authError = null; }
+    public static void setAuthErrorNull() { authResponse = null; }
 
     @Override
     public void run() {
+        JsonNode error = ServerConnection.mapper.readTree("{ \"type\": \"ERROR\" }");
+        JsonNode success = ServerConnection.mapper.readTree("{ \"type\": \"SUCCESS\" }");
+        JsonNode tweet = ServerConnection.mapper.readTree("{ \"type\": \"TWEET\" }");
         try {
             String message;
             while ((message = in.readLine()) != null) {
                 JsonNode json = ServerConnection.mapper.readTree(message);
 
                 // deciding what to do with the received message from server based on its type
-                if (json.get("type").toString().equals("SUCCESS") || json.get("type").toString().equals("ERROR")) {
-                    authError = json;
-                    System.out.println("An auth response was received. ");
+                if (Objects.equals(json.get("type").toString(), success.get("type").toString())) {
+                    authResponse = json;
+                    System.out.println("An auth success response was received. ");
                 }
-                else if (json.get("type").toString().equals("TWEET")) {
+                else if (Objects.equals(json.get("type").toString(), error.get("type").toString())) {
+                    authResponse = json;
+                    System.out.println("An auth error was received. ");
+                }
+                else if (Objects.equals(json.get("type").toString(), tweet.get("type").toString())) {
                     if (CurrentClient.isOnHomePage()) {
 
                         JsonNode payload = ServerConnection.mapper.readTree(json.get("payload").toString());

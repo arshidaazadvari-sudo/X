@@ -21,7 +21,7 @@
 }
 
 .half-transparent-icon {
-    -fx-icon-color: rgba(0 0 0 0.65);
+    -fx-icon-color: rgba(0, 0, 0, 0.65);
 }
 
 .gray-like-icon {
@@ -37,11 +37,11 @@
 }
 
 .red-like-icon {
-    -fx-icon-color: rgb(249 24 128);
+    -fx-icon-color: rgb(249, 24, 128);
 }
 
 .green-repost-icon {
-    -fx-icon-color: rgb(0 186 124);
+    -fx-icon-color: rgb(0, 186, 124);
 }
 
 /* buttons */
@@ -134,7 +134,7 @@
 }
 
 .red-btn {
-    -fx-background-color: rgb(244 33 44);
+    -fx-background-color: rgb(244, 33, 44);
     -fx-border-color: transparent;
     -fx-text-fill: transparent;
     -fx-font-size: 15px;
@@ -146,7 +146,7 @@
 }
 
 .gray-btn {
-    -fx-background-color: rgba(0 0 0 0.65);
+    -fx-background-color: rgba(0, 0, 0, 0.65);
     -fx-border-color: transparent;
     -fx-text-fill: transparent;
     -fx-font-size: 14px;
@@ -157,7 +157,7 @@
 }
 
 .gray-btn:hover{
-    -fx-background-color: rgba(0 0 0 0.85);
+    -fx-background-color: rgba(0, 0, 0, 0.85);
 }
 
 .secondary-btn {
@@ -184,7 +184,7 @@
 }
 
 .gray-like-btn:hover .gray-like-icon {
-    -fx-icon-color: rgba(249 24 128 0.10);
+    -fx-icon-color: rgba(249, 24, 128, 0.10);
 }
 
 .gray-repost-btn {
@@ -198,7 +198,7 @@
 }
 
 .gray-repost-btn:hover .gray-repost-icon {
-    -fx-icon-color: rgba(0 186 124 0.10);
+    -fx-icon-color: rgba(0, 186, 124, 0.10);
 }
 
 .gray-reply-btn {
@@ -212,7 +212,7 @@
 }
 
 .gray-reply-btn:hover .gray-reply-icon {
-    -fx-icon-color: rgba(29 155 240 0.10);
+    -fx-icon-color: rgba(29, 155, 240, 0.10);
 }
 
 /* texts & text fields */
@@ -276,15 +276,15 @@
 .blank-name-t {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
-    -fx-text-fill: rgb(244 33 44);
+    -fx-text-fill: rgb(244, 33, 44);
     -fx-font-size: 13px;
     -fx-padding: 0 0;
 }
 
 .error-t {
-    -fx-background-color: rgb(244 33 44, 0.4);
-    -fx-border-color: rgb(244 33 44);
-    -fx-text-fill: rgb(244 33 44);
+    -fx-background-color: rgba(244, 33, 44, 0.4);
+    -fx-border-color: rgb(244, 33, 44);
+    -fx-text-fill: rgb(244, 33, 44);
     -fx-border-width: 1;
     -fx-font-size: 14px;
     -fx-font-weight: bold;
@@ -296,7 +296,7 @@
 /* backdrop, indicator, box */
 
 .overlay {
-    -fx-background-color: rgba(0 0 0 0.40);
+    -fx-background-color: rgba(0, 0, 0, 0.40);
 }
 
 .indicator-line {
