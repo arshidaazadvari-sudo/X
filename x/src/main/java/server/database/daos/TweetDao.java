@@ -47,6 +47,16 @@ public class TweetDao {
             return false;
         }
 
+        // Debug print (safe)
+        if (tweet.getMediaUrls() == null) {
+            System.out.println("mediaUrls: null");
+        } else {
+            System.out.println("mediaUrls length: " + tweet.getMediaUrls().length);
+            for (String url : tweet.getMediaUrls()) {
+                System.out.println("  - " + url);
+            }
+        }
+
         String sql = "INSERT INTO tweets (user_id, content, media_urls, reply_to_tweet_id, retweet_of_tweet_id) " +
                 "VALUES (?, ?, ?, ?, ?)";
 
@@ -55,7 +65,6 @@ public class TweetDao {
 
             pstmt.setInt(1, tweet.getUserId());
 
-            // For retweets we allow empty content
             String content = tweet.getContent() == null ? "" : tweet.getContent().trim();
             pstmt.setString(2, content);
 
@@ -81,14 +90,6 @@ public class TweetDao {
 
                 System.out.println("Tweet created: ID = " + tweet.getId());
                 return true;
-            }
-            if (tweet.getMediaUrls() == null) {
-                System.out.println("mediaUrls: null");
-            } else {
-                System.out.println("mediaUrls length: " + tweet.getMediaUrls().length);
-                for (String url : tweet.getMediaUrls()) {
-                    System.out.println("  - " + url);
-                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
