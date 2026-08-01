@@ -21,7 +21,7 @@ A desktop social media application inspired by Twitter/X, built with **Java**, *
 
 ### ✅ Implemented
 
-- **Authentication:** Register, login, logout with BCrypt password hashing
+- **Authentication:** Register, login
 - **Tweets:** Create, view, delete, and edit tweets
 - **Personalized Feed:** Display tweets from user and followed users
 - **Follow System:** Follow and unfollow users
@@ -38,7 +38,7 @@ A desktop social media application inspired by Twitter/X, built with **Java**, *
 
 XClone/
 ├── shared/          # Shared code (models, protocol, utilities)
-├── server/          # Server (database, DAO, handlers)
+├── server/          # Server (database, DAO, handlers, services)
 ├── client/          # Client (JavaFX, controllers, views)
 ├── docs/            # Documentation (ERD, schema, API)
 └── run/             # Execution scripts
@@ -62,8 +62,7 @@ XClone/
 | Language | Java 17 |
 | GUI | JavaFX 21 |
 | Database | PostgreSQL 16 |
-| Communication | Sockets + JSON (Gson) |
-| Password Hashing | BCrypt |
+| Communication | Sockets + JSON (Jackson) |
 | Build Tool | Maven |
 
 ---
@@ -79,8 +78,8 @@ XClone/
 ### 2. Clone the Repository
 
 ```bash
-git clone https://github.com/your-team/xclone.git
-cd xclone
+git clone https://github.com/arshidaazadvari-sudo/X.git
+cd X
 ```
 
 3. Database Setup
@@ -109,10 +108,10 @@ private static final String PASSWORD = "your_password";
 
 ```bash
 # Server
-mvn exec:java -pl server -Dexec.mainClass="com.twitter.server.Server"
+mvn exec:java -pl server -Dexec.mainClass="server.ServerLauncher"
 
 # Client
-mvn exec:java -pl client -Dexec.mainClass="com.twitter.client.ClientApp"
+mvn exec:java -pl client -Dexec.mainClass="ClientLauncher"
 ```
 
 ---
@@ -143,15 +142,9 @@ Communication between client and server uses **JSON** messages.
 
 | Name | Responsibilities |
 |------|------------------|
-| Zahra | Database, DAO, Models, Services, password hashing |
-| Kimia | Server, Network, Handlers |
+| Zahra | Database, DAO, Models, password hashing |
+| Kimia | Server, Network, Handlers, Services |
 | Arshida | Client, GUI, User Experience, controller |
-
----
-
-📝 API Documentation
-
-Request and response formats are described in docs/api-protocol.md.
 
 ---
 
