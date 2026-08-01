@@ -52,8 +52,6 @@ public class TweetPageController {
     private TweetController tweetController;
     private Tweet tweet;
 
-    //public void setTweetController(TweetController tc) { this.tweetController = tc; }
-
     public TweetPageController(TweetController tc) {
         this.tweetController = tc;
     }
@@ -76,15 +74,14 @@ public class TweetPageController {
         repostIcon.setIconCode(FontAwesomeSolid.RETWEET);
         likeIcon.setIconCode(FontAwesomeRegular.HEART);
 
-        boolean b1 = likeDAO.isLikedByUser(tweet.getUserId(), tweet.getId());
+        boolean b1 = likeDAO.isLikedByUser(CurrentClient.getUser().getId(), tweet.getId());
         if (b1) {
             likeIcon.setIconCode(FontAwesomeSolid.HEART);
             likeIcon.getStyleClass().clear();
             likeIcon.getStyleClass().add("red-like-icon");
         }
 
-        boolean b2 = true;
-        // isRepostedByUser  ?????????????????????
+        boolean b2 = userDao.isRetweetedByUser(CurrentClient.getUser().getId(), tweet.getId());
         if (b2) {
             repostIcon.getStyleClass().clear();
             repostIcon.getStyleClass().add("green-repost-icon");

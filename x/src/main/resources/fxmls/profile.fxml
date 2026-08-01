@@ -33,13 +33,13 @@
 
                 </StackPane>
 
-                <VBox spacing="5" alignment="CENTER_LEFT" prefHeight="150">
+                <VBox spacing="5" alignment="CENTER_LEFT" prefHeight="300">
                     <padding>
                         <Insets left="30"/>
                     </padding>
                     <Label fx:id="displayName" styleClass="header-t"/>
                     <Label fx:id="username" styleClass="secondary-t"/>
-                    <Label fx:id="bio" styleClass="primary-t" wrapText="true"/>
+                    <Label fx:id="bio" styleClass="primary-t" wrapText="true" prefHeight="80" maxHeight="100"/>
                     <Label fx:id="dateOfJoining" styleClass="secondary-t" graphicTextGap="8">
                         <graphic>
                             <FontIcon fx:id="joiningDateIcon" iconSize="18" styleClass="secondary-icon"/>

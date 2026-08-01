@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class MainController {
 
@@ -305,15 +306,28 @@ public class MainController {
 
     public void setEditWindow() {
         overlay1.setVisible(true);
+        overlay1.setManaged(true);
         editWindow.setVisible(true);
+        editWindow.setManaged(true);
     }
 
     @FXML
     private void closeEditWindow() {
-        if (CurrentClient.getUser().getBannerPic().equals(newBannerPic) &&
-                CurrentClient.getUser().getProfilePic().equals(newProfilePic) &&
-                CurrentClient.getUser().getDisplayName().equals(newDisplayName.getText()) &&
-                CurrentClient.getUser().getBio().equals(newBio.getText())) {
+
+        boolean a1 = true;
+        if (CurrentClient.getUser().getBannerPic() != null) a1 = CurrentClient.getUser().getBannerPic().equals(newBannerPic);
+
+        boolean a2 = true;
+        if (CurrentClient.getUser().getProfilePic() != null) a2 = CurrentClient.getUser().getProfilePic().equals(newProfilePic);
+
+        boolean a3 = true;
+        if (CurrentClient.getUser().getBio() != null) a3 = CurrentClient.getUser().getBio().equals(newBio.getText());
+
+        boolean b1 = ((CurrentClient.getUser().getBannerPic() == null) && (newBannerPic == null)) || a1;
+        boolean b2 = ((CurrentClient.getUser().getProfilePic() == null) && (newProfilePic == null)) || a2;
+        boolean b3 = ((CurrentClient.getUser().getBio() == null) && (Objects.equals(newBio.getText(), ""))) || a3;
+        boolean b4 = CurrentClient.getUser().getDisplayName().equals(newDisplayName.getText());
+        if (b1 && b2 && b3 && b4) {
             overlay1.setVisible(false);
             overlay1.setManaged(false);
             editWindow.setVisible(false);
@@ -329,7 +343,7 @@ public class MainController {
 
     @FXML
     private void saveChanges() {
-        if (newDisplayName.getText() != null) {
+        if (!Objects.equals(newDisplayName.getText(), "")) {
 
             blankNameMSG.setVisible(false);
 
@@ -369,7 +383,8 @@ public class MainController {
         File file = fileChooser.showOpenDialog(bannerPic.getScene().getWindow());
 
         newBannerPic = ImageLoader.bannerImageUploader(file);
-        bannerPic.setImage(ImageLoader.getBannerImage(newBannerPic));
+        Image image = ImageLoader.getBannerImage(newBannerPic);
+        bannerPic.setImage(image);
     }
 
     @FXML
@@ -380,7 +395,8 @@ public class MainController {
         File file = fileChooser.showOpenDialog(profilePic.getScene().getWindow());
 
         newProfilePic = ImageLoader.profileImageUploader(file);
-        profilePic.setImage(ImageLoader.getProfileImage(newProfilePic));
+        Image image = ImageLoader.getProfileImage(newProfilePic);
+        profilePic.setImage(image);
     }
 
     @FXML
@@ -430,6 +446,7 @@ public class MainController {
     @FXML
     private void Post() {
         posting(images, postText.getText());
+        closePostWindow();
     }
 
     @FXML
@@ -458,8 +475,12 @@ public class MainController {
         Timestamp ts = new Timestamp(System.currentTimeMillis());
         payload.put("timestamp", ts.toString());
 
-        String[] imageArray = imageList.toArray(new String[0]);
+        String[] imageArray = new String[imageList.size()];
+        for (int i = 0; i < imageList.size(); i++) {
+            imageArray[i] = imageList.get(i);
+        }
         JsonNode mediaUrls = ServerConnection.mapper.valueToTree(imageArray);
+        System.out.println("images: " + mediaUrls.toString());
         payload.set("mediaUrls", mediaUrls);
 
         if (isReplying) {

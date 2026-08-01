@@ -67,9 +67,12 @@
 
     <Pane fx:id="overlay1" visible="false" managed="false" styleClass="overlay" prefWidth="-Infinity" prefHeight="-Infinity"/>
 
-    <VBox fx:id="editWindow" visible="false" managed="false" prefWidth="600" prefHeight="500" alignment="CENTER" spacing="20">
-        <HBox spacing="20">
-            <Button onAction="#closeEditWindow" text="close icon" styleClass="small-hollow-btn" maxWidth="50">
+    <VBox fx:id="editWindow" styleClass="window" visible="false" managed="false" maxWidth="650" maxHeight="650" alignment="CENTER" spacing="20">
+        <padding>
+            <Insets top="20" left="20" right="20" bottom="20"/>
+        </padding>
+        <HBox spacing="20" maxWidth="600" maxHeight="70" VBox.vgrow="NEVER" alignment="TOP_CENTER">
+            <Button onAction="#closeEditWindow" styleClass="small-hollow-btn" maxWidth="50">
                 <graphic>
                     <FontIcon fx:id="editCloseIcon" iconSize="24" styleClass="primary-icon"/>
                 </graphic>
@@ -78,22 +81,21 @@
             <Button onAction="#saveChanges" text="save" styleClass="small-filled-btn" maxWidth="70"/>
         </HBox>
 
-        <StackPane>
+        <StackPane maxWidth="600" maxHeight="260" VBox.vgrow="ALWAYS">
 
-            <ImageView fx:id="bannerPic" preserveRatio="true"/>
-            <Button onAction="#chooseBannerPic" styleClass="small-hollow-btn">
+            <ImageView fx:id="bannerPic" preserveRatio="true" fitHeight="200" fitWidth="600" StackPane.alignment="TOP_CENTER"/>
+            <Button onAction="#chooseBannerPic" styleClass="small-hollow-btn" StackPane.alignment="TOP_CENTER" translateY="80">
                 <graphic>
                     <FontIcon fx:id="bannerCameraIcon" iconSize="18" styleClass="half-transparent-icon"/>
                 </graphic>
             </Button>
 
-            <ImageView fx:id="profilePic" preserveRatio="true">
+            <ImageView fx:id="profilePic" preserveRatio="true" fitHeight="120" fitWidth="120" StackPane.alignment="BOTTOM_LEFT" translateX="20">
                 <clip>
                     <Circle centerX="60" centerY="60" radius="60"/>
                 </clip>
             </ImageView>
-
-            <Button onAction="#chooseProfilePic" styleClass="small-hollow-btn">
+            <Button onAction="#chooseProfilePic" styleClass="small-hollow-btn" StackPane.alignment="BOTTOM_LEFT" translateX="50" translateY="-30">
                 <graphic>
                     <FontIcon fx:id="profileCameraIcon" iconSize="18" styleClass="half-transparent-icon"/>
                 </graphic>
@@ -101,14 +103,14 @@
 
         </StackPane>
 
-        <VBox spacing="20">
-            <VBox spacing="10">
+        <VBox spacing="20" maxHeight="200" maxWidth="550" VBox.vgrow="NEVER">
+            <VBox spacing="10" maxHeight="80" maxWidth="500">
                 <Label text="Name" styleClass="secondary-t"/>
                 <TextField fx:id="newDisplayName" styleClass="edit-tf"/>
                 <Label fx:id="blankNameMSG" text="Name can't be blank" visible="false" styleClass="blank-name-t"/>
             </VBox>
 
-            <VBox spacing="10">
+            <VBox spacing="10" maxHeight="80" maxWidth="500">
                 <Label text="Bio" styleClass="secondary-t"/>
                 <TextArea fx:id="newBio" styleClass="edit-tf" wrapText="true"/>
             </VBox>
@@ -123,7 +125,7 @@
             <Insets right="20" bottom="20" left="20" top="20"/>
         </padding>
         <Label text="Discard changes?" styleClass="header-t"/>
-        <Label text="This can’t be undone and you’ll lose your changes. " wrapText="true" styleClass="secondary-t"/>
+        <Label text="This can’t be undone and you’ll lose your changes. " maxWidth="250" wrapText="true" styleClass="secondary-t"/>
         <Button text="Discard" onAction="#discard" styleClass="red-btn"/>
         <Button text="Cancel" onAction="#cancelDiscard" styleClass="big-bordered-btn"/>
     </VBox>

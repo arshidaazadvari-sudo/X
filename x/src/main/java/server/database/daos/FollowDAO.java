@@ -12,7 +12,7 @@ import java.util.List;
 
 public class FollowDAO {
     public boolean follow(int followerId, int followeeId){
-        if (followeeId == followeeId){
+        if (followerId == followeeId){
             System.out.println("You cannot follow your self");
             return false;
         }

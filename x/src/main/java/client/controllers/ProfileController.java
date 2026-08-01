@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -62,10 +63,6 @@ public class ProfileController {
     private static MainController mainController;
 
     private User user;
-
-    //public void setUser(User u) { this.user = u; }
-
-    //public void setMainController(MainController mc) { mainController = mc; }
 
     public ProfileController(MainController mc, User u) {
         mainController = mc;

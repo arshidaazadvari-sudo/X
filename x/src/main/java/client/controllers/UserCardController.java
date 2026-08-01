@@ -27,10 +27,6 @@ public class UserCardController {
 
     private final FollowDAO followDAO = new FollowDAO();
 
-    //public void setUser(User u) { this.user = u; }
-
-    //public void setMainController(MainController mc) { mainController = mc; }
-
     public UserCardController(MainController mc, User u) {
         mainController = mc;
         this.user = u;

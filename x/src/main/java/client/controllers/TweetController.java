@@ -58,12 +58,9 @@ public class TweetController {
     private LikeDAO likeDAO = new LikeDAO();
     private ReplyDAO replyDAO = new ReplyDAO();
     private TweetDao tweetDao = new TweetDao();
-
-    //public void setTweet(Tweet tweet) { this.givenTweet = tweet; }
+    private UserDao userDao = new UserDao();
 
     public Tweet getTweet() { return realTweet; }
-
-    //public void setMainController(MainController mc) { mainController = mc; }
 
     public MainController getMainController() { return mainController;}
 
@@ -77,15 +74,14 @@ public class TweetController {
 
         //find the real tweet owner
 
-        Integer tweetId = givenTweet.getRetweetOfTweetId();
-        while (tweetId != null) {
-            Integer temp = tweetDao.getTweetById(tweetId).getRetweetOfTweetId();
-            tweetId = temp;
-        }
+        //Tweet t = givenTweet;
+        //while (t.getRetweetOfTweetId() != null) {
+            //t = tweetDao.getTweetById(t.getRetweetOfTweetId());
+        //}
+        //realTweet = t;
 
-        if (tweetId != null) realTweet = tweetDao.getTweetById(tweetId);
+        if (givenTweet.getRetweetOfTweetId() != null) realTweet = tweetDao.getTweetById(givenTweet.getRetweetOfTweetId());
         else realTweet = givenTweet;
-
 
         //icons
 
@@ -95,15 +91,14 @@ public class TweetController {
         likeIcon.setIconCode(FontAwesomeRegular.HEART);
         repostIcon.setIconCode(FontAwesomeSolid.RETWEET);
 
-        boolean b1 = likeDAO.isLikedByUser(realTweet.getUserId(), realTweet.getId());
+        boolean b1 = likeDAO.isLikedByUser(CurrentClient.getUser().getId(), realTweet.getId());
         if (b1) {
             likeIcon.setIconCode(FontAwesomeSolid.HEART);
             likeIcon.getStyleClass().clear();
             likeIcon.getStyleClass().add("red-like-icon");
         }
 
-        boolean b2 = true;
-        // isRepostedByUser  ?????????????????????
+        boolean b2 = userDao.isRetweetedByUser(CurrentClient.getUser().getId(), realTweet.getId());
         if (b2) {
             repostIcon.getStyleClass().clear();
             repostIcon.getStyleClass().add("green-repost-icon");
@@ -216,13 +211,22 @@ public class TweetController {
     public boolean repost() {
         repostIcon.getStyleClass().clear();
 
-        boolean b1 = true;
-        //b1 = isRepostedByUser ?????????????????
+        boolean b1 = userDao.isRetweetedByUser(CurrentClient.getUser().getId(), realTweet.getId());
         if (b1) {
             ObjectNode payload = ServerConnection.mapper.createObjectNode();
             ObjectNode retweet = ServerConnection.mapper.createObjectNode();
 
-            payload.put("tweetId", givenTweet.getId());
+
+            List<Tweet> allTweets = tweetDao.getTweetByUserId(CurrentClient.getUser().getId());
+            int id = 0;
+            for (Tweet t : allTweets) {
+                if (t.getRetweetOfTweetId() == realTweet.getId()) {
+                    id = t.getId();
+                    break;
+                }
+            }
+
+            payload.put("tweetId", id);
             payload.put("userId", CurrentClient.getUser().getId());
 
             retweet.put("type", "DELETE_TWEET");
@@ -230,6 +234,8 @@ public class TweetController {
             CurrentClient.getConnection().send(retweet.toString());
 
             repostIcon.getStyleClass().add("gray-repost-icon");
+
+            System.out.println("Undo retweet");
         }
         else {
             ObjectNode payload = ServerConnection.mapper.createObjectNode();
@@ -238,11 +244,13 @@ public class TweetController {
             payload.put("originalTweetId", realTweet.getId());
             payload.put("userId", CurrentClient.getUser().getId());
 
-            retweet.put("type", "RETWEET");
+            retweet.put("type", "CREATE_RETWEET");
             retweet.set("payload", payload);
             CurrentClient.getConnection().send(retweet.toString());
 
             repost.getStyleClass().add("green-repost-icon");
+
+            System.out.println("Retweet");
         }
 
         return !b1;
@@ -250,10 +258,10 @@ public class TweetController {
 
     @FXML
     public boolean like() {
-        boolean b1 = likeDAO.isLikedByUser(realTweet.getUserId(), realTweet.getId());
+        boolean b1 = likeDAO.isLikedByUser(CurrentClient.getUser().getId(), realTweet.getId());
         boolean b2;
         if (b1) {
-            b2 = likeDAO.unlike(realTweet.getUserId(), realTweet.getId());
+            b2 = likeDAO.unlike(CurrentClient.getUser().getId(), realTweet.getId());
             if (b2) {
                 likeIcon.setIconCode(FontAwesomeRegular.HEART);
                 likeIcon.getStyleClass().clear();
@@ -261,7 +269,7 @@ public class TweetController {
             }
         }
         else {
-            b2 = likeDAO.like(realTweet.getUserId(), realTweet.getId());
+            b2 = likeDAO.like(CurrentClient.getUser().getId(), realTweet.getId());
             if (b2) {
                 likeIcon.setIconCode(FontAwesomeSolid.HEART);
                 likeIcon.getStyleClass().clear();
@@ -296,20 +304,6 @@ public class TweetController {
             e.printStackTrace();
             System.out.println(e.getMessage());
         }
-    }
-
-    @FXML
-    private void MEntered() {
-        if (realTweet.getUserId() == CurrentClient.getUser().getId()) {
-            deleteBTN.setManaged(true);
-            deleteBTN.setVisible(true);
-        }
-    }
-
-    @FXML
-    private void MExited() {
-        deleteBTN.setManaged(false);
-        deleteBTN.setVisible(false);
     }
 
     @FXML

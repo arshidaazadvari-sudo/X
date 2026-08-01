@@ -37,12 +37,6 @@ public class FollowController {
 
     private static MainController mainController;
 
-    //public void setOnFollowers(boolean b) { this.isOnFollowers = b; }
-
-    //public void setUser(User u) { this.user = u; }
-
-    //public void setMainController(MainController mc) { mainController = mc; }
-
     public FollowController(MainController mc, User u, boolean b) {
         mainController = mc;
         this.user = u;
@@ -54,7 +48,7 @@ public class FollowController {
         //icon
         returnIcon.setIconCode(FontAwesomeSolid.ARROW_LEFT);
 
-        usersContainer.getChildren().clear();
+        if (!usersContainer.getChildren().isEmpty()) usersContainer.getChildren().clear();
 
         for (User u : users) {
             try {
@@ -89,6 +83,9 @@ public class FollowController {
 
     @FXML
     private void followers() {
+        noFollowings.setManaged(false);
+        noFollowings.setVisible(false);
+
         List<User> followers = followDAO.getFollowers(user.getId());
         displayUsers(followers);
         isOnFollowers = true;
@@ -99,8 +96,6 @@ public class FollowController {
             usersContainer.setVisible(false);
             noFollowers.setManaged(true);
             noFollowers.setVisible(true);
-            noFollowings.setManaged(false);
-            noFollowings.setVisible(false);
         }
 
         //change style (the underline)
@@ -110,6 +105,9 @@ public class FollowController {
 
     @FXML
     private void following() {
+        noFollowers.setManaged(false);
+        noFollowers.setVisible(false);
+
         List<User> following = followDAO.getFollowing(user.getId());
         displayUsers(following);
         isOnFollowers = false;
@@ -120,8 +118,6 @@ public class FollowController {
             usersContainer.setVisible(false);
             noFollowings.setManaged(true);
             noFollowings.setVisible(true);
-            noFollowers.setManaged(false);
-            noFollowers.setVisible(false);
         }
 
         //change style (the underline)

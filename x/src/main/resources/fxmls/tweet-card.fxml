@@ -27,7 +27,7 @@
         <Text text="See the tweet" onMouseClicked="#showRepliedTweet" styleClass="secondary-btn"/>
     </TextFlow>
 
-    <HBox spacing="20">
+    <HBox spacing="20" maxWidth="550">
 
         <padding>
             <Insets top="20" right="20" bottom="20" left="20"/>
@@ -39,9 +39,9 @@
             </clip>
         </ImageView>
 
-        <VBox>
+        <VBox maxWidth="500" maxHeight="500">
 
-            <HBox maxWidth="500" minWidth="500" spacing="300">
+            <HBox maxWidth="500" minWidth="500" spacing="250">
                 <HBox minWidth="150" maxWidth="150">
                     <TextFlow>
                         <Text fx:id="name" onMouseClicked="#profile" styleClass="primary-t" style="-fx-font-weight: bold;"/>
@@ -61,7 +61,7 @@
 
             <Label fx:id="tweetText" wrapText="true" styleClass="primary-t" maxWidth="500" minWidth="500" maxHeight="300" minHeight="100"/>
 
-            <HBox fx:id="mediaBox"/>
+            <HBox fx:id="mediaBox" maxHeight="300" maxWidth="500"/>
 
             <HBox maxWidth="500" spacing="150" alignment="TOP_CENTER">
                 <Button fx:id="reply" onAction="#reply" styleClass="gray-reply-btn" graphicTextGap="5">

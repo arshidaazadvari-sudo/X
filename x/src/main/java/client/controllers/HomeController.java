@@ -39,10 +39,6 @@ public class HomeController {
 
     private static MainController mainController;
 
-    //private User user;
-
-    //public void setMainController(MainController mc) { mainController = mc; }
-
     public HomeController(MainController mc) {
         mainController = mc;
     }
@@ -85,9 +81,12 @@ public class HomeController {
         //tweetsContainer.getChildren().clear();
         TweetDao tweetDao = new TweetDao();
         List<Tweet> posts = tweetDao.getFeedForUser(CurrentClient.getUser().getId(), 100);
+        if (posts.isEmpty()) System.out.println("Feed is empty...!");
         for (Tweet t : posts) {
             addNewTweets(t);
+            System.out.println("another post");
         }
+        System.out.println("posts are in feed");
 
         CurrentClient.setOnHomePage(true);
     }
