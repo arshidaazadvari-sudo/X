@@ -1,6 +1,17 @@
+# Compiled files
 target/
-/target/
-/target
-uploads/
-/uploads
-/uploads/
+*.class
+
+# IDE files
+.idea/
+*.iml
+.settings/
+.project
+.classpath
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
