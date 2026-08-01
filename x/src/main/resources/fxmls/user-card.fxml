@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.geometry.Insets?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      styleClass="box"
+      maxWidth="600" maxHeight="150" prefHeight="200" onMouseClicked="#displayProfile">
+
+    <HBox spacing="20">
+
+        <padding>
+            <Insets top="20" left="20" bottom="20" right="20"/>
+        </padding>
+
+        <HBox maxWidth="430" prefWidth="430" spacing="20">
+            <ImageView fx:id="profile" preserveRatio="true" fitWidth="48" fitHeight="48">
+                <clip>
+                    <Circle centerX="24" centerY="24" radius="24"/>
+                </clip>
+            </ImageView>
+
+            <VBox maxWidth="400" maxHeight="100">
+                <Label fx:id="displayName" styleClass="primary-t"/>
+                <Label fx:id="username" styleClass="secondary-t"/>
+                <Label fx:id="bio" styleClass="secondary-t" wrapText="true" maxHeight="120"/>
+            </VBox>
+        </HBox>
+
+        <Button fx:id="followBTN" onAction="#follow" styleClass="small-filled-btn"/>
+
+    </HBox>
+
+</VBox>
