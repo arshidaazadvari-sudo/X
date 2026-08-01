@@ -157,6 +157,15 @@ public class TweetController {
             b.setVisible(false);
         }
 
+        FollowDAO followDAO = new FollowDAO();
+        boolean b = followDAO.isFollowing(CurrentClient.getUser().getId(), realTweet.getUserId());
+        if (b) {
+            followBTN.setText("Unfollow");
+        }
+        else {
+            followBTN.setText("Follow");
+        }
+
         if (realTweet.getUserId() == CurrentClient.getUser().getId()) {
             followBTN.setManaged(false);
             followBTN.setVisible(false);
