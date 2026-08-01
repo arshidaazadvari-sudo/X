@@ -238,6 +238,25 @@ public class TweetDao {
         return false;
     }
 
+    public int getRetweetCount(int tweetId) {
+        String sql = "SELECT COUNT(*) FROM tweets WHERE retweet_of_tweet_id = ? AND is_deleted = false";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, tweetId);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     public void processHashtags(int tweetId, String content){
         HashtagDAO hashtagDAO = new HashtagDAO();
         hashtagDAO.processHashtags(tweetId, content);
