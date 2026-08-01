@@ -91,7 +91,7 @@ psql -U postgres -c "CREATE USER ap_user WITH PASSWORD 'your password';"
 psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE x_clone TO ap_user;"
 
 # Run schema script
-psql -U postgres -d x_clone -f docs/schema.sql
+psql -U postgres -d x_clone -f db/schema.sql
 ```
 
 4. Configure Database Connection
