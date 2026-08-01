@@ -446,6 +446,13 @@ public class MainController {
     @FXML
     private void Post() {
         posting(images, postText.getText());
+        R_ProfilePic = null;
+        R_tweet = null;
+        R_tweetText = null;
+        R_username = null;
+        R_postingDate = null;
+        replyingTo.setVisible(false);
+        replyingTo.setManaged(false);
         closePostWindow();
     }
 
