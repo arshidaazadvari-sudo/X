@@ -80,8 +80,20 @@ public class TweetController {
         //}
         //realTweet = t;
 
-        if (givenTweet.getRetweetOfTweetId() != null) realTweet = tweetDao.getTweetById(givenTweet.getRetweetOfTweetId());
-        else realTweet = givenTweet;
+        //if (givenTweet.getRetweetOfTweetId() != null) realTweet = tweetDao.getTweetById(givenTweet.getRetweetOfTweetId());
+        //else realTweet = givenTweet;
+
+        Tweet t = givenTweet;
+
+        while (t != null && t.getRetweetOfTweetId() != null) {
+            Tweet next = tweetDao.getTweetById(t.getRetweetOfTweetId());
+            if (next == null) {
+                break;
+            }
+            t = next;
+        }
+
+        realTweet = t;
 
         //icons
 
