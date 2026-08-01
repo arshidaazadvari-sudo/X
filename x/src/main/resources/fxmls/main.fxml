@@ -120,7 +120,7 @@
 
     <Pane fx:id="overlay2" visible="false" managed="false" styleClass="overlay" minHeight="-Infinity" minWidth="-Infinity"/>
 
-    <VBox fx:id="discardWindow" visible="false" managed="false" alignment="CENTER" spacing="20" maxHeight="300" maxWidth="300">
+    <VBox fx:id="discardWindow" visible="false" managed="false" styleClass="window" alignment="CENTER" spacing="20" maxHeight="300" maxWidth="300">
         <padding>
             <Insets right="20" bottom="20" left="20" top="20"/>
         </padding>
