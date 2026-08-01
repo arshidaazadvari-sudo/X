@@ -31,7 +31,7 @@ public class TweetPageController {
     @FXML private ImageView profilePicture;
     @FXML private Label displayName;
     @FXML private Label username;
-    @FXML private TextFlow tweetText;
+    @FXML private Label tweetText;
     @FXML private HBox mediaBox;
     @FXML private Label postingDate;
 
@@ -52,11 +52,18 @@ public class TweetPageController {
     private TweetController tweetController;
     private Tweet tweet;
 
-    public void setTweetController(TweetController tc) { this.tweetController = tc; }
+    public TweetPageController(TweetController tc) {
+        this.tweetController = tc;
+    }
 
     @FXML
     private void initialize() {
 
+        CurrentClient.setOnHomePage(false);
+
+        tweet = tweetController.getTweet();
+
+        TweetDao tweetDao = new TweetDao();
         UserDao userDao = new UserDao();
         LikeDAO likeDAO = new LikeDAO();
 
@@ -67,32 +74,24 @@ public class TweetPageController {
         repostIcon.setIconCode(FontAwesomeSolid.RETWEET);
         likeIcon.setIconCode(FontAwesomeRegular.HEART);
 
-        boolean b1 = likeDAO.isLikedByUser(tweet.getUserId(), tweet.getId());
+        boolean b1 = likeDAO.isLikedByUser(CurrentClient.getUser().getId(), tweet.getId());
         if (b1) {
             likeIcon.setIconCode(FontAwesomeSolid.HEART);
             likeIcon.getStyleClass().clear();
             likeIcon.getStyleClass().add("red-like-icon");
         }
 
-        boolean b2 = true;
-        // isRepostedByUser  ?????????????????????
+        boolean b2 = userDao.isRetweetedByUser(CurrentClient.getUser().getId(), tweet.getId());
         if (b2) {
             repostIcon.getStyleClass().clear();
             repostIcon.getStyleClass().add("green-repost-icon");
         }
 
 
-
-        CurrentClient.setOnHomePage(false);
-
-        tweet = tweetController.getTweet();
-
-        TweetDao tweetDao = new TweetDao();
-
         //name the account you're replying to (if you are)
 
         if (tweet.getReplyToTweetId() != null) {
-            replyToUsername.setText("Reply to @" + tweetDao.getTweetById(tweet.getReplyToTweetId()).getUsername());
+            replyToUsername.setText("Reply to @" + tweetDao.getTweetById(tweet.getReplyToTweetId()).getUsername() + " ");
             replyToText.setVisible(true);
         }
         else {
@@ -109,13 +108,18 @@ public class TweetPageController {
         //repost.setText(); ?????????????????????
         displayName.setText(tweet.getDisplayName());
         username.setText(" @" + tweet.getUsername());
-        postingDate.setText(" . " + DateFormatter.postingDateInPage(tweet.getCreatedAt()));
+        postingDate.setText(DateFormatter.postingDateInPage(tweet.getCreatedAt()));
 
-        Text text = new Text(tweet.getContent());
-        tweetText = new TextFlow(text);
+        tweetText.setText(tweet.getContent());
 
         //mediaBox
-        List<String> images = new ArrayList<>(Arrays.asList(tweet.getMediaUrls()));
+        List<String> images;
+        if (tweet.getMediaUrls() != null) {
+            images = new ArrayList<>(Arrays.asList(tweet.getMediaUrls()));
+        }
+        else {
+            images = new ArrayList<>();
+        }
         List<Button> btns = tweetController.getMainController().displayMedia(images, mediaBox);
         for (Button b : btns) {
             b.setManaged(false);
@@ -132,11 +136,11 @@ public class TweetPageController {
             try {
                 FXMLLoader loader = new FXMLLoader(HomeController.class.getResource("/fxmls/tweet-card.fxml"));
 
-                VBox tweetBox = loader.load();
 
-                TweetController controller = loader.getController();
-                controller.setTweet(rt);
-                controller.setMainController(tweetController.getMainController());
+                TweetController controller = new TweetController(tweetController.getMainController(), rt);
+                loader.setController(controller);
+
+                VBox tweetBox = loader.load();
 
                 vb.getChildren().add(tweetBox);
 
@@ -148,11 +152,10 @@ public class TweetPageController {
                     try {
                         FXMLLoader loader2 = new FXMLLoader(HomeController.class.getResource("/fxmls/tweet-card.fxml"));
 
-                        VBox tweetBox2 = loader2.load();
+                        TweetController controller2 = new TweetController(tweetController.getMainController(), nextRT);
+                        loader2.setController(controller2);
 
-                        TweetController controller2 = loader2.getController();
-                        controller2.setTweet(nextRT);
-                        controller2.setMainController(tweetController.getMainController());
+                        VBox tweetBox2 = loader2.load();
 
                         vb.getChildren().add(tweetBox2);
                     }

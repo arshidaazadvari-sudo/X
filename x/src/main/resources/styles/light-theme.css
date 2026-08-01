@@ -110,6 +110,7 @@
     -fx-padding: 12 24;
     -fx-margin: 0 12;
     -fx-border-radius: 999px;
+    -fx-background-radius: 999px;
     -fx-cursor: hand;
 }
 
@@ -126,6 +127,7 @@
     -fx-font-weight: bold;
     -fx-padding: 10 16;
     -fx-border-radius: 999px;
+    -fx-background-radius: 999px;
     -fx-cursor: hand;
 }
 
@@ -136,7 +138,7 @@
 .red-btn {
     -fx-background-color: rgb(244, 33, 44);
     -fx-border-color: transparent;
-    -fx-text-fill: transparent;
+    -fx-text-fill: -text-primary;
     -fx-font-size: 15px;
     -fx-font-weight: bold;
     -fx-padding: 12 24;
@@ -184,7 +186,7 @@
 }
 
 .gray-like-btn:hover .gray-like-icon {
-    -fx-icon-color: rgba(249, 24, 128, 0.10);
+    -fx-icon-color: rgba(249, 24, 128, 0.70);
 }
 
 .gray-repost-btn {
@@ -198,7 +200,7 @@
 }
 
 .gray-repost-btn:hover .gray-repost-icon {
-    -fx-icon-color: rgba(0, 186, 124, 0.10);
+    -fx-icon-color: rgba(0, 186, 124, 0.70);
 }
 
 .gray-reply-btn {
@@ -212,7 +214,14 @@
 }
 
 .gray-reply-btn:hover .gray-reply-icon {
-    -fx-icon-color: rgba(29, 155, 240, 0.10);
+    -fx-icon-color: rgba(29, 155, 240, 0.70);
+}
+
+.hollow-delete-btn {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 7 7;
+    -fx-cursor: hand;
 }
 
 /* texts & text fields */
@@ -243,8 +252,9 @@
     -fx-background-color: transparent;
     -fx-border-color: transparent;
     -fx-text-fill: -text-primary;
+    -fx-border-width: 0px;
     -fx-font-size: 20px;
-    -fx-padding: 0 2;
+    -fx-padding: 5 5;
     -fx-cursor: text;
 }
 
@@ -322,4 +332,10 @@
 
 .scroll-pane > .viewport {
     -fx-background-color: -bg;
+}
+
+.window {
+    -fx-background-color: -bg;
+    -fx-background-radius: 7px;
+    -fx-border-width: 0px;
 }

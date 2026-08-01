@@ -1,7 +1,10 @@
 package client.controllers;
 
+import client.CurrentClient;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -29,63 +32,56 @@ public class ExploreController {
     @FXML private FontIcon returnIcon;
     @FXML private FontIcon searchIcon;
 
-    private static String givenHashtag;
-    private static String givenMention;
-
     private MainController mainController;
 
-    public void setMainController(MainController mc) { mainController = mc; }
-
-    public static void setHashtag(String s) { givenHashtag = s; }
-
-    public static void setMention(String s) { givenMention = s; }
+    public ExploreController(MainController mc) {
+        this.mainController = mc;
+        System.out.println("constructor");
+    }
 
     @FXML
     private void initialize() {
+
+        System.out.println("explore initializer");
 
         //icons
         returnIcon.setIconCode(FontAwesomeSolid.ARROW_LEFT);
         searchIcon.setIconCode(FontAwesomeSolid.SEARCH);
 
-        //automatically search the given mention or hashtag if there's any; if not, display trending hashtags
+        //automatically search the given hashtag if there's any; if not, display trending hashtags
 
-        if (givenHashtag != null) {
-            searchText.setText("#" + givenHashtag);
-            search();
-            givenHashtag = null;
+
+        HashtagDAO hD = new HashtagDAO();
+        List<String> trending= hD.getTrendingHashtags(10);
+        if (trending.isEmpty()) System.out.println("no trending");
+        for (String s : trending) {
+            System.out.println(s);
+            System.out.println("---");
         }
-        else if (givenMention != null) {
-            searchText.setText("@" + givenMention);
-            search();
-            givenMention = null;
+        for (String s : trending) {
+
+            VBox vb = new VBox();
+            vb.setMaxHeight(200);
+            vb.setMaxWidth(600);
+            vb.setAlignment(Pos.CENTER_LEFT);
+            vb.setPadding(new Insets(20, 20, 20, 20));
+            Text t = new Text("#" + s);
+
+            t.setStyle("-fx-font-weight: bold;");
+            t.getStyleClass().add("primary-t");
+
+            vb.getChildren().add(t);
+
+            trendingHashtags.getChildren().add(vb);
         }
-        else {
-            HashtagDAO hD = new HashtagDAO();
-            List<String> trending= hD.getTrendingHashtags(10);
-            for (String s : trending) {
 
-                VBox vb = new VBox();
-                vb.setOnMouseClicked(mouseEvent -> {
-                    ExploreController.setHashtag(s);
-                    mainController.Explore();
-                });
-                Text t = new Text("#" + s);
+        trendingHashtags.setManaged(true);
+        trendingHashtags.setVisible(true);
+        resultsContainer.setManaged(false);
+        resultsContainer.setVisible(false);
 
-                t.setStyle("-fx-font-weight: bold;");
-                t.getStyleClass().add("primary-t");
+        returnBTN.setVisible(false);
 
-                vb.getChildren().add(t);
-
-                trendingHashtags.getChildren().add(vb);
-            }
-
-            trendingHashtags.setManaged(true);
-            trendingHashtags.setVisible(true);
-            resultsContainer.setManaged(false);
-            resultsContainer.setVisible(false);
-
-            returnBTN.setVisible(false);
-        }
     }
 
     @FXML
@@ -127,12 +123,11 @@ public class ExploreController {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/user-card.fxml"));
 
+                UserCardController controller = new UserCardController(mainController, u);
+                loader.setController(controller);
+
                 VBox uBox = loader.load();
-
-                UserCardController controller = loader.getController();
-                controller.setMainController(mainController);
-                controller.setUser(u);
-
+                
                 resultsContainer.getChildren().add(uBox);
 
             } catch (IOException e) {
@@ -150,11 +145,10 @@ public class ExploreController {
             try {
                 FXMLLoader loader = new FXMLLoader(HomeController.class.getResource("/fxmls/tweet-card.fxml"));
 
-                VBox tweetBox = loader.load();
+                TweetController controller = new TweetController(mainController, t);
+                loader.setController(controller);
 
-                TweetController controller = loader.getController();
-                controller.setTweet(t);
-                controller.setMainController(mainController);
+                VBox tweetBox = loader.load();
 
                 resultsContainer.getChildren().add(tweetBox);
 
@@ -173,11 +167,10 @@ public class ExploreController {
             try {
                 FXMLLoader loader = new FXMLLoader(HomeController.class.getResource("/fxmls/tweet-card.fxml"));
 
-                VBox tweetBox = loader.load();
+                TweetController controller = new TweetController(mainController, t);
+                loader.setController(controller);
 
-                TweetController controller = loader.getController();
-                controller.setTweet(t);
-                controller.setMainController(mainController);
+                VBox tweetBox = loader.load();
 
                 resultsContainer.getChildren().add(tweetBox);
 

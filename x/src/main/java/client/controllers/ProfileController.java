@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -55,17 +56,18 @@ public class ProfileController {
 
     private final FollowDAO followDAO = new FollowDAO();
 
+    private TweetDao tweetDao = new TweetDao();
+
     private List<Tweet> allPosts;
 
     private static MainController mainController;
 
-    private TweetDao tweetDao = new TweetDao();
+    private User user;
 
-    private User user = new User();
-
-    public void setUser(User u) { this.user = u; }
-
-    public void setMainController(MainController mc) { mainController = mc; }
+    public ProfileController(MainController mc, User u) {
+        mainController = mc;
+        this.user = u;
+    }
 
     @FXML
     private void initialize() {
@@ -88,9 +90,9 @@ public class ProfileController {
         banner.setImage(banner_pic);
 
         displayName.setText(user.getDisplayName());
-        username.setText(user.getUsername());
+        username.setText("@" + user.getUsername());
         bio.setText(user.getBio());
-        //dateOfJoining.setText( "Joined " + DateFormatter.joiningDate(user.getCreatedAt()));
+        dateOfJoining.setText( "Joined " + DateFormatter.joiningDate(user.getCreatedAt()));
 
         //set text for tweets, followings & followers (include counts)
         int tweetC = tweetDao.getTweetByUserId(user.getId()).size();
@@ -163,11 +165,10 @@ public class ProfileController {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/tweet-card.fxml"));
 
-                VBox tweetBox = loader.load();
+                TweetController controller = new TweetController(mainController, t);
+                loader.setController(controller);
 
-                TweetController controller = loader.getController();
-                controller.setTweet(t);
-                controller.setMainController(mainController);
+                VBox tweetBox = loader.load();
 
                 tweetsContainer.getChildren().add(tweetBox);
 
@@ -201,11 +202,10 @@ public class ProfileController {
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/tweet-card.fxml"));
 
-                    VBox tweetBox = loader.load();
+                    TweetController controller = new TweetController(mainController, t);
+                    loader.setController(controller);
 
-                    TweetController controller = loader.getController();
-                    controller.setTweet(t);
-                    controller.setMainController(mainController);
+                    VBox tweetBox = loader.load();
 
                     tweetsContainer.getChildren().add(tweetBox);
 
@@ -236,15 +236,14 @@ public class ProfileController {
         tweetsContainer.getChildren().clear();
 
         for (Tweet t : allPosts) {
-            if (t.getMediaUrls().length != 0) {
+            if (t.getMediaUrls() != null) {
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/tweet-card.fxml"));
 
-                    VBox tweetBox = loader.load();
+                    TweetController controller = new TweetController(mainController, t);
+                    loader.setController(controller);
 
-                    TweetController controller = loader.getController();
-                    controller.setTweet(t);
-                    controller.setMainController(mainController);
+                    VBox tweetBox = loader.load();
 
                     tweetsContainer.getChildren().add(tweetBox);
 

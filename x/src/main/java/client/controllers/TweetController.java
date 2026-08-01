@@ -37,7 +37,7 @@ public class TweetController {
     @FXML private Button followBTN;
     @FXML private Button deleteBTN;
 
-    @FXML private TextFlow tweetText;
+    @FXML private Label tweetText;
     @FXML private Button reply;
     @FXML private Button repost;
     @FXML private Button like;
@@ -58,29 +58,42 @@ public class TweetController {
     private LikeDAO likeDAO = new LikeDAO();
     private ReplyDAO replyDAO = new ReplyDAO();
     private TweetDao tweetDao = new TweetDao();
-
-    public void setTweet(Tweet tweet) { this.givenTweet = tweet; }
+    private UserDao userDao = new UserDao();
 
     public Tweet getTweet() { return realTweet; }
 
-    public void setMainController(MainController mc) { mainController = mc; }
-
     public MainController getMainController() { return mainController;}
+
+    public TweetController(MainController mc, Tweet t) {
+        mainController = mc;
+        this.givenTweet = t;
+    }
 
     @FXML
     private void initialize() {
 
         //find the real tweet owner
 
-        Integer tweetId = givenTweet.getRetweetOfTweetId();
-        while (tweetId != null) {
-            Integer temp = tweetDao.getTweetById(tweetId).getRetweetOfTweetId();
-            tweetId = temp;
+        //Tweet t = givenTweet;
+        //while (t.getRetweetOfTweetId() != null) {
+            //t = tweetDao.getTweetById(t.getRetweetOfTweetId());
+        //}
+        //realTweet = t;
+
+        //if (givenTweet.getRetweetOfTweetId() != null) realTweet = tweetDao.getTweetById(givenTweet.getRetweetOfTweetId());
+        //else realTweet = givenTweet;
+
+        Tweet t = givenTweet;
+
+        while (t != null && t.getRetweetOfTweetId() != null) {
+            Tweet next = tweetDao.getTweetById(t.getRetweetOfTweetId());
+            if (next == null) {
+                break;
+            }
+            t = next;
         }
 
-        if (tweetId != null) realTweet = tweetDao.getTweetById(tweetId);
-        else realTweet = givenTweet;
-
+        realTweet = t;
 
         //icons
 
@@ -90,15 +103,14 @@ public class TweetController {
         likeIcon.setIconCode(FontAwesomeRegular.HEART);
         repostIcon.setIconCode(FontAwesomeSolid.RETWEET);
 
-        boolean b1 = likeDAO.isLikedByUser(realTweet.getUserId(), realTweet.getId());
+        boolean b1 = likeDAO.isLikedByUser(CurrentClient.getUser().getId(), realTweet.getId());
         if (b1) {
             likeIcon.setIconCode(FontAwesomeSolid.HEART);
             likeIcon.getStyleClass().clear();
             likeIcon.getStyleClass().add("red-like-icon");
         }
 
-        boolean b2 = true;
-        // isRepostedByUser  ?????????????????????
+        boolean b2 = userDao.isRetweetedByUser(CurrentClient.getUser().getId(), realTweet.getId());
         if (b2) {
             repostIcon.getStyleClass().clear();
             repostIcon.getStyleClass().add("green-repost-icon");
@@ -108,7 +120,7 @@ public class TweetController {
         //name the account you're replying to (if you are)
 
         if (realTweet.getReplyToTweetId() != null) {
-            replyToUsername.setText("Reply to @" + tweetDao.getTweetById(realTweet.getReplyToTweetId()).getUsername());
+            replyToUsername.setText("Reply to @" + tweetDao.getTweetById(realTweet.getReplyToTweetId()).getUsername() + " ");
             replyToText.setVisible(true);
         } else {
             replyToText.setVisible(false);
@@ -128,24 +140,45 @@ public class TweetController {
         username.setText(" @" + realTweet.getUsername());
         postingDate.setText(" . " + DateFormatter.postingDate(realTweet.getCreatedAt()));
 
-        Text t = new Text(realTweet.getContent());
-        tweetText = new TextFlow(t);
+        tweetText.setText(realTweet.getContent());
 
         //mediaBox
-        List<String> images = new ArrayList<>(Arrays.asList(realTweet.getMediaUrls()));
+        List<String> images;
+        if (realTweet.getMediaUrls() != null) {
+            images = new ArrayList<>(Arrays.asList(realTweet.getMediaUrls()));
+        }
+        else {
+            images = new ArrayList<>();
+        }
+
         List<Button> btns = mainController.displayMedia(images, mediaBox);
         for (Button b : btns) {
             b.setManaged(false);
             b.setVisible(false);
         }
 
+        FollowDAO followDAO = new FollowDAO();
+        boolean b = followDAO.isFollowing(CurrentClient.getUser().getId(), realTweet.getUserId());
+        if (b) {
+            followBTN.setText("Unfollow");
+        }
+        else {
+            followBTN.setText("Follow");
+        }
+
         if (realTweet.getUserId() == CurrentClient.getUser().getId()) {
             followBTN.setManaged(false);
             followBTN.setVisible(false);
+            deleteBTN.setManaged(true);
+            deleteBTN.setVisible(true);
+        }
+        else {
+            deleteBTN.setManaged(false);
+            deleteBTN.setVisible(false);
+            followBTN.setManaged(true);
+            followBTN.setVisible(true);
         }
 
-        deleteBTN.setManaged(false);
-        deleteBTN.setVisible(false);
     }
 
     @FXML
@@ -153,10 +186,10 @@ public class TweetController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/tweet-page.fxml"));
 
-            VBox tBox = loader.load();
+            TweetPageController controller = new TweetPageController(this);
+            loader.setController(controller);
 
-            TweetPageController controller = loader.getController();
-            controller.setTweetController(this);
+            VBox tBox = loader.load();
 
             mainController.getContainer().getChildren().clear();
             mainController.getContainer().getChildren().add(tBox);
@@ -199,13 +232,22 @@ public class TweetController {
     public boolean repost() {
         repostIcon.getStyleClass().clear();
 
-        boolean b1 = true;
-        //b1 = isRepostedByUser ?????????????????
+        boolean b1 = userDao.isRetweetedByUser(CurrentClient.getUser().getId(), realTweet.getId());
         if (b1) {
             ObjectNode payload = ServerConnection.mapper.createObjectNode();
             ObjectNode retweet = ServerConnection.mapper.createObjectNode();
 
-            payload.put("tweetId", givenTweet.getId());
+
+            List<Tweet> allTweets = tweetDao.getTweetByUserId(CurrentClient.getUser().getId());
+            int id = 0;
+            for (Tweet t : allTweets) {
+                if (t.getRetweetOfTweetId() == realTweet.getId()) {
+                    id = t.getId();
+                    break;
+                }
+            }
+
+            payload.put("tweetId", id);
             payload.put("userId", CurrentClient.getUser().getId());
 
             retweet.put("type", "DELETE_TWEET");
@@ -213,6 +255,8 @@ public class TweetController {
             CurrentClient.getConnection().send(retweet.toString());
 
             repostIcon.getStyleClass().add("gray-repost-icon");
+
+            System.out.println("Undo retweet");
         }
         else {
             ObjectNode payload = ServerConnection.mapper.createObjectNode();
@@ -221,11 +265,13 @@ public class TweetController {
             payload.put("originalTweetId", realTweet.getId());
             payload.put("userId", CurrentClient.getUser().getId());
 
-            retweet.put("type", "RETWEET");
+            retweet.put("type", "CREATE_RETWEET");
             retweet.set("payload", payload);
             CurrentClient.getConnection().send(retweet.toString());
 
             repost.getStyleClass().add("green-repost-icon");
+
+            System.out.println("Retweet");
         }
 
         return !b1;
@@ -233,10 +279,10 @@ public class TweetController {
 
     @FXML
     public boolean like() {
-        boolean b1 = likeDAO.isLikedByUser(realTweet.getUserId(), realTweet.getId());
+        boolean b1 = likeDAO.isLikedByUser(CurrentClient.getUser().getId(), realTweet.getId());
         boolean b2;
         if (b1) {
-            b2 = likeDAO.unlike(realTweet.getUserId(), realTweet.getId());
+            b2 = likeDAO.unlike(CurrentClient.getUser().getId(), realTweet.getId());
             if (b2) {
                 likeIcon.setIconCode(FontAwesomeRegular.HEART);
                 likeIcon.getStyleClass().clear();
@@ -244,7 +290,7 @@ public class TweetController {
             }
         }
         else {
-            b2 = likeDAO.like(realTweet.getUserId(), realTweet.getId());
+            b2 = likeDAO.like(CurrentClient.getUser().getId(), realTweet.getId());
             if (b2) {
                 likeIcon.setIconCode(FontAwesomeSolid.HEART);
                 likeIcon.getStyleClass().clear();
@@ -260,17 +306,17 @@ public class TweetController {
         try {
             FXMLLoader loader1 = new FXMLLoader(HomeController.class.getResource("/fxmls/tweet-card.fxml"));
 
-            TweetController controller1 = loader1.getController();
-            controller1.setTweet(tweetDao.getTweetById(realTweet.getReplyToTweetId()));
-            controller1.setMainController(mainController);
+
+            TweetController controller1 = new TweetController(mainController, tweetDao.getTweetById(realTweet.getReplyToTweetId()));
+            loader1.setController(controller1);
 
 
             FXMLLoader loader2 = new FXMLLoader(getClass().getResource("/fxmls/tweet-page.fxml"));
 
-            VBox tBox = loader2.load();
+            TweetPageController controller2 = new TweetPageController(controller1);
+            loader2.setController(controller2);
 
-            TweetPageController controller2 = loader2.getController();
-            controller2.setTweetController(controller1);
+            VBox tBox = loader2.load();
 
             mainController.getContainer().getChildren().clear();
             mainController.getContainer().getChildren().add(tBox);
@@ -279,20 +325,6 @@ public class TweetController {
             e.printStackTrace();
             System.out.println(e.getMessage());
         }
-    }
-
-    @FXML
-    private void MEntered() {
-        if (realTweet.getUserId() == CurrentClient.getUser().getId()) {
-            deleteBTN.setManaged(true);
-            deleteBTN.setVisible(true);
-        }
-    }
-
-    @FXML
-    private void MExited() {
-        deleteBTN.setManaged(false);
-        deleteBTN.setVisible(false);
     }
 
     @FXML

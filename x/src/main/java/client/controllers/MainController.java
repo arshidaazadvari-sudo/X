@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class MainController {
 
@@ -157,12 +158,10 @@ public class MainController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/followers&followings.fxml"));
 
-            VBox fBox = loader.load();
+            FollowController controller = new FollowController(this, user, onFollowers);
+            loader.setController(controller);
 
-            FollowController controller = loader.getController();
-            controller.setOnFollowers(onFollowers);
-            controller.setUser(user);
-            controller.setMainController(this);
+            VBox fBox = loader.load();
 
             container.getChildren().clear();
             container.getChildren().add(fBox);
@@ -180,11 +179,10 @@ public class MainController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/profile.fxml"));
 
-            VBox uBox = loader.load();
+            ProfileController controller = new ProfileController(this, u);
+            loader.setController(controller);
 
-            ProfileController controller = loader.getController();
-            controller.setUser(u);
-            controller.setMainController(this);
+            VBox uBox = loader.load();
 
             container.getChildren().add(uBox);
 
@@ -212,11 +210,10 @@ public class MainController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/home.fxml"));
 
-            VBox hBox = loader.load();
+            HomeController controller = new HomeController(this);
+            loader.setController(controller);
 
-            HomeController controller = loader.getController();
-            controller.setMainController(this);
-            //controller.setUser(CurrentClient.getUser());
+            VBox hBox = loader.load();
 
             container.getChildren().add(hBox);
 
@@ -235,10 +232,10 @@ public class MainController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmls/explore.fxml"));
 
-            VBox eBox = loader.load();
+            ExploreController controller = new ExploreController(this);
+            loader.setController(controller);
 
-            ExploreController controller = loader.getController();
-            controller.setMainController(this);
+            VBox eBox = loader.load();
 
             container.getChildren().add(eBox);
 
@@ -260,7 +257,7 @@ public class MainController {
             UserDao userDao = new UserDao();
 
             R_ProfilePic.setImage(ImageLoader.getProfileImage(userDao.getUserById(R_tweet.getUserId()).getProfilePic()));
-            R_username.setText(R_tweet.getUsername());
+            R_username.setText(" " + R_tweet.getUsername());
             R_name.setText(R_tweet.getDisplayName());
             R_postingDate.setText(DateFormatter.postingDate(R_tweet.getCreatedAt()));
             R_tweetText.setText(R_tweet.getContent());
@@ -309,15 +306,28 @@ public class MainController {
 
     public void setEditWindow() {
         overlay1.setVisible(true);
+        overlay1.setManaged(true);
         editWindow.setVisible(true);
+        editWindow.setManaged(true);
     }
 
     @FXML
     private void closeEditWindow() {
-        if (CurrentClient.getUser().getBannerPic().equals(newBannerPic) &&
-                CurrentClient.getUser().getProfilePic().equals(newProfilePic) &&
-                CurrentClient.getUser().getDisplayName().equals(newDisplayName.getText()) &&
-                CurrentClient.getUser().getBio().equals(newBio.getText())) {
+
+        boolean a1 = true;
+        if (CurrentClient.getUser().getBannerPic() != null) a1 = CurrentClient.getUser().getBannerPic().equals(newBannerPic);
+
+        boolean a2 = true;
+        if (CurrentClient.getUser().getProfilePic() != null) a2 = CurrentClient.getUser().getProfilePic().equals(newProfilePic);
+
+        boolean a3 = true;
+        if (CurrentClient.getUser().getBio() != null) a3 = CurrentClient.getUser().getBio().equals(newBio.getText());
+
+        boolean b1 = ((CurrentClient.getUser().getBannerPic() == null) && (newBannerPic == null)) || a1;
+        boolean b2 = ((CurrentClient.getUser().getProfilePic() == null) && (newProfilePic == null)) || a2;
+        boolean b3 = ((CurrentClient.getUser().getBio() == null) && (Objects.equals(newBio.getText(), ""))) || a3;
+        boolean b4 = CurrentClient.getUser().getDisplayName().equals(newDisplayName.getText());
+        if (b1 && b2 && b3 && b4) {
             overlay1.setVisible(false);
             overlay1.setManaged(false);
             editWindow.setVisible(false);
@@ -333,7 +343,7 @@ public class MainController {
 
     @FXML
     private void saveChanges() {
-        if (newDisplayName.getText() != null) {
+        if (!Objects.equals(newDisplayName.getText(), "")) {
 
             blankNameMSG.setVisible(false);
 
@@ -373,7 +383,8 @@ public class MainController {
         File file = fileChooser.showOpenDialog(bannerPic.getScene().getWindow());
 
         newBannerPic = ImageLoader.bannerImageUploader(file);
-        bannerPic.setImage(ImageLoader.getBannerImage(newBannerPic));
+        Image image = ImageLoader.getBannerImage(newBannerPic);
+        bannerPic.setImage(image);
     }
 
     @FXML
@@ -384,7 +395,8 @@ public class MainController {
         File file = fileChooser.showOpenDialog(profilePic.getScene().getWindow());
 
         newProfilePic = ImageLoader.profileImageUploader(file);
-        profilePic.setImage(ImageLoader.getProfileImage(newProfilePic));
+        Image image = ImageLoader.getProfileImage(newProfilePic);
+        profilePic.setImage(image);
     }
 
     @FXML
@@ -434,6 +446,7 @@ public class MainController {
     @FXML
     private void Post() {
         posting(images, postText.getText());
+        closePostWindow();
     }
 
     @FXML
@@ -462,8 +475,12 @@ public class MainController {
         Timestamp ts = new Timestamp(System.currentTimeMillis());
         payload.put("timestamp", ts.toString());
 
-        String[] imageArray = imageList.toArray(new String[0]);
+        String[] imageArray = new String[imageList.size()];
+        for (int i = 0; i < imageList.size(); i++) {
+            imageArray[i] = imageList.get(i);
+        }
         JsonNode mediaUrls = ServerConnection.mapper.valueToTree(imageArray);
+        System.out.println("images: " + mediaUrls.toString());
         payload.set("mediaUrls", mediaUrls);
 
         if (isReplying) {
@@ -488,7 +505,9 @@ public class MainController {
         for (Button b : btns) {
             FontIcon deleteIcon = new FontIcon(FontAwesomeSolid.WINDOW_CLOSE);
             deleteIcon.getStyleClass().add("half-transparent-icon");
+            deleteIcon.setIconSize(24);
             b.setGraphic(deleteIcon);
+            b.getStyleClass().add("hollow-delete-btn");
             b.setPrefHeight(24);
             b.setPrefWidth(24);
             b.setMaxHeight(24);
@@ -497,7 +516,9 @@ public class MainController {
     }
 
     private void deleteMedia(List<String> imageList, int index) {
-        imageList.remove(index);
+        if (imageList.size() > index) {
+            imageList.remove(index);
+        }
         List<Button> btns = displayMedia(imageList, mediaBox);
         buttonStyling(btns);
     }

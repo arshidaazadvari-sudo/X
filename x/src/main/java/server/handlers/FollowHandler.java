@@ -18,7 +18,7 @@ public class FollowHandler {
     private final ObjectMapper mapper = new ObjectMapper();
     public Response handle(Request request) {
         String type = request.getType();
-        User currentUser = authService.getCurrentUser(request.getToken());
+        User currentUser = authService.getCurrentUser(request.getUserId());
         if (currentUser == null) {
             return Response.error(request.getRequestId(), 401, "You must be logged in");
         }

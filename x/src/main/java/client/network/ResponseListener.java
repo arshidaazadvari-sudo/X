@@ -37,11 +37,16 @@ public class ResponseListener implements Runnable {
                 // deciding what to do with the received message from server based on its type
                 if (Objects.equals(json.get("type").toString(), success.get("type").toString())) {
                     authResponse = json;
-                    System.out.println("An auth success response was received. ");
+                    System.out.println("A success response was received. ");
                 }
                 else if (Objects.equals(json.get("type").toString(), error.get("type").toString())) {
-                    authResponse = json;
-                    System.out.println("An auth error was received. ");
+                    if (CurrentClient.getUser() == null) {
+                        authResponse = json;
+                        System.out.println("An auth error was received. ");
+                    }
+                    else {
+                        System.out.println("An error was received from server: " + json.get("message").toString());
+                    }
                 }
                 else if (Objects.equals(json.get("type").toString(), tweet.get("type").toString())) {
                     if (CurrentClient.isOnHomePage()) {

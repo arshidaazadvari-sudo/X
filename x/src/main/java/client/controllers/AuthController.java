@@ -104,7 +104,9 @@ public class AuthController {
             //get the user
             UserDao userDao = new UserDao();
             User u = userDao.getUserByUsername(usernameField.getText());
+            System.out.println("User: " + u.getUsername());
             CurrentClient.setUser(u);
+            System.out.println("Current user: " + CurrentClient.getUser().getUsername());
 
             //go to main scene
             try {

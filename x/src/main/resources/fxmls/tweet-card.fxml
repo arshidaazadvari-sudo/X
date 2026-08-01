@@ -8,13 +8,17 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.text.Text?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
+<?import javafx.geometry.Insets?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="client.controllers.TweetController"
-      styleClass="box"
-      prefHeight="400.0" prefWidth="600.0" onMouseClicked="#tweetPage" onMouseEntered="#MEntered" onMouseDragExited="#MExited">
+      alignment="TOP_CENTER"
+      styleClass="box" style="-fx-backgound-color: red;"
+      maxWidth="600" maxHeight="400" onMouseClicked="#tweetPage">
 
-    <TextFlow fx:id="replyToText">
+    <TextFlow fx:id="replyToText" maxWidth="500">
+        <padding>
+            <Insets top="10" left="10" bottom="10" right="10"/>
+        </padding>
         <Label fx:id="replyToUsername" styleClass="secondary-t" graphicTextGap="8">
             <graphic>
                 <FontIcon fx:id="repliedIcon" iconSize="18" styleClass="secondary-icon"/>
@@ -23,35 +27,43 @@
         <Text text="See the tweet" onMouseClicked="#showRepliedTweet" styleClass="secondary-btn"/>
     </TextFlow>
 
-    <HBox>
+    <HBox spacing="20" maxWidth="550">
 
-        <ImageView fx:id="profilePicture" onMouseClicked="#profile" preserveRatio="true">
+        <padding>
+            <Insets top="20" right="20" bottom="20" left="20"/>
+        </padding>
+
+        <ImageView fx:id="profilePicture" onMouseClicked="#profile" preserveRatio="true" fitHeight="44" fitWidth="44">
             <clip>
                 <Circle centerX="22" centerY="22" radius="22"/>
             </clip>
         </ImageView>
 
-        <VBox>
+        <VBox maxWidth="500" maxHeight="500">
 
-            <HBox>
-                <TextFlow>
-                    <Text fx:id="name" onMouseClicked="#profile" styleClass="primary-t" style="-fx-font-weight: bold;"/>
-                    <Text fx:id="username" onMouseClicked="#profile" styleClass="secondary-t"/>
-                    <Text fx:id="postingDate"/>
-                </TextFlow>
-                <Button fx:id="followBTN" onAction="#follow" text="Follow" styleClass="small-filled-btn"/>
-                <Button fx:id="deleteBTN" onAction="#delete" maxWidth="24" maxHeight="24" prefWidth="24" prefHeight="24">
-                    <graphic>
-                        <FontIcon fx:id="deleteIcon" iconSize="24" style="-fx-icon-color: rgba(244 33 44 0.4);"/>
-                    </graphic>
-                </Button>
+            <HBox maxWidth="500" minWidth="500" spacing="250">
+                <HBox minWidth="150" maxWidth="150">
+                    <TextFlow>
+                        <Text fx:id="name" onMouseClicked="#profile" styleClass="primary-t" style="-fx-font-weight: bold;"/>
+                        <Text fx:id="username" onMouseClicked="#profile" styleClass="secondary-t"/>
+                        <Text fx:id="postingDate" styleClass="secondary-t"/>
+                    </TextFlow>
+                </HBox>
+                <HBox>
+                    <Button fx:id="followBTN" onAction="#follow" text="Follow" styleClass="small-filled-btn"/>
+                    <Button fx:id="deleteBTN" onAction="#delete" maxWidth="24" maxHeight="24" prefWidth="24" prefHeight="24" styleClass="hollow-delete-btn">
+                        <graphic>
+                            <FontIcon fx:id="deleteIcon" iconSize="24" style="-fx-icon-color: rgba(244, 33, 44, 0.4);"/>
+                        </graphic>
+                    </Button>
+                </HBox>
             </HBox>
 
-            <TextFlow fx:id="tweetText" styleClass="primary-t"/>
+            <Label fx:id="tweetText" wrapText="true" styleClass="primary-t" maxWidth="500" minWidth="500" maxHeight="300" minHeight="100"/>
 
-            <HBox fx:id="mediaBox"/>
+            <HBox fx:id="mediaBox" maxHeight="300" maxWidth="500"/>
 
-            <HBox>
+            <HBox maxWidth="500" spacing="150" alignment="TOP_CENTER">
                 <Button fx:id="reply" onAction="#reply" styleClass="gray-reply-btn" graphicTextGap="5">
                     <graphic>
                         <FontIcon fx:id="replyIcon" iconSize="18" styleClass="gray-reply-icon"/>
