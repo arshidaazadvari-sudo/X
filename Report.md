@@ -54,9 +54,9 @@ used a separated thread named ResponseListener to manage the receiving messages 
 
 The protocol of messages is in Json; We decided to design the pattern of Json objects this way:
 
-There are two main keys (fields), one is `type` and the other one is `payload` or `message` based on need.
+- There are two main keys (fields), one is `type` and the other one is `payload` or `message` based on need.
 
-But the major part of front-end is about designing a friendly UI. In order to do that, I used javafx, css and java controllers.
+- But the major part of front-end is about designing a friendly UI. In order to do that, I used javafx, css and java controllers.
 
 In a nutshell, the architecture of fxml files usage is like this:
 
