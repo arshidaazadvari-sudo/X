@@ -105,7 +105,7 @@ public class TweetPageController {
         int r = tweetDao.getRepliesForTweet(tweet.getId()).size();
         reply.setText(String.valueOf(r));
         like.setText(String.valueOf(tweet.getLikesCount()));
-        //repost.setText(); ?????????????????????
+        repost.setText(String.valueOf(tweetDao.getRetweetCount(tweet.getId())));
         displayName.setText(tweet.getDisplayName());
         username.setText(" @" + tweet.getUsername());
         postingDate.setText(DateFormatter.postingDateInPage(tweet.getCreatedAt()));

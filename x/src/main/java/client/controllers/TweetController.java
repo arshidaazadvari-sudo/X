@@ -135,7 +135,7 @@ public class TweetController {
         int r = tweetDao.getRepliesForTweet(realTweet.getId()).size();
         reply.setText(String.valueOf(r));
         like.setText(String.valueOf(realTweet.getLikesCount()));
-        //repost.setText(); ??????????????????????
+        repost.setText(String.valueOf(tweetDao.getRetweetCount(realTweet.getId())));
         name.setText(realTweet.getDisplayName());
         username.setText(" @" + realTweet.getUsername());
         postingDate.setText(" . " + DateFormatter.postingDate(realTweet.getCreatedAt()));
